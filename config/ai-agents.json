@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "verifiedAt": "2026-10-07T21:50:36.479119+00:00",
+  "agents": [
+    {
+      "id": 198982749,
+      "login": "copilot-swe-agent[bot]",
+      "name": "GitHub Copilot",
+      "source": "https://docs.github.com/en/copilot/concepts/agents/coding-agent/about-coding-agent"
+    },
+    {
+      "id": 209825114,
+      "login": "claude[bot]",
+      "name": "Claude Code",
+      "source": "https://github.com/anthropics/claude-code-action"
+    },
+    {
+      "id": 206951365,
+      "login": "cursor[bot]",
+      "name": "Cursor",
+      "source": "https://cursor.com/docs/cloud-agent"
+    },
+    {
+      "id": 158243242,
+      "login": "devin-ai-integration[bot]",
+      "name": "Devin",
+      "source": "https://docs.devin.ai/integrations/github"
+    },
+    {
+      "id": 161369871,
+      "login": "google-labs-jules[bot]",
+      "name": "Jules",
+      "source": "https://jules.google/docs/tasks-repos/"
+    },
+    {
+      "id": 242516109,
+      "login": "openai-code-agent[bot]",
+      "name": "Codex",
+      "source": "https://docs.github.com/en/copilot/concepts/agents/about-third-party-coding-agents"
+    },
+    {
+      "id": 199175422,
+      "login": "chatgpt-codex-connector[bot]",
+      "name": "Codex",
+      "source": "https://developers.openai.com/codex/integrations/github/"
+    },
+    {
+      "id": 131295404,
+      "login": "codegen-sh[bot]",
+      "name": "Codegen",
+      "source": "https://docs.codegen.com/integrations/github"
+    }
+  ]
+}

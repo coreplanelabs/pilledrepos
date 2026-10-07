@@ -1,0 +1,2573 @@
+{
+  "version": 1,
+  "repository": "vitejs/vite",
+  "url": "https://github.com/vitejs/vite",
+  "description": "Next generation frontend tooling. It's fast!",
+  "capturedAt": "2026-10-06T19:05:56.777Z",
+  "summary": "I found 53 PRs merged in the past 90 days within 100 recently updated closed PRs. @sapphi-red authored 16 of those merges. I inspected 10 selected PRs for diff and inline-review counts. These awards describe the observed snapshot, not developer skill or the project's contribution policy.",
+  "awards": [
+    {
+      "id": "merge",
+      "name": "Merge Machine",
+      "icon": "↗",
+      "status": "observed",
+      "headline": "@sapphi-red",
+      "value": "16 merged PRs",
+      "description": "Authored the most merges in this snapshot.",
+      "scope": "53 observed merges in the past 90 days, from 100 recently updated closed PRs.",
+      "evidence": [
+        {
+          "number": 23661,
+          "title": "fix: backports for v6",
+          "url": "https://github.com/vitejs/vite/pull/23661",
+          "author": {
+            "id": 49056869,
+            "login": "sapphi-red",
+            "bot": false
+          },
+          "createdAt": 1791260821000,
+          "updatedAt": 1791265477000,
+          "mergedAt": 1791265475000,
+          "draft": false,
+          "association": "MEMBER",
+          "headSha": "bdf71c5dc964a2986b56268d935f145950b138ea"
+        },
+        {
+          "number": 23660,
+          "title": "fix: backports for v7",
+          "url": "https://github.com/vitejs/vite/pull/23660",
+          "author": {
+            "id": 49056869,
+            "login": "sapphi-red",
+            "bot": false
+          },
+          "createdAt": 1791260161000,
+          "updatedAt": 1791263197000,
+          "mergedAt": 1791263194000,
+          "draft": false,
+          "association": "MEMBER",
+          "headSha": "40e3b149aa17c8f87c90449a2161ce7e157be971"
+        },
+        {
+          "number": 23659,
+          "title": "fix: backports for v8.1",
+          "url": "https://github.com/vitejs/vite/pull/23659",
+          "author": {
+            "id": 49056869,
+            "login": "sapphi-red",
+            "bot": false
+          },
+          "createdAt": 1791258901000,
+          "updatedAt": 1791262074000,
+          "mergedAt": 1791262071000,
+          "draft": false,
+          "association": "MEMBER",
+          "headSha": "ee9141d6cad78e62e7c4d2565cfc4ec1d1b2b51e"
+        },
+        {
+          "number": 23658,
+          "title": "fix: backports for v8.2",
+          "url": "https://github.com/vitejs/vite/pull/23658",
+          "author": {
+            "id": 49056869,
+            "login": "sapphi-red",
+            "bot": false
+          },
+          "createdAt": 1791258452000,
+          "updatedAt": 1791260916000,
+          "mergedAt": 1791260915000,
+          "draft": false,
+          "association": "MEMBER",
+          "headSha": "9dc3dd6b7b8e9658b9d1018ba7390d5b1f6bec07"
+        }
+      ]
+    },
+    {
+      "id": "delete",
+      "name": "Delete Club",
+      "icon": "−",
+      "status": "observed",
+      "headline": "@sapphi-red",
+      "value": "74 lines deleted",
+      "description": "PR #23661 deleted the most lines among inspected PRs. It also added 289 lines.",
+      "scope": "10 of 10 selected recent merged PRs inspected. Counts include all file types.",
+      "evidence": [
+        {
+          "number": 23661,
+          "title": "fix: backports for v6",
+          "url": "https://github.com/vitejs/vite/pull/23661",
+          "author": {
+            "id": 49056869,
+            "login": "sapphi-red",
+            "bot": false
+          },
+          "createdAt": 1791260821000,
+          "updatedAt": 1791265477000,
+          "mergedAt": 1791265475000,
+          "draft": false,
+          "association": "MEMBER",
+          "headSha": "bdf71c5dc964a2986b56268d935f145950b138ea",
+          "additions": 289,
+          "deletions": 74,
+          "reviewComments": 0
+        }
+      ]
+    },
+    {
+      "id": "comments",
+      "name": "Comment Magnet",
+      "icon": "…",
+      "status": "observed",
+      "headline": "PR #23655",
+      "value": "2 review comments",
+      "description": "The busiest inline review conversation among inspected PRs. A comment count is not a roast or a defect count.",
+      "scope": "10 of 10 selected recent merged PRs inspected. Counts include all file types.",
+      "evidence": [
+        {
+          "number": 23655,
+          "title": "fix(server): check `fs.serve` for `?vite-wasm-instance`",
+          "url": "https://github.com/vitejs/vite/pull/23655",
+          "author": {
+            "id": 49056869,
+            "login": "sapphi-red",
+            "bot": false
+          },
+          "createdAt": 1791256827000,
+          "updatedAt": 1791295990000,
+          "mergedAt": 1791257455000,
+          "draft": false,
+          "association": "MEMBER",
+          "headSha": "0e43fd0ef16c6612956f99f8de5b01ed595ac9ab",
+          "additions": 33,
+          "deletions": 1,
+          "reviewComments": 2
+        }
+      ]
+    },
+    {
+      "id": "cast",
+      "name": "The Cast",
+      "icon": "+",
+      "status": "observed",
+      "headline": "Meet the cast",
+      "value": "25 contributor accounts",
+      "description": "Distinct accounts that authored merged PRs in this snapshot. Includes bot accounts; this is not a count of new or external contributors.",
+      "scope": "53 observed merges in the past 90 days, from 100 recently updated closed PRs.",
+      "evidence": [
+        {
+          "number": 23661,
+          "title": "fix: backports for v6",
+          "url": "https://github.com/vitejs/vite/pull/23661",
+          "author": {
+            "id": 49056869,
+            "login": "sapphi-red",
+            "bot": false
+          },
+          "createdAt": 1791260821000,
+          "updatedAt": 1791265477000,
+          "mergedAt": 1791265475000,
+          "draft": false,
+          "association": "MEMBER",
+          "headSha": "bdf71c5dc964a2986b56268d935f145950b138ea"
+        },
+        {
+          "number": 23621,
+          "title": "perf: only register time middleware when debug logging is enabled",
+          "url": "https://github.com/vitejs/vite/pull/23621",
+          "author": {
+            "id": 24516654,
+            "login": "btea",
+            "bot": false
+          },
+          "createdAt": 1790840156000,
+          "updatedAt": 1790845504000,
+          "mergedAt": 1790845015000,
+          "draft": false,
+          "association": "CONTRIBUTOR",
+          "headSha": "cff5a1644249e84e54a20de6f32919db53a23161"
+        },
+        {
+          "number": 23246,
+          "title": "test(bundled-dev): enable fs-serve, resolve, dynamic-import and assets-sanitize cases",
+          "url": "https://github.com/vitejs/vite/pull/23246",
+          "author": {
+            "id": 10465670,
+            "login": "h-a-n-a",
+            "bot": false
+          },
+          "createdAt": 1786524532000,
+          "updatedAt": 1790645691000,
+          "mergedAt": 1790645690000,
+          "draft": false,
+          "association": "MEMBER",
+          "headSha": "5e206c5a8ca3c4cb7de58c78738d86df6b09383c"
+        },
+        {
+          "number": 23604,
+          "title": "chore(deps): update vitest monorepo to v5",
+          "url": "https://github.com/vitejs/vite/pull/23604",
+          "author": {
+            "id": 29139614,
+            "login": "renovate[bot]",
+            "bot": true
+          },
+          "createdAt": 1790562065000,
+          "updatedAt": 1790648736000,
+          "mergedAt": 1790648734000,
+          "draft": false,
+          "association": "CONTRIBUTOR",
+          "headSha": "7cd3848c8dca418a24f51b3db9d380d4239df663"
+        }
+      ]
+    },
+    {
+      "id": "oldest",
+      "name": "The Long Goodbye",
+      "icon": "◷",
+      "status": "observed",
+      "headline": "PR #6267",
+      "value": "1,744 days open",
+      "description": "The oldest open PR returned by GitHub's oldest-first listing. Age does not mean neglect.",
+      "scope": "30 oldest open PRs read. This is calendar age, not time waiting for review.",
+      "evidence": [
+        {
+          "number": 6267,
+          "title": "feat: allow assets to be external instead of inline in lib mode.",
+          "url": "https://github.com/vitejs/vite/pull/6267",
+          "author": {
+            "id": 5960988,
+            "login": "wxsms",
+            "bot": false
+          },
+          "createdAt": 1640592694000,
+          "updatedAt": 1780307314000,
+          "mergedAt": null,
+          "draft": false,
+          "association": "NONE",
+          "headSha": "46c3dcdbb7e431822bd57b2eed5c898db2646180"
+        }
+      ]
+    },
+    {
+      "id": "fast",
+      "name": "Fastest Lap",
+      "icon": "⌁",
+      "status": "observed",
+      "headline": "PR #23657",
+      "value": "1 minute",
+      "description": "Shortest PR opening-to-merge time observed. Includes draft time, waiting and automation. This is not time spent coding.",
+      "scope": "53 observed merges in the past 90 days, from 100 recently updated closed PRs.",
+      "evidence": [
+        {
+          "number": 23657,
+          "title": "release: v8.3.3",
+          "url": "https://github.com/vitejs/vite/pull/23657",
+          "author": {
+            "id": 41898282,
+            "login": "github-actions[bot]",
+            "bot": true
+          },
+          "createdAt": 1791258413000,
+          "updatedAt": 1791258505000,
+          "mergedAt": 1791258502000,
+          "draft": false,
+          "association": "CONTRIBUTOR",
+          "headSha": "d12461fadcfe63347a2c0c22b4574c54d129dc36"
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "The closed-PR scan stopped at one page. Merge awards describe this snapshot, not every merge in the period."
+  ],
+  "contributingUrl": "https://github.com/vitejs/vite/blob/main/CONTRIBUTING.md",
+  "coverage": {
+    "days": 90,
+    "closedRead": 100,
+    "mergedObserved": 53,
+    "periodComplete": false,
+    "detailsRequested": 10,
+    "detailsRead": 10,
+    "openRead": 30,
+    "requests": 14
+  },
+  "facts": {
+    "closed": [
+      {
+        "number": 23428,
+        "title": "fix(client): preserve 0 in ws timeout and port injection",
+        "url": "https://github.com/vitejs/vite/pull/23428",
+        "author": {
+          "id": 236466140,
+          "login": "xia-chao",
+          "bot": false
+        },
+        "createdAt": 1788449663000,
+        "updatedAt": 1791306495000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "add0e1c21822c2d78611290b28803a97cb28e687"
+      },
+      {
+        "number": 23654,
+        "title": "fix(deps): update launch-editor to v2.14.2",
+        "url": "https://github.com/vitejs/vite/pull/23654",
+        "author": {
+          "id": 49056869,
+          "login": "sapphi-red",
+          "bot": false
+        },
+        "createdAt": 1791256708000,
+        "updatedAt": 1791296047000,
+        "mergedAt": 1791257328000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "bfd85720b7196c94c89a50d5615a3e03a4fafb62"
+      },
+      {
+        "number": 23656,
+        "title": "fix(server): store ids to `safeModulePaths` rather than URLs",
+        "url": "https://github.com/vitejs/vite/pull/23656",
+        "author": {
+          "id": 49056869,
+          "login": "sapphi-red",
+          "bot": false
+        },
+        "createdAt": 1791256993000,
+        "updatedAt": 1791296010000,
+        "mergedAt": 1791258243000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "42be1097d48196d92fbacd2d24acacb2bad82c21"
+      },
+      {
+        "number": 23655,
+        "title": "fix(server): check `fs.serve` for `?vite-wasm-instance`",
+        "url": "https://github.com/vitejs/vite/pull/23655",
+        "author": {
+          "id": 49056869,
+          "login": "sapphi-red",
+          "bot": false
+        },
+        "createdAt": 1791256827000,
+        "updatedAt": 1791295990000,
+        "mergedAt": 1791257455000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "0e43fd0ef16c6612956f99f8de5b01ed595ac9ab"
+      },
+      {
+        "number": 23653,
+        "title": "fix(html): filename passed to transformIndexHtml should not include queries",
+        "url": "https://github.com/vitejs/vite/pull/23653",
+        "author": {
+          "id": 49056869,
+          "login": "sapphi-red",
+          "bot": false
+        },
+        "createdAt": 1791256593000,
+        "updatedAt": 1791295971000,
+        "mergedAt": 1791257036000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "2ddb1de4f6b82954f40e08fc5428636cc43865b3"
+      },
+      {
+        "number": 23645,
+        "title": "fix: allow colon paths on POSIX",
+        "url": "https://github.com/vitejs/vite/pull/23645",
+        "author": {
+          "id": 211269698,
+          "login": "mikamikasuki",
+          "bot": false
+        },
+        "createdAt": 1791133858000,
+        "updatedAt": 1791276649000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "1f4c619b35efd102f2aee49bc9acd7f4d8609a59"
+      },
+      {
+        "number": 23661,
+        "title": "fix: backports for v6",
+        "url": "https://github.com/vitejs/vite/pull/23661",
+        "author": {
+          "id": 49056869,
+          "login": "sapphi-red",
+          "bot": false
+        },
+        "createdAt": 1791260821000,
+        "updatedAt": 1791265477000,
+        "mergedAt": 1791265475000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "bdf71c5dc964a2986b56268d935f145950b138ea"
+      },
+      {
+        "number": 23660,
+        "title": "fix: backports for v7",
+        "url": "https://github.com/vitejs/vite/pull/23660",
+        "author": {
+          "id": 49056869,
+          "login": "sapphi-red",
+          "bot": false
+        },
+        "createdAt": 1791260161000,
+        "updatedAt": 1791263197000,
+        "mergedAt": 1791263194000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "40e3b149aa17c8f87c90449a2161ce7e157be971"
+      },
+      {
+        "number": 23659,
+        "title": "fix: backports for v8.1",
+        "url": "https://github.com/vitejs/vite/pull/23659",
+        "author": {
+          "id": 49056869,
+          "login": "sapphi-red",
+          "bot": false
+        },
+        "createdAt": 1791258901000,
+        "updatedAt": 1791262074000,
+        "mergedAt": 1791262071000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "ee9141d6cad78e62e7c4d2565cfc4ec1d1b2b51e"
+      },
+      {
+        "number": 23658,
+        "title": "fix: backports for v8.2",
+        "url": "https://github.com/vitejs/vite/pull/23658",
+        "author": {
+          "id": 49056869,
+          "login": "sapphi-red",
+          "bot": false
+        },
+        "createdAt": 1791258452000,
+        "updatedAt": 1791260916000,
+        "mergedAt": 1791260915000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "9dc3dd6b7b8e9658b9d1018ba7390d5b1f6bec07"
+      },
+      {
+        "number": 23657,
+        "title": "release: v8.3.3",
+        "url": "https://github.com/vitejs/vite/pull/23657",
+        "author": {
+          "id": 41898282,
+          "login": "github-actions[bot]",
+          "bot": true
+        },
+        "createdAt": 1791258413000,
+        "updatedAt": 1791258505000,
+        "mergedAt": 1791258502000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "d12461fadcfe63347a2c0c22b4574c54d129dc36"
+      },
+      {
+        "number": 23578,
+        "title": "fix(server): report ignored server.hmr options when ws is false",
+        "url": "https://github.com/vitejs/vite/pull/23578",
+        "author": {
+          "id": 108967541,
+          "login": "beduldul",
+          "bot": false
+        },
+        "createdAt": 1790300167000,
+        "updatedAt": 1791155060000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "f1336221cb0d4ce4f00718a99d72565f76fd9185"
+      },
+      {
+        "number": 23607,
+        "title": "fix: handle URL-normalized ?raw=/ ?url= and strip ?t= before #fragment (fix #22060, fix #23390)",
+        "url": "https://github.com/vitejs/vite/pull/23607",
+        "author": {
+          "id": 190860569,
+          "login": "sai4u-dev",
+          "bot": false
+        },
+        "createdAt": 1790598010000,
+        "updatedAt": 1791135708000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "dfa6194890c6f4d7da5fc8424becc2e3cea0201d"
+      },
+      {
+        "number": 23642,
+        "title": "fix(css): correct dev sourcemap source bases (fix #23195)",
+        "url": "https://github.com/vitejs/vite/pull/23642",
+        "author": {
+          "id": 5174173,
+          "login": "yousefissa",
+          "bot": false
+        },
+        "createdAt": 1791074470000,
+        "updatedAt": 1791075665000,
+        "mergedAt": null,
+        "draft": true,
+        "association": "NONE",
+        "headSha": "33886a1242549a4162a183b778a59c7c2997e701"
+      },
+      {
+        "number": 23638,
+        "title": "fix: escape $ in subpath import id to prevent resolve.exports wildcard mangling",
+        "url": "https://github.com/vitejs/vite/pull/23638",
+        "author": {
+          "id": 130782884,
+          "login": "okxint",
+          "bot": false
+        },
+        "createdAt": 1791009392000,
+        "updatedAt": 1791009428000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "f3c88f1599b87dda49a6aa46f17ddc61de56d791"
+      },
+      {
+        "number": 23635,
+        "title": "fix: match default fs.deny and watcher ignore globs relative to root",
+        "url": "https://github.com/vitejs/vite/pull/23635",
+        "author": {
+          "id": 180254320,
+          "login": "charan-rathore",
+          "bot": false
+        },
+        "createdAt": 1790931606000,
+        "updatedAt": 1790931863000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "c842ec4bf87c0d1b2c81a6949c30f7de4b655e95"
+      },
+      {
+        "number": 18615,
+        "title": "fix(css): `config.build` should be obtained from the current environment rather than from the top-level config",
+        "url": "https://github.com/vitejs/vite/pull/18615",
+        "author": {
+          "id": 31563977,
+          "login": "Jonny-china",
+          "bot": false
+        },
+        "createdAt": 1730998072000,
+        "updatedAt": 1790925557000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "a079ad65e538c5c932996fb3cda8fc025bb8b59a"
+      },
+      {
+        "number": 23633,
+        "title": "fix: preserve stylesheet links in CSS cycles (fix #23628)",
+        "url": "https://github.com/vitejs/vite/pull/23633",
+        "author": {
+          "id": 62262441,
+          "login": "GreedyC",
+          "bot": false
+        },
+        "createdAt": 1790914240000,
+        "updatedAt": 1790914338000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "81109334c8b76fe6ec16dc9b350a6caa263ee7a1"
+      },
+      {
+        "number": 23632,
+        "title": "FIX: Preserve stylesheet links in CSS cycles (fix #23628)",
+        "url": "https://github.com/vitejs/vite/pull/23632",
+        "author": {
+          "id": 62262441,
+          "login": "GreedyC",
+          "bot": false
+        },
+        "createdAt": 1790913968000,
+        "updatedAt": 1790913988000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "81109334c8b76fe6ec16dc9b350a6caa263ee7a1"
+      },
+      {
+        "number": 23630,
+        "title": "fix: missing stylesheet links in CSS cycles (fix #23628)",
+        "url": "https://github.com/vitejs/vite/pull/23630",
+        "author": {
+          "id": 62262441,
+          "login": "GreedyC",
+          "bot": false
+        },
+        "createdAt": 1790891709000,
+        "updatedAt": 1790891730000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "81109334c8b76fe6ec16dc9b350a6caa263ee7a1"
+      },
+      {
+        "number": 23629,
+        "title": "fix: missing stylesheet links in CSS cycles (fix #23628)",
+        "url": "https://github.com/vitejs/vite/pull/23629",
+        "author": {
+          "id": 62262441,
+          "login": "GreedyC",
+          "bot": false
+        },
+        "createdAt": 1790891645000,
+        "updatedAt": 1790891670000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "81109334c8b76fe6ec16dc9b350a6caa263ee7a1"
+      },
+      {
+        "number": 23614,
+        "title": "fix(worker): align worker urls in client and server when using terser",
+        "url": "https://github.com/vitejs/vite/pull/23614",
+        "author": {
+          "id": 227292,
+          "login": "BPScott",
+          "bot": false
+        },
+        "createdAt": 1790748826000,
+        "updatedAt": 1790873987000,
+        "mergedAt": 1790847252000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "33528e84fbf7f2748a0ecb312341de7752c6da3a"
+      },
+      {
+        "number": 23503,
+        "title": "fix(server): handle file watcher errors without crashing",
+        "url": "https://github.com/vitejs/vite/pull/23503",
+        "author": {
+          "id": 300409226,
+          "login": "kingmakeruix",
+          "bot": false
+        },
+        "createdAt": 1789633748000,
+        "updatedAt": 1790859364000,
+        "mergedAt": 1790816919000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "93f2bc61191bb67a6ba5b081525f3cfec6574f8d"
+      },
+      {
+        "number": 23625,
+        "title": "fix: resolve subpath imports starting with multiple hashes",
+        "url": "https://github.com/vitejs/vite/pull/23625",
+        "author": {
+          "id": 328244157,
+          "login": "drakeo338",
+          "bot": false
+        },
+        "createdAt": 1790851380000,
+        "updatedAt": 1790851397000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "a5badff63370e12d04b4cd4710cfe236ec5d7acb"
+      },
+      {
+        "number": 23623,
+        "title": "release: v8.3.2",
+        "url": "https://github.com/vitejs/vite/pull/23623",
+        "author": {
+          "id": 41898282,
+          "login": "github-actions[bot]",
+          "bot": true
+        },
+        "createdAt": 1790849289000,
+        "updatedAt": 1790849498000,
+        "mergedAt": 1790849496000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "5f5fa48d8ace2d5c9bdafcaaf496eebd97580607"
+      },
+      {
+        "number": 23590,
+        "title": "fix(optimize-deps): avoid \"unsupported\" warnings for browser:false mappings",
+        "url": "https://github.com/vitejs/vite/pull/23590",
+        "author": {
+          "id": 180254320,
+          "login": "charan-rathore",
+          "bot": false
+        },
+        "createdAt": 1790409815000,
+        "updatedAt": 1790845965000,
+        "mergedAt": 1790741641000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "55869ef55d518059b13ac883c21189b0e736bc27"
+      },
+      {
+        "number": 21816,
+        "title": "fix(deps): guard against undefined deps in commitProcessing",
+        "url": "https://github.com/vitejs/vite/pull/21816",
+        "author": {
+          "id": 29712230,
+          "login": "guest363",
+          "bot": false
+        },
+        "createdAt": 1773243790000,
+        "updatedAt": 1790845880000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "a2741a073b67761758b34d093f622038f7733ea6"
+      },
+      {
+        "number": 23621,
+        "title": "perf: only register time middleware when debug logging is enabled",
+        "url": "https://github.com/vitejs/vite/pull/23621",
+        "author": {
+          "id": 24516654,
+          "login": "btea",
+          "bot": false
+        },
+        "createdAt": 1790840156000,
+        "updatedAt": 1790845504000,
+        "mergedAt": 1790845015000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "cff5a1644249e84e54a20de6f32919db53a23161"
+      },
+      {
+        "number": 23619,
+        "title": "docs: fix grammar in Feature page",
+        "url": "https://github.com/vitejs/vite/pull/23619",
+        "author": {
+          "id": 189948849,
+          "login": "gilangabdian",
+          "bot": false
+        },
+        "createdAt": 1790836587000,
+        "updatedAt": 1790844966000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "9c6b6e30ef9ea82ea4a15ff0a9c25002c5c628ce"
+      },
+      {
+        "number": 23461,
+        "title": "perf: avoid encoding intermediate source maps",
+        "url": "https://github.com/vitejs/vite/pull/23461",
+        "author": {
+          "id": 4660659,
+          "login": "ShMcK",
+          "bot": false
+        },
+        "createdAt": 1789013060000,
+        "updatedAt": 1790844877000,
+        "mergedAt": 1790844877000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "87cdf0de798a7c4ae22d31550ff609f5c0b3ee87"
+      },
+      {
+        "number": 21578,
+        "title": "docs(troubleshooting): suggest `usePolling` for `EISDIR` error when watching files",
+        "url": "https://github.com/vitejs/vite/pull/21578",
+        "author": {
+          "id": 779047,
+          "login": "remcohaszing",
+          "bot": false
+        },
+        "createdAt": 1770373333000,
+        "updatedAt": 1790838131000,
+        "mergedAt": 1790819049000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "aab853266c9a054c804a82723b4ebb77d24cc1b1"
+      },
+      {
+        "number": 23591,
+        "title": "fix: pre-rasterize logo SVGs to avoid WebKit filter/mask rendering bugs",
+        "url": "https://github.com/vitejs/vite/pull/23591",
+        "author": {
+          "id": 141932641,
+          "login": "neevmodh",
+          "bot": false
+        },
+        "createdAt": 1790411722000,
+        "updatedAt": 1790835089000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "3fd9f49c499107a2aff878ce0f5d512176c6dc4e"
+      },
+      {
+        "number": 23499,
+        "title": "fix(server): release previous environments after initialization",
+        "url": "https://github.com/vitejs/vite/pull/23499",
+        "author": {
+          "id": 44307608,
+          "login": "Tiancheng-Xu",
+          "bot": false
+        },
+        "createdAt": 1789555205000,
+        "updatedAt": 1790833899000,
+        "mergedAt": 1790833899000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "55b5ada3c1d11d37baff6e54a47de045d8d3f806"
+      },
+      {
+        "number": 23594,
+        "title": "docs: fix dead og-image PNG links in vite6/vite7 changelog entries",
+        "url": "https://github.com/vitejs/vite/pull/23594",
+        "author": {
+          "id": 325296939,
+          "login": "auroraxo",
+          "bot": false
+        },
+        "createdAt": 1790515581000,
+        "updatedAt": 1790828124000,
+        "mergedAt": 1790828124000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "0d81a21f28eb66fa4f07719a9e93909cbce965b0"
+      },
+      {
+        "number": 22624,
+        "title": "fix(resolve): disable rolldown native tsconfig paths to prevent windows duplication",
+        "url": "https://github.com/vitejs/vite/pull/22624",
+        "author": {
+          "id": 222976357,
+          "login": "Dotify71",
+          "bot": false
+        },
+        "createdAt": 1780707390000,
+        "updatedAt": 1790822308000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "07e96029e65cd88d78c54fccba78681a3eb2ec39"
+      },
+      {
+        "number": 22570,
+        "title": "docs: fix Environment API framework example codes",
+        "url": "https://github.com/vitejs/vite/pull/22570",
+        "author": {
+          "id": 37394823,
+          "login": "hanityx",
+          "bot": false
+        },
+        "createdAt": 1780302789000,
+        "updatedAt": 1790822130000,
+        "mergedAt": 1790822130000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "43598434e04f5582e28f1767587a957b8a50ad1a"
+      },
+      {
+        "number": 22556,
+        "title": "fix(server): handle ECONNRESET on the WS upgrade socket",
+        "url": "https://github.com/vitejs/vite/pull/22556",
+        "author": {
+          "id": 1174623,
+          "login": "sashanicolas",
+          "bot": false
+        },
+        "createdAt": 1780183712000,
+        "updatedAt": 1790821976000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "4c3e9c4acb72c2c47b04e66e1cee20a885f68acb"
+      },
+      {
+        "number": 22519,
+        "title": "docs: mention CJS namespace import workaround",
+        "url": "https://github.com/vitejs/vite/pull/22519",
+        "author": {
+          "id": 151845341,
+          "login": "Caltsic",
+          "bot": false
+        },
+        "createdAt": 1779703332000,
+        "updatedAt": 1790821241000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "549f868004c16839e6aad723fef5205e9ceee25a"
+      },
+      {
+        "number": 22498,
+        "title": "fix(build): improve root URL import error",
+        "url": "https://github.com/vitejs/vite/pull/22498",
+        "author": {
+          "id": 151845341,
+          "login": "Caltsic",
+          "bot": false
+        },
+        "createdAt": 1779447751000,
+        "updatedAt": 1790821104000,
+        "mergedAt": null,
+        "draft": true,
+        "association": "CONTRIBUTOR",
+        "headSha": "63082d8788b12f19409099e85833fa5845161281"
+      },
+      {
+        "number": 23401,
+        "title": "fix(deps): watch asset files in linked optimized dependencies",
+        "url": "https://github.com/vitejs/vite/pull/23401",
+        "author": {
+          "id": 189948849,
+          "login": "gilangabdian",
+          "bot": false
+        },
+        "createdAt": 1788108498000,
+        "updatedAt": 1790820933000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "7842a5d9827e540fc55540fc11eb734f594f366b"
+      },
+      {
+        "number": 21978,
+        "title": "docs: clarify NODE_ENV behavior in JS API",
+        "url": "https://github.com/vitejs/vite/pull/21978",
+        "author": {
+          "id": 259874948,
+          "login": "lilianakatrina684-a11y",
+          "bot": false
+        },
+        "createdAt": 1774108575000,
+        "updatedAt": 1790820391000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "9ad6036a1ec560eebd0cffa351d4e6116856a7f3"
+      },
+      {
+        "number": 21977,
+        "title": "docs: clarify Environment API externalization options",
+        "url": "https://github.com/vitejs/vite/pull/21977",
+        "author": {
+          "id": 259874948,
+          "login": "lilianakatrina684-a11y",
+          "bot": false
+        },
+        "createdAt": 1774108122000,
+        "updatedAt": 1790820389000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "6bf27b9da8537eeb42c7ace509a20192966bd7b2"
+      },
+      {
+        "number": 21980,
+        "title": "docs: clarify production build caching",
+        "url": "https://github.com/vitejs/vite/pull/21980",
+        "author": {
+          "id": 259874948,
+          "login": "lilianakatrina684-a11y",
+          "bot": false
+        },
+        "createdAt": 1774110596000,
+        "updatedAt": 1790820383000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "d65aa40afc524a0eb920476d41a6a5bf96a41425"
+      },
+      {
+        "number": 21837,
+        "title": "fix(ssr): use proxyModuleUrl instead of proxyModulePath for CSS proxy URLs (fix #21836)",
+        "url": "https://github.com/vitejs/vite/pull/21837",
+        "author": {
+          "id": 168684030,
+          "login": "zakiscoding",
+          "bot": false
+        },
+        "createdAt": 1773342293000,
+        "updatedAt": 1790820226000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "400133e6b64893a872dc717eb7f6505e8c95f3dd"
+      },
+      {
+        "number": 21802,
+        "title": "docs: fix grammer in environment API page",
+        "url": "https://github.com/vitejs/vite/pull/21802",
+        "author": {
+          "id": 181558744,
+          "login": "Rohan5commit",
+          "bot": false
+        },
+        "createdAt": 1773114508000,
+        "updatedAt": 1790819977000,
+        "mergedAt": 1790819977000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "92f1dedb1f24218c870eeae08476c7a80af88463"
+      },
+      {
+        "number": 21680,
+        "title": "fix: strip import attributes from dynamic imports to fix Firefox compatibility",
+        "url": "https://github.com/vitejs/vite/pull/21680",
+        "author": {
+          "id": 21049395,
+          "login": "IMaloney",
+          "bot": false
+        },
+        "createdAt": 1771694905000,
+        "updatedAt": 1790759314000,
+        "mergedAt": null,
+        "draft": true,
+        "association": "NONE",
+        "headSha": "5976a3bed26ce3388996dd2a53ee1d83328257e2"
+      },
+      {
+        "number": 23536,
+        "title": "fix: merge `build.rolldownOptions.output.minify` correctly",
+        "url": "https://github.com/vitejs/vite/pull/23536",
+        "author": {
+          "id": 62770500,
+          "login": "hktitof",
+          "bot": false
+        },
+        "createdAt": 1789937518000,
+        "updatedAt": 1790757743000,
+        "mergedAt": 1790749241000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "4621c710bd3aa5baec01f9a417071c184206a5db"
+      },
+      {
+        "number": 23615,
+        "title": "fix(ssr): escape % in module runner sourceURL",
+        "url": "https://github.com/vitejs/vite/pull/23615",
+        "author": {
+          "id": 84681565,
+          "login": "sarmah-rup",
+          "bot": false
+        },
+        "createdAt": 1790755809000,
+        "updatedAt": 1790756396000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "f81b19944d128c1e814b6ca10b9435954008b61b"
+      },
+      {
+        "number": 23510,
+        "title": "perf(build): avoid quadratic link scan in the preload helper",
+        "url": "https://github.com/vitejs/vite/pull/23510",
+        "author": {
+          "id": 6699668,
+          "login": "antur84",
+          "bot": false
+        },
+        "createdAt": 1789654775000,
+        "updatedAt": 1790751557000,
+        "mergedAt": 1790751557000,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "ffc8df65e6f6a026ff4318488febf84160109316"
+      },
+      {
+        "number": 17784,
+        "title": "feat: dynamicFallbackInlineCode content and inject conditions",
+        "url": "https://github.com/vitejs/vite/pull/17784",
+        "author": {
+          "id": 73653404,
+          "login": "yonecdeng",
+          "bot": false
+        },
+        "createdAt": 1722236924000,
+        "updatedAt": 1790750851000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "2b999577e93388b0630fbe6f4473a9809a77d544"
+      },
+      {
+        "number": 23612,
+        "title": "fix(hmr): wait for chunked writes before reading changed files (fix #23608)",
+        "url": "https://github.com/vitejs/vite/pull/23612",
+        "author": {
+          "id": 330743750,
+          "login": "xpeng5278-web",
+          "bot": false
+        },
+        "createdAt": 1790737108000,
+        "updatedAt": 1790739266000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "b2ec2a597f563b43ff07336013be809ac7a38da8"
+      },
+      {
+        "number": 23611,
+        "title": "fix(build): preload CSS correctly when `renderBuiltUrl` returns URLs with queries",
+        "url": "https://github.com/vitejs/vite/pull/23611",
+        "author": {
+          "id": 53927819,
+          "login": "keshav-019",
+          "bot": false
+        },
+        "createdAt": 1790689165000,
+        "updatedAt": 1790736645000,
+        "mergedAt": 1790736645000,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "507f5b74e10e714d2d06b6f55e3608f399752407"
+      },
+      {
+        "number": 23609,
+        "title": "fix(html): resolve percent-encoded srcset urls",
+        "url": "https://github.com/vitejs/vite/pull/23609",
+        "author": {
+          "id": 218713058,
+          "login": "shoutoutuoadi325",
+          "bot": false
+        },
+        "createdAt": 1790666531000,
+        "updatedAt": 1790735509000,
+        "mergedAt": 1790735509000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "a52a5f6b573bbfe6fb7a5367c6c24d95095e0cf2"
+      },
+      {
+        "number": 23559,
+        "title": "fix(dev): warn when the bundled dev runtime and the installed rolldown version mismatch",
+        "url": "https://github.com/vitejs/vite/pull/23559",
+        "author": {
+          "id": 24516654,
+          "login": "btea",
+          "bot": false
+        },
+        "createdAt": 1790154640000,
+        "updatedAt": 1790731276000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "6993cd58d59fa2f7d27d7ef62a51820b7286d5cb"
+      },
+      {
+        "number": 23262,
+        "title": "fix(build): classify query-suffixed css preload urls",
+        "url": "https://github.com/vitejs/vite/pull/23262",
+        "author": {
+          "id": 53927819,
+          "login": "keshav-019",
+          "bot": false
+        },
+        "createdAt": 1786712190000,
+        "updatedAt": 1790689265000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "9dc8fb13f3dd8f9a1675148b370dd1be18692a2d"
+      },
+      {
+        "number": 23600,
+        "title": "fix(optimizer): preserve excluded optional peer require fallbacks",
+        "url": "https://github.com/vitejs/vite/pull/23600",
+        "author": {
+          "id": 10815538,
+          "login": "james-elicx",
+          "bot": false
+        },
+        "createdAt": 1790552345000,
+        "updatedAt": 1790688904000,
+        "mergedAt": 1790666211000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "acf3f5f540d97953caf1346eec31151882a5b65b"
+      },
+      {
+        "number": 23610,
+        "title": "fix(bundled-dev): load the hmr patch even when no module re-runs",
+        "url": "https://github.com/vitejs/vite/pull/23610",
+        "author": {
+          "id": 10465670,
+          "login": "h-a-n-a",
+          "bot": false
+        },
+        "createdAt": 1790684126000,
+        "updatedAt": 1790685589000,
+        "mergedAt": null,
+        "draft": true,
+        "association": "MEMBER",
+        "headSha": "367913ac3520e9ad518edc4855dc7a8be8a48a13"
+      },
+      {
+        "number": 23586,
+        "title": "fix: pass queries to `renderBuiltUrl`",
+        "url": "https://github.com/vitejs/vite/pull/23586",
+        "author": {
+          "id": 49056869,
+          "login": "sapphi-red",
+          "bot": false
+        },
+        "createdAt": 1790333262000,
+        "updatedAt": 1790677155000,
+        "mergedAt": 1790677153000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "aad1a6cc458223e907d0127675d469c48865cff5"
+      },
+      {
+        "number": 22533,
+        "title": "feat(resolve): allow custom tsconfig file via resolve.tsconfigPaths.configFile",
+        "url": "https://github.com/vitejs/vite/pull/22533",
+        "author": {
+          "id": 40404708,
+          "login": "rubnogueira",
+          "bot": false
+        },
+        "createdAt": 1779811182000,
+        "updatedAt": 1790675032000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "2eaff6f99e4031d238f0a003dcede310d35a9fb0"
+      },
+      {
+        "number": 17626,
+        "title": "feat(assets): assetsFlatten option",
+        "url": "https://github.com/vitejs/vite/pull/17626",
+        "author": {
+          "id": 1086005,
+          "login": "karlvr",
+          "bot": false
+        },
+        "createdAt": 1720319439000,
+        "updatedAt": 1790828313000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "696a6edb7e35497655ff745345239e07695d5a31"
+      },
+      {
+        "number": 21273,
+        "title": "fix(optimizer): transform TypeScript files before parsing with es-module-lexer",
+        "url": "https://github.com/vitejs/vite/pull/21273",
+        "author": {
+          "id": 198982749,
+          "login": "Copilot",
+          "bot": true
+        },
+        "createdAt": 1765520277000,
+        "updatedAt": 1790656192000,
+        "mergedAt": null,
+        "draft": true,
+        "association": "CONTRIBUTOR",
+        "headSha": "5e89c00b3e4756f33c6accb9b276c77dbdf7ac98"
+      },
+      {
+        "number": 23026,
+        "title": "fix(bundled-dev): serve lazy chunk sourcemaps",
+        "url": "https://github.com/vitejs/vite/pull/23026",
+        "author": {
+          "id": 32216112,
+          "login": "tbvjaos510",
+          "bot": false
+        },
+        "createdAt": 1784806905000,
+        "updatedAt": 1790655895000,
+        "mergedAt": 1790655895000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "0f70b4010836eb679389636a8dc8ee8b4a69773a"
+      },
+      {
+        "number": 23604,
+        "title": "chore(deps): update vitest monorepo to v5",
+        "url": "https://github.com/vitejs/vite/pull/23604",
+        "author": {
+          "id": 29139614,
+          "login": "renovate[bot]",
+          "bot": true
+        },
+        "createdAt": 1790562065000,
+        "updatedAt": 1790648736000,
+        "mergedAt": 1790648734000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "7cd3848c8dca418a24f51b3db9d380d4239df663"
+      },
+      {
+        "number": 23246,
+        "title": "test(bundled-dev): enable fs-serve, resolve, dynamic-import and assets-sanitize cases",
+        "url": "https://github.com/vitejs/vite/pull/23246",
+        "author": {
+          "id": 10465670,
+          "login": "h-a-n-a",
+          "bot": false
+        },
+        "createdAt": 1786524532000,
+        "updatedAt": 1790645691000,
+        "mergedAt": 1790645690000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "5e206c5a8ca3c4cb7de58c78738d86df6b09383c"
+      },
+      {
+        "number": 23606,
+        "title": "test(bundled-dev): accept a rolldown dev runtime with no helper imports",
+        "url": "https://github.com/vitejs/vite/pull/23606",
+        "author": {
+          "id": 10465670,
+          "login": "h-a-n-a",
+          "bot": false
+        },
+        "createdAt": 1790580559000,
+        "updatedAt": 1790607655000,
+        "mergedAt": 1790607646000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "67412dbe65555613d1e343f859a919d5716ee3e6"
+      },
+      {
+        "number": 23289,
+        "title": "test(bundled-dev): enable worker playground specs",
+        "url": "https://github.com/vitejs/vite/pull/23289",
+        "author": {
+          "id": 10465670,
+          "login": "h-a-n-a",
+          "bot": false
+        },
+        "createdAt": 1787031463000,
+        "updatedAt": 1790581920000,
+        "mergedAt": 1790581918000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "ba2e0dbf1c96c2cbccb0d9df414cffff5ff19d06"
+      },
+      {
+        "number": 23605,
+        "title": "test: replace native config loader incompatible code",
+        "url": "https://github.com/vitejs/vite/pull/23605",
+        "author": {
+          "id": 49056869,
+          "login": "sapphi-red",
+          "bot": false
+        },
+        "createdAt": 1790563439000,
+        "updatedAt": 1790564410000,
+        "mergedAt": 1790564408000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "54d84160b2865c409ce904ace4a306ac936849e8"
+      },
+      {
+        "number": 23602,
+        "title": "fix(deps): update rolldown-related dependencies",
+        "url": "https://github.com/vitejs/vite/pull/23602",
+        "author": {
+          "id": 29139614,
+          "login": "renovate[bot]",
+          "bot": true
+        },
+        "createdAt": 1790557795000,
+        "updatedAt": 1790561947000,
+        "mergedAt": 1790561944000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "5ec9415a8f22a2c78688cb97f3172c25e45d093c"
+      },
+      {
+        "number": 23601,
+        "title": "fix(deps): update all non-major dependencies",
+        "url": "https://github.com/vitejs/vite/pull/23601",
+        "author": {
+          "id": 29139614,
+          "login": "renovate[bot]",
+          "bot": true
+        },
+        "createdAt": 1790557777000,
+        "updatedAt": 1790558966000,
+        "mergedAt": 1790558964000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "e587aec16f966525971fba18ce65511edd7ff387"
+      },
+      {
+        "number": 23598,
+        "title": "docs: clarify app vs deps targets in vite dev vs build",
+        "url": "https://github.com/vitejs/vite/pull/23598",
+        "author": {
+          "id": 89024979,
+          "login": "SatvikMishra08",
+          "bot": false
+        },
+        "createdAt": 1790533038000,
+        "updatedAt": 1790533059000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "56ab82d7ecbd7b0bdddf1d4f93575d68e84f7c10"
+      },
+      {
+        "number": 23597,
+        "title": "docs: give ViteDevServer its own API page",
+        "url": "https://github.com/vitejs/vite/pull/23597",
+        "author": {
+          "id": 89024979,
+          "login": "SatvikMishra08",
+          "bot": false
+        },
+        "createdAt": 1790532955000,
+        "updatedAt": 1790532975000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "0511ff63162792a1890921d210d562a779bfa558"
+      },
+      {
+        "number": 23593,
+        "title": "docs: document server.headers default for preview.headers",
+        "url": "https://github.com/vitejs/vite/pull/23593",
+        "author": {
+          "id": 88960774,
+          "login": "grzdev",
+          "bot": false
+        },
+        "createdAt": 1790497271000,
+        "updatedAt": 1790497288000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "6a76ee221e864e50bdbc5ece069fbc4e979e2849"
+      },
+      {
+        "number": 23583,
+        "title": "refactor: use `tinyexec` instead of `cross-spawn`",
+        "url": "https://github.com/vitejs/vite/pull/23583",
+        "author": {
+          "id": 24516654,
+          "login": "btea",
+          "bot": false
+        },
+        "createdAt": 1790315901000,
+        "updatedAt": 1790330929000,
+        "mergedAt": 1790323521000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "28ef73a38d1c06f4828fd3f747ceda25d1e3e20d"
+      },
+      {
+        "number": 23582,
+        "title": "ci: remove unnecessary step",
+        "url": "https://github.com/vitejs/vite/pull/23582",
+        "author": {
+          "id": 24516654,
+          "login": "btea",
+          "bot": false
+        },
+        "createdAt": 1790315032000,
+        "updatedAt": 1790330911000,
+        "mergedAt": 1790323569000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "86d083cb29de3789616cf8cf5512f1b1f11250ac"
+      },
+      {
+        "number": 23568,
+        "title": "fix(bundled-dev): serve the rolldown runtime from the installed rolldown",
+        "url": "https://github.com/vitejs/vite/pull/23568",
+        "author": {
+          "id": 10465670,
+          "login": "h-a-n-a",
+          "bot": false
+        },
+        "createdAt": 1790241853000,
+        "updatedAt": 1790323739000,
+        "mergedAt": 1790323726000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "75cb6c3785802639ae410dda72833bf2b176fa45"
+      },
+      {
+        "number": 23513,
+        "title": "fix(ssr): encode whitespace in module runner sourceURL",
+        "url": "https://github.com/vitejs/vite/pull/23513",
+        "author": {
+          "id": 28706372,
+          "login": "danielroe",
+          "bot": false
+        },
+        "createdAt": 1789672369000,
+        "updatedAt": 1790323302000,
+        "mergedAt": 1790323271000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "893a08eedf1cd84f6586df04c2603ac7cf906362"
+      },
+      {
+        "number": 23584,
+        "title": "docs(create-vite): add command line options table to readme",
+        "url": "https://github.com/vitejs/vite/pull/23584",
+        "author": {
+          "id": 88960774,
+          "login": "grzdev",
+          "bot": false
+        },
+        "createdAt": 1790321030000,
+        "updatedAt": 1790321047000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "51620831a88f7ed8da0f424d851a25349fce9140"
+      },
+      {
+        "number": 23581,
+        "title": "ci: unpin Node 24 Windows CI",
+        "url": "https://github.com/vitejs/vite/pull/23581",
+        "author": {
+          "id": 49056869,
+          "login": "sapphi-red",
+          "bot": false
+        },
+        "createdAt": 1790308843000,
+        "updatedAt": 1790309420000,
+        "mergedAt": 1790309418000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "0f72d6eda436159c6b7ce81c83fd4e9830aad730"
+      },
+      {
+        "number": 23580,
+        "title": "chore: use full version for actions comment",
+        "url": "https://github.com/vitejs/vite/pull/23580",
+        "author": {
+          "id": 49056869,
+          "login": "sapphi-red",
+          "bot": false
+        },
+        "createdAt": 1790308288000,
+        "updatedAt": 1790308733000,
+        "mergedAt": 1790308731000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "1b13ee9f41dd8e330f499fbaf9bbc1ee22de1e28"
+      },
+      {
+        "number": 23579,
+        "title": "ci: use pnpm/setup action",
+        "url": "https://github.com/vitejs/vite/pull/23579",
+        "author": {
+          "id": 34116392,
+          "login": "bluwy",
+          "bot": false
+        },
+        "createdAt": 1790303332000,
+        "updatedAt": 1790307963000,
+        "mergedAt": 1790307960000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "b54285efa793d1688558ce81bbbbad585eaf3b35"
+      },
+      {
+        "number": 23565,
+        "title": "fix: limit size of object and array printing via `forwardConsole`",
+        "url": "https://github.com/vitejs/vite/pull/23565",
+        "author": {
+          "id": 4232207,
+          "login": "hi-ogawa",
+          "bot": false
+        },
+        "createdAt": 1790233120000,
+        "updatedAt": 1790303143000,
+        "mergedAt": 1790303141000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "fc829065633bc7036c82fc1e45d2443d6523e27f"
+      },
+      {
+        "number": 23553,
+        "title": "fix: limit forwarded console argument size",
+        "url": "https://github.com/vitejs/vite/pull/23553",
+        "author": {
+          "id": 287127232,
+          "login": "yoominho91",
+          "bot": false
+        },
+        "createdAt": 1790090704000,
+        "updatedAt": 1790303143000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "084728646d418a3934281a7d9e6fec0b0e14fe05"
+      },
+      {
+        "number": 23577,
+        "title": "docs(cli): add profile option to optimize and preview",
+        "url": "https://github.com/vitejs/vite/pull/23577",
+        "author": {
+          "id": 88960774,
+          "login": "grzdev",
+          "bot": false
+        },
+        "createdAt": 1790285825000,
+        "updatedAt": 1790285876000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "2a9211c208dc5eff60ba2d55f03dc68cc0a347f6"
+      },
+      {
+        "number": 23531,
+        "title": "fix(optimizer): dep-scan misses imports whose local name starts with `type`",
+        "url": "https://github.com/vitejs/vite/pull/23531",
+        "author": {
+          "id": 4175097,
+          "login": "Dextheking1",
+          "bot": false
+        },
+        "createdAt": 1789856501000,
+        "updatedAt": 1790275178000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "8bcec9e340155bcfe8bd76b8826a3b5f4e6ff804"
+      },
+      {
+        "number": 23573,
+        "title": "release: v8.3.1",
+        "url": "https://github.com/vitejs/vite/pull/23573",
+        "author": {
+          "id": 41898282,
+          "login": "github-actions[bot]",
+          "bot": true
+        },
+        "createdAt": 1790252326000,
+        "updatedAt": 1790252467000,
+        "mergedAt": 1790252465000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "51674cad4318b332c43266555be85d9ba418c32b"
+      },
+      {
+        "number": 23569,
+        "title": "docs: update viteconf link on the sidebar to 2026 and add banner",
+        "url": "https://github.com/vitejs/vite/pull/23569",
+        "author": {
+          "id": 49056869,
+          "login": "sapphi-red",
+          "bot": false
+        },
+        "createdAt": 1790241964000,
+        "updatedAt": 1790252264000,
+        "mergedAt": 1790252262000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "78bdf8ca271e0f09fffa16734c393d53506c68af"
+      },
+      {
+        "number": 23511,
+        "title": "fix: handle `server.ws: false` in mergeConfig",
+        "url": "https://github.com/vitejs/vite/pull/23511",
+        "author": {
+          "id": 97379957,
+          "login": "vjymisal0",
+          "bot": false
+        },
+        "createdAt": 1789656579000,
+        "updatedAt": 1790249451000,
+        "mergedAt": 1790249451000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "9c5a1886acb757669dde300ac4649f7b817d88e0"
+      },
+      {
+        "number": 23541,
+        "title": "refactor(create-vite): use `tinyexec` instead of `cross-spawn`",
+        "url": "https://github.com/vitejs/vite/pull/23541",
+        "author": {
+          "id": 24516654,
+          "login": "btea",
+          "bot": false
+        },
+        "createdAt": 1789981770000,
+        "updatedAt": 1790248790000,
+        "mergedAt": 1790247606000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "b913d713806d3585a9fbde26d36bed629b4d44c4"
+      },
+      {
+        "number": 23572,
+        "title": "fix(server): avoid reinitializing watcher when adding file after server close",
+        "url": "https://github.com/vitejs/vite/pull/23572",
+        "author": {
+          "id": 49056869,
+          "login": "sapphi-red",
+          "bot": false
+        },
+        "createdAt": 1790247879000,
+        "updatedAt": 1790248781000,
+        "mergedAt": 1790248780000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "7de3cc6f682a2c8dbac85dbc05744790ab685387"
+      },
+      {
+        "number": 23442,
+        "title": "fix(optimizer): settle pending dependency processing on close",
+        "url": "https://github.com/vitejs/vite/pull/23442",
+        "author": {
+          "id": 17411182,
+          "login": "leonardoventurini",
+          "bot": false
+        },
+        "createdAt": 1788717391000,
+        "updatedAt": 1790248092000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "96bb970242dc7a3924c57b98660e79cdc16c70cd"
+      },
+      {
+        "number": 23567,
+        "title": "fix(optimizer): resolve pending discovered dep processing on close before init",
+        "url": "https://github.com/vitejs/vite/pull/23567",
+        "author": {
+          "id": 49056869,
+          "login": "sapphi-red",
+          "bot": false
+        },
+        "createdAt": 1790239453000,
+        "updatedAt": 1790248027000,
+        "mergedAt": 1790240645000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "3c1f99aea56db6bb72376ed93be0880f2f9abd97"
+      },
+      {
+        "number": 23519,
+        "title": "fix(sourcemap): skip URL source roots when injecting sources content",
+        "url": "https://github.com/vitejs/vite/pull/23519",
+        "author": {
+          "id": 60959623,
+          "login": "murugu-21",
+          "bot": false
+        },
+        "createdAt": 1789731521000,
+        "updatedAt": 1790244696000,
+        "mergedAt": 1790244696000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "ff828969e49ac8a0e15707b336df2376ae2e7382"
+      },
+      {
+        "number": 23347,
+        "title": "fix(optimizer): unblock server.close() when deps were discovered before listen (fix #23143)",
+        "url": "https://github.com/vitejs/vite/pull/23347",
+        "author": {
+          "id": 115890693,
+          "login": "santusht06",
+          "bot": false
+        },
+        "createdAt": 1787559615000,
+        "updatedAt": 1790240647000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "5d8228da6926a05f52983049cc6f1f68404b8477"
+      },
+      {
+        "number": 23273,
+        "title": "fix: resolve pending discovered deps on close",
+        "url": "https://github.com/vitejs/vite/pull/23273",
+        "author": {
+          "id": 189964965,
+          "login": "rajanpanth",
+          "bot": false
+        },
+        "createdAt": 1786886136000,
+        "updatedAt": 1790240646000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "494cad53c2dc9bb1a71687786a949c0eeb3126a8"
+      },
+      {
+        "number": 23552,
+        "title": "test(bundled-dev): enable passing cases in more playgrounds",
+        "url": "https://github.com/vitejs/vite/pull/23552",
+        "author": {
+          "id": 10465670,
+          "login": "h-a-n-a",
+          "bot": false
+        },
+        "createdAt": 1790074378000,
+        "updatedAt": 1790240087000,
+        "mergedAt": 1790240084000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "7d4fb71d28f2060756c7b5ebd45e148f1ba31e20"
+      },
+      {
+        "number": 23566,
+        "title": "chore(optimizer): add debug log when waiting for dep before init",
+        "url": "https://github.com/vitejs/vite/pull/23566",
+        "author": {
+          "id": 49056869,
+          "login": "sapphi-red",
+          "bot": false
+        },
+        "createdAt": 1790236883000,
+        "updatedAt": 1790237854000,
+        "mergedAt": 1790237851000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "e0cc2455febb8db83de59e705429294e6ee2b44b"
+      },
+      {
+        "number": 23537,
+        "title": "fix(deps): update all non-major dependencies",
+        "url": "https://github.com/vitejs/vite/pull/23537",
+        "author": {
+          "id": 29139614,
+          "login": "renovate[bot]",
+          "bot": true
+        },
+        "createdAt": 1789960001000,
+        "updatedAt": 1790237106000,
+        "mergedAt": 1790237104000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "80b96161a307fe3ca877440bfc47f7704d66e1b2"
+      },
+      {
+        "number": 23564,
+        "title": "fix(build): make __vitePreload factory async to support await in import specifiers",
+        "url": "https://github.com/vitejs/vite/pull/23564",
+        "author": {
+          "id": 130782884,
+          "login": "okxint",
+          "bot": false
+        },
+        "createdAt": 1790232104000,
+        "updatedAt": 1790232125000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "df6b65436edf1c908e74f3bef3e45fed5e59ba1a"
+      },
+      {
+        "number": 23501,
+        "title": "fix: preserve import order for eager import.meta.glob",
+        "url": "https://github.com/vitejs/vite/pull/23501",
+        "author": {
+          "id": 97379957,
+          "login": "vjymisal0",
+          "bot": false
+        },
+        "createdAt": 1789620213000,
+        "updatedAt": 1790227855000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "7b77598f6de99dfdb92661a8f564fc225f53a944"
+      },
+      {
+        "number": 23554,
+        "title": "refactor: replace `find` with `some`",
+        "url": "https://github.com/vitejs/vite/pull/23554",
+        "author": {
+          "id": 24516654,
+          "login": "btea",
+          "bot": false
+        },
+        "createdAt": 1790090707000,
+        "updatedAt": 1790153655000,
+        "mergedAt": 1790146274000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "6b76b95244b5ab3e94d919ce3705d8cd0fb6fef7"
+      }
+    ],
+    "open": [
+      {
+        "number": 6267,
+        "title": "feat: allow assets to be external instead of inline in lib mode.",
+        "url": "https://github.com/vitejs/vite/pull/6267",
+        "author": {
+          "id": 5960988,
+          "login": "wxsms",
+          "bot": false
+        },
+        "createdAt": 1640592694000,
+        "updatedAt": 1780307314000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "46c3dcdbb7e431822bd57b2eed5c898db2646180"
+      },
+      {
+        "number": 6274,
+        "title": "feat: runtime error overlay",
+        "url": "https://github.com/vitejs/vite/pull/6274",
+        "author": {
+          "id": 32745766,
+          "login": "arbassett",
+          "bot": false
+        },
+        "createdAt": 1640628035000,
+        "updatedAt": 1780307314000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "61e912121101db39eeb6c30f6b4a4ce9aebeb266"
+      },
+      {
+        "number": 6569,
+        "title": "feat(css): add cssExtract option to build config (#4345)",
+        "url": "https://github.com/vitejs/vite/pull/6569",
+        "author": {
+          "id": 23187848,
+          "login": "JackFGreen",
+          "bot": false
+        },
+        "createdAt": 1642681286000,
+        "updatedAt": 1780307313000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "d82de56e2462707a92a39947745f244ece233f27"
+      },
+      {
+        "number": 6585,
+        "title": "feat: add es.min format for lib mode",
+        "url": "https://github.com/vitejs/vite/pull/6585",
+        "author": {
+          "id": 40156382,
+          "login": "Bigfish8",
+          "bot": false
+        },
+        "createdAt": 1642767729000,
+        "updatedAt": 1780307314000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "9f32de62ca69b58b963a064c980b521f4cace15b"
+      },
+      {
+        "number": 7735,
+        "title": "feat(lib): allow emit assets in es mode",
+        "url": "https://github.com/vitejs/vite/pull/7735",
+        "author": {
+          "id": 40156382,
+          "login": "Bigfish8",
+          "bot": false
+        },
+        "createdAt": 1649939090000,
+        "updatedAt": 1780307314000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "3de62674b14c70842e59dbe80d3dcd6e7bd423b4"
+      },
+      {
+        "number": 8488,
+        "title": "feat: worker format with worker type",
+        "url": "https://github.com/vitejs/vite/pull/8488",
+        "author": {
+          "id": 36070057,
+          "login": "poyoho",
+          "bot": false
+        },
+        "createdAt": 1654601921000,
+        "updatedAt": 1780307313000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "31b5e4a2d8fee72c4843e49d2e6f94a6128daa58"
+      },
+      {
+        "number": 9734,
+        "title": "feat(vite): emitAssetsWithModule in library mode",
+        "url": "https://github.com/vitejs/vite/pull/9734",
+        "author": {
+          "id": 9126398,
+          "login": "yoyo930021",
+          "bot": false
+        },
+        "createdAt": 1660832070000,
+        "updatedAt": 1780307313000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "fabafb0bc10e131d0d36922871f2df0e5bdafd5a"
+      },
+      {
+        "number": 9920,
+        "title": "feat: support preloading also on legacy bundle",
+        "url": "https://github.com/vitejs/vite/pull/9920",
+        "author": {
+          "id": 1467072,
+          "login": "Tal500",
+          "bot": false
+        },
+        "createdAt": 1661895964000,
+        "updatedAt": 1780307313000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "211f4a7ca9e1659683957a5ae82ee4bef2499dff"
+      },
+      {
+        "number": 10743,
+        "title": "fix: support dynamic path with alias in `new URL()` (fix #10597)",
+        "url": "https://github.com/vitejs/vite/pull/10743",
+        "author": {
+          "id": 82131679,
+          "login": "hershelh",
+          "bot": false
+        },
+        "createdAt": 1667237779000,
+        "updatedAt": 1780307313000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "e4888cd77b1628892974419a360b4438502ce550"
+      },
+      {
+        "number": 11001,
+        "title": "fix: handle .htm as same as .html (fix #10997)",
+        "url": "https://github.com/vitejs/vite/pull/11001",
+        "author": {
+          "id": 48394190,
+          "login": "Potato1682",
+          "bot": false
+        },
+        "createdAt": 1668947457000,
+        "updatedAt": 1780307313000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "47df44d7fe80c1b6fc76d255605e44b908330ae8"
+      },
+      {
+        "number": 11093,
+        "title": "fix(node): should not ignore ssr.external in build mode",
+        "url": "https://github.com/vitejs/vite/pull/11093",
+        "author": {
+          "id": 102238922,
+          "login": "sun0day",
+          "bot": false
+        },
+        "createdAt": 1669604584000,
+        "updatedAt": 1780307313000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "6945c5e6eb67963eda416d6add358d50c48bfd92"
+      },
+      {
+        "number": 11233,
+        "title": "fix: url with non-existent assets in dynamic URLs should fallback to rawUrl (#11157)",
+        "url": "https://github.com/vitejs/vite/pull/11233",
+        "author": {
+          "id": 25676701,
+          "login": "Jevon617",
+          "bot": false
+        },
+        "createdAt": 1670396089000,
+        "updatedAt": 1780307313000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "4e615f8c774324330512e46f91dda4bcae12472e"
+      },
+      {
+        "number": 11473,
+        "title": "fix(resolve): use DEFAULT_EXTENSIONS when resolving file from node_modules",
+        "url": "https://github.com/vitejs/vite/pull/11473",
+        "author": {
+          "id": 17904663,
+          "login": "zscumt123",
+          "bot": false
+        },
+        "createdAt": 1671785383000,
+        "updatedAt": 1780307313000,
+        "mergedAt": null,
+        "draft": true,
+        "association": "NONE",
+        "headSha": "c707d0b2b751491e5124c72cd108bed1a094e9be"
+      },
+      {
+        "number": 11817,
+        "title": "feat: allow package subpaths in ssr.noExternal",
+        "url": "https://github.com/vitejs/vite/pull/11817",
+        "author": {
+          "id": 10846005,
+          "login": "cyco130",
+          "bot": false
+        },
+        "createdAt": 1674721481000,
+        "updatedAt": 1780307313000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "0574352501ca447c6264f6704e1f8106b593177f"
+      },
+      {
+        "number": 11874,
+        "title": "fix: bundle classic workers by default (fix #8466)",
+        "url": "https://github.com/vitejs/vite/pull/11874",
+        "author": {
+          "id": 188426,
+          "login": "jonathantneal",
+          "bot": false
+        },
+        "createdAt": 1675231751000,
+        "updatedAt": 1780307313000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "28b4bc81e5edbccdd34332f4a13c39a0ff4362df"
+      },
+      {
+        "number": 11962,
+        "title": "fix: re-run build when config files are changed in watch mode",
+        "url": "https://github.com/vitejs/vite/pull/11962",
+        "author": {
+          "id": 12322740,
+          "login": "fi3ework",
+          "bot": false
+        },
+        "createdAt": 1675749643000,
+        "updatedAt": 1780307313000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "9f8e4073e4ee044ad385851b156789fd6b94fa16"
+      },
+      {
+        "number": 12076,
+        "title": "fix(css modules): apply preprocessor to composed file if needed (fix #10340)",
+        "url": "https://github.com/vitejs/vite/pull/12076",
+        "author": {
+          "id": 6201376,
+          "login": "Thiry1",
+          "bot": false
+        },
+        "createdAt": 1676550629000,
+        "updatedAt": 1780307313000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "f056d3d7b4a44282323dbcdba87aac8bb81e05c6"
+      },
+      {
+        "number": 12221,
+        "title": "feat(import-glob): support read module from alias pattern ",
+        "url": "https://github.com/vitejs/vite/pull/12221",
+        "author": {
+          "id": 102238922,
+          "login": "sun0day",
+          "bot": false
+        },
+        "createdAt": 1677512833000,
+        "updatedAt": 1780307313000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "42e61517940f4861a1c27e938263990aa4f422a2"
+      },
+      {
+        "number": 12320,
+        "title": "feat: legacy build of web workers",
+        "url": "https://github.com/vitejs/vite/pull/12320",
+        "author": {
+          "id": 1467072,
+          "login": "Tal500",
+          "bot": false
+        },
+        "createdAt": 1678190982000,
+        "updatedAt": 1780307312000,
+        "mergedAt": null,
+        "draft": true,
+        "association": "CONTRIBUTOR",
+        "headSha": "839ffb725fe928cc1c6e933a2b6b5cafc3b5b4a0"
+      },
+      {
+        "number": 12334,
+        "title": "fix(indexHtml):  support transform assets url to safe path ",
+        "url": "https://github.com/vitejs/vite/pull/12334",
+        "author": {
+          "id": 102238922,
+          "login": "sun0day",
+          "bot": false
+        },
+        "createdAt": 1678282011000,
+        "updatedAt": 1780307313000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "6a97c409ef866ec427846fd7529e7677d9510198"
+      },
+      {
+        "number": 12517,
+        "title": "feat(css): shrink base64 usage in css file",
+        "url": "https://github.com/vitejs/vite/pull/12517",
+        "author": {
+          "id": 102238922,
+          "login": "sun0day",
+          "bot": false
+        },
+        "createdAt": 1679415530000,
+        "updatedAt": 1780307313000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "eb73e1ccb9e610f2723c6ab1f980de0ca2fb5124"
+      },
+      {
+        "number": 12714,
+        "title": "chore(ssr): show the user land ssr error stack",
+        "url": "https://github.com/vitejs/vite/pull/12714",
+        "author": {
+          "id": 102238922,
+          "login": "sun0day",
+          "bot": false
+        },
+        "createdAt": 1680510620000,
+        "updatedAt": 1780307313000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "100698864c563029e15cb1669833fbd81aa1fdf6"
+      },
+      {
+        "number": 13136,
+        "title": "feat(node/build): add crossOrigin configuration for modulePreload links",
+        "url": "https://github.com/vitejs/vite/pull/13136",
+        "author": {
+          "id": 3051193,
+          "login": "HipsterBrown",
+          "bot": false
+        },
+        "createdAt": 1683669230000,
+        "updatedAt": 1780307313000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "3f5279bab6215f35b5cd705214589a166a5b50fc"
+      },
+      {
+        "number": 13369,
+        "title": "feat: emit CSS sourcemap in build mode",
+        "url": "https://github.com/vitejs/vite/pull/13369",
+        "author": {
+          "id": 12322740,
+          "login": "fi3ework",
+          "bot": false
+        },
+        "createdAt": 1685382172000,
+        "updatedAt": 1780307312000,
+        "mergedAt": null,
+        "draft": true,
+        "association": "MEMBER",
+        "headSha": "f5ec32956c0a0054a083128e58e09d98c4fe3a8a"
+      },
+      {
+        "number": 13568,
+        "title": "feat: allow function in noExternal",
+        "url": "https://github.com/vitejs/vite/pull/13568",
+        "author": {
+          "id": 127379,
+          "login": "manucorporat",
+          "bot": false
+        },
+        "createdAt": 1687258494000,
+        "updatedAt": 1780307312000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "a307ef1fc19758ba43880e7e9c830682615d94f9"
+      },
+      {
+        "number": 13968,
+        "title": "feat(proxy): add router to support dynamically set the target",
+        "url": "https://github.com/vitejs/vite/pull/13968",
+        "author": {
+          "id": 30423976,
+          "login": "Fatpandac",
+          "bot": false
+        },
+        "createdAt": 1690474540000,
+        "updatedAt": 1787820818000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "NONE",
+        "headSha": "038621375a015b9fc2b9ce2332217e773595e60a"
+      },
+      {
+        "number": 14110,
+        "title": "feat: vite config postcss support exclude option",
+        "url": "https://github.com/vitejs/vite/pull/14110",
+        "author": {
+          "id": 53506531,
+          "login": "ZEJIA-LIU",
+          "bot": false
+        },
+        "createdAt": 1692101033000,
+        "updatedAt": 1780307312000,
+        "mergedAt": null,
+        "draft": true,
+        "association": "NONE",
+        "headSha": "545b12e2e1203dce7c8c325b5cd4505471aa5fa3"
+      },
+      {
+        "number": 14366,
+        "title": "feat: build inline worker in dev",
+        "url": "https://github.com/vitejs/vite/pull/14366",
+        "author": {
+          "id": 36070057,
+          "login": "poyoho",
+          "bot": false
+        },
+        "createdAt": 1694621697000,
+        "updatedAt": 1780307312000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "95e1b3ac77b2506251c27c686f05a68f4c3aef66"
+      },
+      {
+        "number": 14467,
+        "title": "feat(css): bundle css as part of optimizeDeps",
+        "url": "https://github.com/vitejs/vite/pull/14467",
+        "author": {
+          "id": 17907922,
+          "login": "thebanjomatic",
+          "bot": false
+        },
+        "createdAt": 1695650952000,
+        "updatedAt": 1780307313000,
+        "mergedAt": null,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "9b0c2167ed884b34857a96002b92d7c2a1634822"
+      },
+      {
+        "number": 14797,
+        "title": "feat(html): pass `req` + `res` to `transformIndexHtml`",
+        "url": "https://github.com/vitejs/vite/pull/14797",
+        "author": {
+          "id": 2456381,
+          "login": "mxxk",
+          "bot": false
+        },
+        "createdAt": 1698629941000,
+        "updatedAt": 1780307312000,
+        "mergedAt": null,
+        "draft": true,
+        "association": "NONE",
+        "headSha": "bc21e492d82dec6e9abb851ce93d7faf7aaac157"
+      }
+    ],
+    "details": [
+      {
+        "number": 23661,
+        "title": "fix: backports for v6",
+        "url": "https://github.com/vitejs/vite/pull/23661",
+        "author": {
+          "id": 49056869,
+          "login": "sapphi-red",
+          "bot": false
+        },
+        "createdAt": 1791260821000,
+        "updatedAt": 1791265477000,
+        "mergedAt": 1791265475000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "bdf71c5dc964a2986b56268d935f145950b138ea",
+        "additions": 289,
+        "deletions": 74,
+        "reviewComments": 0
+      },
+      {
+        "number": 23660,
+        "title": "fix: backports for v7",
+        "url": "https://github.com/vitejs/vite/pull/23660",
+        "author": {
+          "id": 49056869,
+          "login": "sapphi-red",
+          "bot": false
+        },
+        "createdAt": 1791260161000,
+        "updatedAt": 1791263197000,
+        "mergedAt": 1791263194000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "40e3b149aa17c8f87c90449a2161ce7e157be971",
+        "additions": 248,
+        "deletions": 27,
+        "reviewComments": 0
+      },
+      {
+        "number": 23659,
+        "title": "fix: backports for v8.1",
+        "url": "https://github.com/vitejs/vite/pull/23659",
+        "author": {
+          "id": 49056869,
+          "login": "sapphi-red",
+          "bot": false
+        },
+        "createdAt": 1791258901000,
+        "updatedAt": 1791262074000,
+        "mergedAt": 1791262071000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "ee9141d6cad78e62e7c4d2565cfc4ec1d1b2b51e",
+        "additions": 178,
+        "deletions": 28,
+        "reviewComments": 0
+      },
+      {
+        "number": 23658,
+        "title": "fix: backports for v8.2",
+        "url": "https://github.com/vitejs/vite/pull/23658",
+        "author": {
+          "id": 49056869,
+          "login": "sapphi-red",
+          "bot": false
+        },
+        "createdAt": 1791258452000,
+        "updatedAt": 1791260916000,
+        "mergedAt": 1791260915000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "9dc3dd6b7b8e9658b9d1018ba7390d5b1f6bec07",
+        "additions": 209,
+        "deletions": 29,
+        "reviewComments": 0
+      },
+      {
+        "number": 23657,
+        "title": "release: v8.3.3",
+        "url": "https://github.com/vitejs/vite/pull/23657",
+        "author": {
+          "id": 41898282,
+          "login": "github-actions[bot]",
+          "bot": true
+        },
+        "createdAt": 1791258413000,
+        "updatedAt": 1791258505000,
+        "mergedAt": 1791258502000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "d12461fadcfe63347a2c0c22b4574c54d129dc36",
+        "additions": 9,
+        "deletions": 1,
+        "reviewComments": 0
+      },
+      {
+        "number": 23656,
+        "title": "fix(server): store ids to `safeModulePaths` rather than URLs",
+        "url": "https://github.com/vitejs/vite/pull/23656",
+        "author": {
+          "id": 49056869,
+          "login": "sapphi-red",
+          "bot": false
+        },
+        "createdAt": 1791256993000,
+        "updatedAt": 1791296010000,
+        "mergedAt": 1791258243000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "42be1097d48196d92fbacd2d24acacb2bad82c21",
+        "additions": 92,
+        "deletions": 10,
+        "reviewComments": 0
+      },
+      {
+        "number": 23655,
+        "title": "fix(server): check `fs.serve` for `?vite-wasm-instance`",
+        "url": "https://github.com/vitejs/vite/pull/23655",
+        "author": {
+          "id": 49056869,
+          "login": "sapphi-red",
+          "bot": false
+        },
+        "createdAt": 1791256827000,
+        "updatedAt": 1791295990000,
+        "mergedAt": 1791257455000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "0e43fd0ef16c6612956f99f8de5b01ed595ac9ab",
+        "additions": 33,
+        "deletions": 1,
+        "reviewComments": 2
+      },
+      {
+        "number": 23654,
+        "title": "fix(deps): update launch-editor to v2.14.2",
+        "url": "https://github.com/vitejs/vite/pull/23654",
+        "author": {
+          "id": 49056869,
+          "login": "sapphi-red",
+          "bot": false
+        },
+        "createdAt": 1791256708000,
+        "updatedAt": 1791296047000,
+        "mergedAt": 1791257328000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "bfd85720b7196c94c89a50d5615a3e03a4fafb62",
+        "additions": 16,
+        "deletions": 14,
+        "reviewComments": 0
+      },
+      {
+        "number": 23653,
+        "title": "fix(html): filename passed to transformIndexHtml should not include queries",
+        "url": "https://github.com/vitejs/vite/pull/23653",
+        "author": {
+          "id": 49056869,
+          "login": "sapphi-red",
+          "bot": false
+        },
+        "createdAt": 1791256593000,
+        "updatedAt": 1791295971000,
+        "mergedAt": 1791257036000,
+        "draft": false,
+        "association": "MEMBER",
+        "headSha": "2ddb1de4f6b82954f40e08fc5428636cc43865b3",
+        "additions": 68,
+        "deletions": 4,
+        "reviewComments": 0
+      },
+      {
+        "number": 23623,
+        "title": "release: v8.3.2",
+        "url": "https://github.com/vitejs/vite/pull/23623",
+        "author": {
+          "id": 41898282,
+          "login": "github-actions[bot]",
+          "bot": true
+        },
+        "createdAt": 1790849289000,
+        "updatedAt": 1790849498000,
+        "mergedAt": 1790849496000,
+        "draft": false,
+        "association": "CONTRIBUTOR",
+        "headSha": "5f5fa48d8ace2d5c9bdafcaaf496eebd97580607",
+        "additions": 42,
+        "deletions": 1,
+        "reviewComments": 0
+      }
+    ],
+    "openKnown": true
+  }
+}

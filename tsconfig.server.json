@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": ".server-dist",
+    "allowJs": false,
+    "checkJs": false,
+    "declaration": true
+  },
+  "include": [
+    "server/**/*.ts",
+    "src/core.ts",
+    "src/catalog.ts",
+    "src/view.ts",
+    "src/icons.ts",
+    "worker/**/*.ts"
+  ]
+}

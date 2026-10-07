@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.test-dist/
+.wrangler/
+receipts/
+.env
+.env.*
+.dev.vars
+.dev.vars.*
+*.tgz
+.DS_Store
+
+.server-dist/
+.data/
