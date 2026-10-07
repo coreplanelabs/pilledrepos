@@ -1,54 +1,112 @@
 {
   "version": 1,
-  "verifiedAt": "2026-10-07T21:50:36.479119+00:00",
+  "verifiedAt": "2026-10-07T22:02:41.358Z",
   "agents": [
     {
       "id": 198982749,
-      "login": "copilot-swe-agent[bot]",
+      "login": "Copilot",
       "name": "GitHub Copilot",
-      "source": "https://docs.github.com/en/copilot/concepts/agents/coding-agent/about-coding-agent"
+      "source": "https://docs.github.com/en/copilot/concepts/copilot-surfaces/copilot-on-github",
+      "aliases": ["copilot-swe-agent[bot]"],
+      "accountUrl": "https://github.com/apps/copilot-swe-agent"
     },
     {
       "id": 209825114,
       "login": "claude[bot]",
       "name": "Claude Code",
-      "source": "https://github.com/anthropics/claude-code-action"
+      "source": "https://github.com/anthropics/claude-code-action",
+      "aliases": ["claude[bot]"],
+      "accountUrl": "https://github.com/apps/claude"
     },
     {
       "id": 206951365,
       "login": "cursor[bot]",
       "name": "Cursor",
-      "source": "https://cursor.com/docs/cloud-agent"
+      "source": "https://cursor.com/docs/cloud-agent",
+      "aliases": ["cursor[bot]"],
+      "accountUrl": "https://github.com/apps/cursor"
     },
     {
       "id": 158243242,
       "login": "devin-ai-integration[bot]",
       "name": "Devin",
-      "source": "https://docs.devin.ai/integrations/github"
+      "source": "https://docs.devin.ai/integrations/gh",
+      "aliases": ["devin-ai-integration[bot]"],
+      "accountUrl": "https://github.com/apps/devin-ai-integration"
     },
     {
       "id": 161369871,
       "login": "google-labs-jules[bot]",
       "name": "Jules",
-      "source": "https://jules.google/docs/tasks-repos/"
+      "source": "https://jules.google/docs/tasks-repos/",
+      "aliases": ["google-labs-jules[bot]"],
+      "accountUrl": "https://github.com/apps/google-labs-jules"
     },
     {
       "id": 242516109,
-      "login": "openai-code-agent[bot]",
+      "login": "Codex",
       "name": "Codex",
-      "source": "https://docs.github.com/en/copilot/concepts/agents/about-third-party-coding-agents"
+      "source": "https://docs.github.com/en/copilot/concepts/agents/about-third-party-coding-agents",
+      "aliases": ["openai-code-agent[bot]"],
+      "accountUrl": "https://github.com/apps/openai-code-agent"
     },
     {
       "id": 199175422,
       "login": "chatgpt-codex-connector[bot]",
       "name": "Codex",
-      "source": "https://developers.openai.com/codex/integrations/github/"
+      "source": "https://learn.chatgpt.com/docs/third-party/github",
+      "aliases": ["chatgpt-codex-connector[bot]"],
+      "accountUrl": "https://github.com/apps/chatgpt-codex-connector"
     },
     {
       "id": 131295404,
       "login": "codegen-sh[bot]",
       "name": "Codegen",
-      "source": "https://docs.codegen.com/integrations/github"
+      "source": "https://docs.codegen.com/integrations/github",
+      "aliases": ["codegen-sh[bot]"],
+      "accountUrl": "https://github.com/apps/codegen-sh"
+    },
+    {
+      "id": 242468646,
+      "login": "Claude",
+      "aliases": ["anthropic-code-agent[bot]"],
+      "name": "Claude Code",
+      "source": "https://docs.github.com/en/copilot/concepts/agents/about-third-party-coding-agents",
+      "accountUrl": "https://github.com/apps/anthropic-code-agent"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://docs.github.com/en/copilot/concepts/agents/about-third-party-coding-agents",
+      "sha": "c24226a904b798d6073c157b9787192c54cb4a35"
+    },
+    {
+      "url": "https://docs.github.com/en/copilot/concepts/copilot-surfaces/copilot-on-github",
+      "sha": "4438dd4ffe9df2c613db2c29d5b9c832053d8d5026ad215275f59d3764d2863d"
+    },
+    {
+      "url": "https://github.com/anthropics/claude-code-action",
+      "sha": "ec63be678ec489727d621fd7aae7cc9c85e0a2a8b8f7aa79e0d0bd6bcd95bcec"
+    },
+    {
+      "url": "https://cursor.com/docs/cloud-agent",
+      "sha": "19a648b83454907106a31de35d93f7bb222af709b628d43f3fd0410572a3f326"
+    },
+    {
+      "url": "https://docs.devin.ai/integrations/gh",
+      "sha": "a900799310e8c9e503f33d459ff17a0f77f3c15b2c55487e282ee106f561e3e7"
+    },
+    {
+      "url": "https://jules.google/docs/tasks-repos/",
+      "sha": "e2ce8ee39a1d6cba8f388a891879ab4ec9f87e5e9c4cf2be48cad96ef9901ab5"
+    },
+    {
+      "url": "https://learn.chatgpt.com/docs/third-party/github",
+      "sha": "4c3d97fa1201a0dbe6b17d79d089213ae0ab4c43719845a9264c28f3716085e5"
+    },
+    {
+      "url": "https://docs.codegen.com/integrations/github",
+      "sha": "117d347a430fe14e82474ba0c8cb48d90d22f643f90f989cd119fec76fd8266e"
     }
   ]
 }

@@ -1,0 +1,9 @@
+{
+  "name": "CHOOSE_EXPERIMENT_WORKER",
+  "account_id": "VERIFY_DNS_ACCOUNT_FIRST",
+  "compatibility_date": "2026-10-07",
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [],
+  "kv_namespaces": []
+}

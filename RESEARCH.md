@@ -1,86 +1,72 @@
-# Repo Lore research and scope
+# Registry review
 
-This experiment implements the human's October 6 pivot from review-pressure
-research to a quick, gamified public-repository report. It is not an engineering
-performance dashboard. It runs independently of Polylane and Switchboard.
+Reviewed 2026-10-07 using GitHub's public identity API, official app metadata where
+available, and vendor documentation. This is an allowlist of known agent authors,
+not an estimate of all AI use.
 
-## Prior art
+## Confirmed account IDs
 
-- [Repo Wrapped](https://www.repowrapped.com/) offers repository narration,
-  share cards and a leaderboard. A generic wrapped summary is not a new category.
-- [wrapped.dev](https://www.wrapped.dev/) offers public-repository year-in-review
-  reports. This experiment focuses on a quick recent snapshot with named awards
-  and literal source-linked facts.
-- [GitHub issue-metrics](https://github.com/github-community-projects/issue-metrics)
-  provides response/review/lifecycle measurements. The earlier research already
-  found little justification for another generic review-volume tool.
-- [GitHub PR API](https://docs.github.com/en/rest/pulls/pulls),
-  [community profile](https://docs.github.com/en/rest/metrics/community) and
-  [review comments](https://docs.github.com/en/rest/pulls/comments) supply the
-  fields this app reads. Different comment types remain distinct.
+| Agent | Stable ID | API display login | GitHub app alias |
+| --- | ---: | --- | --- |
+| Copilot | 198982749 | Copilot | copilot-swe-agent |
+| Claude Code action | 209825114 | claude[bot] | claude |
+| Claude partner agent | 242468646 | Claude | anthropic-code-agent |
+| Cursor | 206951365 | cursor[bot] | cursor |
+| Devin | 158243242 | devin-ai-integration[bot] | devin-ai-integration |
+| Jules | 161369871 | google-labs-jules[bot] | google-labs-jules |
+| Codex partner agent | 242516109 | Codex | openai-code-agent |
+| Codex connector | 199175422 | chatgpt-codex-connector[bot] | chatgpt-codex-connector |
+| Codegen | 131295404 | codegen-sh[bot] | codegen-sh |
 
-No superiority, causal AI effect or market demand claim has been demonstrated.
+The account API returns a Bot identity and app URL for each ID. Public app metadata
+links the non-partner apps to their provider organizations: github, anthropics,
+cursor, usacognition, google-labs-code, openai, and codegen-sh. GitHub's private
+partner app metadata returns 404; its public app URL redirects to the official
+partner documentation. We verified those partner IDs by resolving the exact
+bot aliases in GitHub's explicit installation declarations. A 404 from the app
+metadata API is not proof that the bot account does not exist.
 
-## Chosen supported scope
+## Corrections to the inherited draft
 
-Public canonical github.com repositories, browser or Node 22+, no authentication
-setup, one page of recent closed PRs, ten selected merge diffs and an oldest-first
-open listing. Static UI; no database, email capture, indexer or inference service.
-All awards disclose their inspected scope. A quiet or capped repository remains
-useful without manufactured winners or a universal quality score.
+- The known list omitted Claude's partner app ID `242468646`.
+- Copilot and partner Codex display logins differ from their GraphQL aliases.
+  Refresh by ID; do not look up API display names as if they were bot aliases.
+- The old Devin integration URL returned 404. The valid source is
+  https://docs.devin.ai/integrations/gh.
+- OpenAI moved the GitHub integration docs to
+  https://learn.chatgpt.com/docs/third-party/github. Use that canonical URL.
+- A failed verification used to keep a stale seed identity silently. It now stops
+  the new run and preserves the prior complete index.
+- A non-bot account was called human. It is now a neutral user-account count.
+- Draft eligibility used 20 merges and accepted legacy/incomplete samples. The
+  reviewed rule needs a complete census and 100 merges.
 
-The earlier repository screen found 57/65 opened PRs in Pytest and 56/92 in Vite
-in the two 14-day screening periods. These select live test targets, not health
-benchmarks. Large-repo and quiet-repo behavior matter as much as a happy path.
+## Discovery boundary
 
-## Acceptance
+The parser admits only explicit “Allow … coding agent” install declarations in
+GitHub's official partner documentation. It resolves the declared app alias and
+checks the returned stable ID and app URL. New names from observed PR authors or
+bios do not create AI labels. Remaining bot candidates are retained for review.
 
-- A public repo produces real award cards with PR links and a readable summary.
-- Browser and CLI run the same pure calculations; saved facts reproduce awards.
-- PNG export carries the date and scope; JSON includes source facts and prose.
-- Input cannot choose a different host, private access, executable link, or
-  another repository's evidence. PR prose renders as text.
-- Absent, malformed, capped, moved and rate-limited data remain explicit.
-- Offline correctness cases, typecheck and runnable build pass. Manual live
-  browser/CLI checks verify the actual user path and exported image.
-- A useful cold result should arrive within 30 seconds in the bounded supported
-  scope. Individual timings do not establish universal latency or p95.
+`config/ai-agents.json` records the current sources and digests. Every captured
+index keeps its own immutable registry version and source evidence. The UI links
+to public app pages and official documentation. Unauthenticated GitHub API links
+may hit shared-IP rate limits, so they are not the main public evidence link.
 
-Readiness, public release and product resonance are separate. Keep the package
-private on npm with its publication refusal. Source is published on GitHub with the user's approval.
+## Collector review
 
-## URL-first repo identity and comparisons
+Real API reads disproved the assumption that returned `updatedAt` values are
+strictly sorted in GitHub's update-ordered merged-PR connection. Merge-date search
+with recursively split time ranges replaces that collector.
 
-- Shiptalkers (https://shiptalkers.dev/) makes the hook personal through named
-  identities and public comparisons. Repo Lore uses identities and comparisons
-  of literal PR records, without importing a quality judgment or Twitter data.
-- Yappers (https://yappers.context.dev/@t3dotchat) leads with a group's identity,
-  people, and standings. Repo Lore adds GitHub portraits, contributor standings,
-  overlapping top-three photos, and a rest count.
-- Nominal's OG guidance uses local fonts, a shared card design, PNG output,
-  and prerasterized image assets to avoid expensive blur/turbulence. This app
-  uses local licensed font subsets, PNG/JPEG portraits, a common 1200x630 layout,
-  and cached resvg WASM renders.
-- GitHub API quota guidance: https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api
-- PNG renderer source: https://github.com/yisibl/resvg-js
+A single `merged:START..END` qualifier is required. Repeating `merged:>=START` and
+`merged:<END` did not constrain the live query as intended. Leaf scope checks
+caught this; these failed captures never became complete indexes. UTC second
+ranges are disjoint and records are filtered again against exact timestamps.
 
-Acceptance: clean owner/repo paths; server-rendered canonical and OG metadata;
-versioned PNGs tied to the same snapshot; no sharing UI; three contributor
-portraits plus correct rest count; sourced cross-repo rows; no token in browser
-or stored facts; SSO remains intact. Tests inject fetch, storage, clock, and PNG
-rendering. Real HTTP, image, and mobile checks supplement the offline suite.
+References:
 
-## Compact award hierarchy
-
-The card groups its content into result, comparison, and evidence/actions.
-A high-contrast rank is the central item in a three-position comparison strip;
-neighboring repos use smaller text, arrows, and quieter portraits. It borrows
-picker hierarchy without pretending that rank is an editable selection.
-Related footer actions share a baseline and 44px touch targets. Natural card
-height replaces minimum heights and auto margins that separated related content.
-
-Design basis: [NN/g proximity](https://www.nngroup.com/articles/gestalt-proximity/),
-[NN/g visual hierarchy](https://www.nngroup.com/articles/principles-visual-design/),
-and [Apple pickers](https://developer.apple.com/design/human-interface-guidelines/pickers).
-These guide the layout; browser review verifies the implementation, not a claim
-that this exact design has been experimentally validated.
+- https://docs.github.com/en/search-github/searching-on-github/searching-issues-and-pull-requests
+- https://docs.github.com/en/graphql/reference/queries#search
+- https://docs.github.com/en/copilot/concepts/agents/about-third-party-coding-agents
+- Individual vendor sources are in `config/ai-agents.json`.

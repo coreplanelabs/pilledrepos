@@ -1,2 +1,3 @@
-console.error("Repo Lore is not released on npm. Source is available on GitHub.");
-process.exit(1);
+throw new Error(
+  "AI Pilled is a local experiment. Package publication is disabled.",
+);

@@ -5,13 +5,8 @@
   public/assets/dmsans-OFL.txt and public/assets/dmmono-OFL.txt.
   https://github.com/google/fonts/tree/main/ofl/dmsans
   https://github.com/google/fonts/tree/main/ofl/dmmono
-- Font Awesome Free 6.7.2 SVG paths: CC BY 4.0, Fonticons, Inc. The full bundled
-  license is public/assets/fontawesome-LICENSE.txt.
-  https://github.com/FortAwesome/Font-Awesome/tree/6.7.2
 - resvg WASM 2.6.2: MPL-2.0, used unmodified for PNG rendering.
   https://github.com/yisibl/resvg-js
   License: https://github.com/yisibl/resvg-js/blob/main/LICENSE
 - GitHub avatars and public repository metadata come from GitHub's public API.
   Photos retain their owners' rights and are not relicensed as this app's code.
-
-The footer names Polylane as the server sponsor. No Polylane logo asset is used.

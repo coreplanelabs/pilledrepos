@@ -1,5 +1,11 @@
 (() => {
-  let preference = 'system';
-  try { const saved = localStorage.getItem('repo-arcade-theme'); if (['light', 'dark', 'system'].includes(saved)) preference = saved; } catch { /* Storage is optional. */ }
-  document.documentElement.dataset.theme = preference === 'system' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : preference;
+  let p = "system";
+  try {
+    p = localStorage.getItem("ai-pilled-theme") || p;
+  } catch {}
+  document.documentElement.dataset.theme = ["light", "dark"].includes(p)
+    ? p
+    : matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
 })();

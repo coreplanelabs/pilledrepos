@@ -1,23 +1,97 @@
-import type {AiAgent,AiRegistry} from '../src/ai.js';
-import {parseRegistry} from '../src/ai.js';
-export const PARTNER_SOURCE='/repos/github/docs/contents/content/copilot/concepts/agents/about-third-party-coding-agents.md';
-export const PARTNER_URL='https://docs.github.com/en/copilot/concepts/agents/about-third-party-coding-agents';
-/** Only explicit agent-install declarations in GitHub's own docs create candidates. */
-export function partnerAgents(markdown:string):{login:string;name:string;source:string}[]{
- const entries=[];for(const match of markdown.matchAll(/Allow ([a-z0-9 -]+) coding agent\*\*[^\n]*will install `([a-z0-9 -]+)`/gi))entries.push({login:match[2].trim().replace(/\s+/g,'-')+'[bot]',name:match[1].trim(),source:PARTNER_URL});return entries;
+import {
+  parseRegistry,
+  type AiAgent,
+  type AiRegistry,
+  type Source,
+} from "../src/ai.js";
+export const PARTNER_SOURCE =
+  "/repos/github/docs/contents/content/copilot/concepts/agents/about-third-party-coding-agents.md";
+export const PARTNER_URL =
+  "https://docs.github.com/en/copilot/concepts/agents/about-third-party-coding-agents";
+/** Names are used only to resolve explicit install declarations, never to classify observed bots. */
+export function partnerAgents(
+  markdown: string,
+): { login: string; name: string; source: string }[] {
+  return [
+    ...markdown.matchAll(
+      /\*\*Allow ([a-z0-9 -]+) coding agent\*\* will install `([a-z0-9 -]+)`/gi,
+    ),
+  ].map((m) => ({
+    login: m[2].trim().replace(/\s+/g, "-") + "[bot]",
+    name: m[1].trim(),
+    source: PARTNER_URL,
+  }));
 }
-export async function refreshAiRegistry(seed:AiRegistry,read:(path:string)=>Promise<unknown>,now:number):Promise<AiRegistry>{
- const source=await read(PARTNER_SOURCE) as {content?:string;sha?:string;encoding?:string};
- if(source.encoding!=='base64'||!source.content||!source.sha||source.content.length>500000)throw new Error('Cannot refresh the official AI-agent source.');
- const text=atob(source.content.replace(/\s/g,'')),discovered=partnerAgents(text);
- if(!discovered.length)throw new Error('GitHub agent declarations changed; review the registry parser.');
- const verified=new Map<number,AiAgent>(seed.agents.map(agent=>[agent.id,agent]));
- for(const entry of [...seed.agents,...discovered]) {
-  let raw:unknown;try{raw=await read('/users/'+encodeURIComponent(entry.login));}catch{if('id'in entry)continue;throw new Error(`New agent identity cannot be verified: ${entry.name}.`);}
-  const account=raw as {id:number;login:string;type:string;html_url:string};
-  if(account.type!=='Bot'||!Number.isSafeInteger(account.id)||account.id<1)throw new Error(`Agent identity is not a GitHub bot: ${entry.name}.`);
-  if('id'in entry&&entry.id!==account.id)throw new Error(`AI account identity changed: ${entry.name}.`);
-  const actor=verified.get(account.id);verified.set(account.id,{id:account.id,login:account.login,name:actor?.name??entry.name,source:actor?.source??entry.source});
- }
- return parseRegistry({version:1,verifiedAt:new Date(now).toISOString(),agents:[...verified.values()],sources:[{url:PARTNER_URL,sha:source.sha}]});
+export async function refreshAiRegistry(
+  seed: AiRegistry,
+  read: (path: string) => Promise<unknown>,
+  now: number,
+  verifySource: (url: string) => Promise<Source>,
+): Promise<AiRegistry> {
+  parseRegistry(seed);
+  const raw = (await read(PARTNER_SOURCE)) as {
+    content?: string;
+    sha?: string;
+    encoding?: string;
+  };
+  if (
+    raw.encoding !== "base64" ||
+    !raw.content ||
+    !raw.sha ||
+    raw.content.length > 500000
+  )
+    throw new Error("Cannot read the official agent declarations.");
+  const discovered = partnerAgents(atob(raw.content.replace(/\s/g, "")));
+  if (!discovered.length)
+    throw new Error("GitHub agent declarations changed; review the parser.");
+  const verified = new Map<number, AiAgent>();
+  // ID endpoint avoids display-login versus GraphQL-alias differences. A failed check stops this run.
+  for (const agent of seed.agents) {
+    const a = (await read("/user/" + agent.id)) as {
+      id: number;
+      login: string;
+      type: string;
+      html_url: string;
+    };
+    if (
+      a.id !== agent.id ||
+      a.type !== "Bot" ||
+      a.html_url !== agent.accountUrl
+    )
+      throw new Error(`Account evidence changed: ${agent.name}.`);
+    verified.set(a.id, { ...agent, login: a.login });
+  }
+  for (const entry of discovered) {
+    const a = (await read("/users/" + encodeURIComponent(entry.login))) as {
+      id: number;
+      login: string;
+      type: string;
+      html_url: string;
+    };
+    const slug = entry.login.replace(/\[bot\]$/, "");
+    if (
+      !Number.isSafeInteger(a.id) ||
+      a.id < 1 ||
+      a.type !== "Bot" ||
+      a.html_url !== `https://github.com/apps/${slug}`
+    )
+      throw new Error(`New agent identity cannot be verified: ${entry.name}.`);
+    if (!verified.has(a.id))
+      verified.set(a.id, {
+        ...entry,
+        id: a.id,
+        login: a.login,
+        aliases: [entry.login],
+        accountUrl: a.html_url,
+      });
+  }
+  const sources: Source[] = [{ url: PARTNER_URL, sha: raw.sha }];
+  for (const url of new Set([...verified.values()].map((a) => a.source)))
+    if (url !== PARTNER_URL) sources.push(await verifySource(url));
+  return parseRegistry({
+    version: 1,
+    verifiedAt: new Date(now).toISOString(),
+    agents: [...verified.values()],
+    sources,
+  });
 }

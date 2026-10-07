@@ -1,59 +1,99 @@
 import { createServer } from "node:http";
-import { readFile, readdir, mkdir, writeFile } from "node:fs/promises";
-import { createHash } from "node:crypto";
+import { readFile, mkdir } from "node:fs/promises";
+import { resolve } from "node:path";
 import { createHandler } from "../.server-dist/server/http.js";
 import { pngRenderer } from "../.server-dist/server/og.js";
-
-const root = new URL("../dist/", import.meta.url), files = new Set();
-/** @param {URL} directory @param {string} prefix */
-async function inventory(directory, prefix = "") {
-  for (const entry of await readdir(directory, { withFileTypes: true })) {
-    if (entry.isDirectory()) await inventory(new URL(entry.name + "/", directory), prefix + entry.name + "/");
-    else if (!entry.name.startsWith(".") && !entry.name.endsWith(".d.ts") && !["_headers"].includes(entry.name)) files.add("/" + prefix + entry.name);
+import { collectIndexedReport } from "../.server-dist/server/github-index.js";
+import { parseReport } from "../.server-dist/src/ai.js";
+import { githubReader } from "./github-api.mjs";
+import { readJson, atomicJson } from "./index-storage.mjs";
+const root = resolve("dist"),
+  index = resolve(".data/index");
+let cached, tag;
+async function dataset() {
+  let path;
+  try {
+    const p = await readJson(resolve(index, "current.json"));
+    if (!/^[a-z0-9-]+$/.test(p.runId))
+      throw new Error("Invalid index pointer.");
+    path = resolve(index, "runs", p.runId, "index.json");
+  } catch {
+    path = resolve(".data/preview.json");
+  }
+  if (tag !== path) {
+    cached = await readJson(path);
+    tag = path;
+  }
+  return cached;
+}
+const types = {
+  js: "text/javascript",
+  css: "text/css",
+  svg: "image/svg+xml",
+  woff: "font/woff",
+  ttf: "font/ttf",
+};
+async function assets(path) {
+  if (!/^\/(?:assets\/[a-z0-9_.-]+|[a-z0-9_.-]+)$/.test(path))
+    return new Response("Not found", { status: 404 });
+  try {
+    const bytes = await readFile(resolve(root, path.slice(1)));
+    return new Response(bytes, {
+      headers: {
+        "Content-Type":
+          types[path.split(".").at(-1)] ?? "application/octet-stream",
+        "X-Content-Type-Options": "nosniff",
+      },
+    });
+  } catch {
+    return new Response("Not found", { status: 404 });
   }
 }
-await inventory(root);
-const contentTypes = new Map([["html", "text/html; charset=utf-8"], ["js", "text/javascript; charset=utf-8"], ["css", "text/css; charset=utf-8"], ["json", "application/json"], ["svg", "image/svg+xml"], ["woff", "font/woff"], ["ttf", "font/ttf"], ["txt", "text/plain"]]);
-const assets = {
-  /** @param {Request} request */
-  async fetch(request) {
-  const path = new URL(request.url).pathname;
-  if (!files.has(path)) return new Response("Not found", { status: 404 });
-  const bytes = await readFile(new URL(path.slice(1), root));
-  return new Response(new Uint8Array(bytes).buffer, { headers: { "Content-Type": contentTypes.get(path.split(".").at(-1) ?? "") ?? "application/octet-stream", "Cache-Control": "no-store" } });
-} };
-const cacheRoot = new URL("../.data/kv/", import.meta.url);
-await mkdir(cacheRoot, { recursive: true });
-/** @param {string} key */
-function keyPath(key) { return new URL(createHash("sha256").update(key).digest("hex") + ".json", cacheRoot); }
-const store = {
-  /** @param {string} key @returns {Promise<string | null>} */
-  async get(key) {
-    try { return await readFile(keyPath(key), "utf8"); } catch { /* A captured seed can fill a cold local cache. */ }
-    if (key.startsWith("repo:")) {
-      const repository = key.slice(5), filename = repository.replace("/", "-") + ".json";
-      for (const directory of ["../.data/reports/", "../public/examples/"]) {
-        try { return await readFile(new URL(directory + filename, import.meta.url), "utf8"); } catch { /* Try the next dated source. */ }
-      }
-    }
-    if (key.startsWith("snapshot:")) {
-      const [_, repository, stamp] = key.split(":");
-      const saved = await store.get("repo:" + repository);
-      if (saved && Date.parse(JSON.parse(saved).capturedAt) === Number(stamp)) return saved;
-    }
-    return null;
-  },
-  /** @param {string} key @param {string} value */ async put(key, value) { await writeFile(keyPath(key), value); }
-};
-const wasm = await readFile(new URL("../node_modules/@resvg/resvg-wasm/index_bg.wasm", import.meta.url));
-const handler = createHandler({ assets, store, fetch, now: Date.now, githubToken: process.env.REPOLORE_GITHUB_TOKEN,
-  png: pngRenderer(wasm, () => Promise.all([400, 500].map(weight => readFile(new URL(`assets/dm-sans-${weight}-ascii.ttf`, root))))) });
-const port = Number(process.env.REPO_ARCADE_PORT ?? 4178);
-if (!Number.isInteger(port) || port < 1024 || port > 65535) throw new Error("Use a port between 1024 and 65535.");
-createServer(async (request, response) => {
+async function onDemand(repo) {
+  const file = resolve(
+    ".data/on-demand",
+    repo.toLowerCase().replace("/", "--") + ".json",
+  );
   try {
-    const result = await handler(new Request(`http://127.0.0.1:${port}${request.url ?? "/"}`, { method: request.method }));
-    response.writeHead(result.status, Object.fromEntries(result.headers));
-    response.end(Buffer.from(await result.arrayBuffer()));
-  } catch { response.writeHead(503); response.end("This round could not be loaded."); }
-}).listen(port, "127.0.0.1", () => console.log(`Local: http://127.0.0.1:${port}`));
+    const r = parseReport(await readJson(file));
+    if (Date.now() - Date.parse(r.capturedAt) < 86400000) return r;
+  } catch {}
+  const r = await collectIndexedReport(repo, {
+    read: githubReader(),
+    now: Date.now(),
+  });
+  await atomicJson(file, r);
+  return r;
+}
+const wasm = await readFile("node_modules/@resvg/resvg-wasm/index_bg.wasm");
+const handler = createHandler({
+  dataset,
+  assets,
+  png: pngRenderer(wasm, () =>
+    Promise.all(
+      [400, 500].map((w) =>
+        readFile(resolve(root, `assets/dm-sans-${w}-ascii.ttf`)),
+      ),
+    ),
+  ),
+  onDemand: process.env.AI_PILLED_GITHUB_TOKEN ? onDemand : undefined,
+});
+const port = Number(process.env.AI_PILLED_PORT ?? 4189);
+if (!Number.isInteger(port) || port < 1024 || port > 65535)
+  throw new Error("Use a local port from 1024 to 65535.");
+createServer(async (req, res) => {
+  try {
+    const r = await handler(
+      new Request(`http://127.0.0.1:${port}${req.url ?? "/"}`, {
+        method: req.method,
+      }),
+    );
+    res.writeHead(r.status, Object.fromEntries(r.headers));
+    res.end(Buffer.from(await r.arrayBuffer()));
+  } catch {
+    res.writeHead(503);
+    res.end("Local read unavailable.");
+  }
+}).listen(port, "127.0.0.1", () =>
+  console.log(`AI Pilled preview: http://127.0.0.1:${port}`),
+);

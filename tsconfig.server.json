@@ -9,10 +9,6 @@
   },
   "include": [
     "server/**/*.ts",
-    "src/core.ts",
-    "src/catalog.ts",
-    "src/view.ts",
-    "src/icons.ts",
-    "worker/**/*.ts"
+    "src/**/*.ts"
   ]
 }
