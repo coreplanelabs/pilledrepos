@@ -33,5 +33,10 @@
   },
   "dependencies": {
     "@resvg/resvg-wasm": "2.6.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/coreplanelabs/pilledrepos.git"
+  },
+  "homepage": "https://pilledrepos.com"
 }

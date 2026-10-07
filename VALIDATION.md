@@ -77,3 +77,27 @@ KV, domain, environments, and secrets were not changed or reused. Independent CI
 validation is prepared. Deployment setup stays pending the new repo/domain choice,
 verification of the actual DNS-owning Cloudflare account, separate resources, and
 new deployment authorization. Polycorp's DNS transfer is not assumed complete.
+
+## Polylane styling update
+
+The UI now uses Repo Lore's Polylane colors, DM Sans/DM Mono typography, header
+layout, three theme buttons, logo hover/focus motion, and footer attribution.
+The PR evidence card is removed. Agent source/PR links remain in a collapsed
+section. Comparison defaults to the actual #1 eligible repo; the leader's page
+avoids duplicate self-comparison. User choices override the default.
+
+52 offline tests, typecheck, and build passed after this update. Desktop and
+390-pixel mobile checks passed with no horizontal overflow or browser errors.
+Read times display in the viewer's timezone; measured window dates use UTC and
+readable month names. The footer shows “Built for fun by Polylane.” The footer has the same attribution and “View the source” links as Repo Lore.
+The source link points to the independent `coreplanelabs/pilledrepos` repository. The home page has no redundant “Try” links; the leaderboard supplies
+repo choices. “View on GitHub” uses the GitHub icon.
+
+A real on-demand comparison with `octocat/Hello-World`, outside the indexed pool,
+succeeded through the existing read-only GitHub CLI login and the local cache.
+The comparison showed an empty merged-PR window and an unranked label. The
+published 1,000-repo index was not changed. Start the local server with
+`bun run dev -- --use-gh` to enable public lookups outside the index.
+
+Current visual proof: `docs/polylane-desktop.jpg`, `docs/polylane-mobile.jpg`, and
+`docs/polylane-og.png`. Earlier screenshots remain as the initial prototype proof.

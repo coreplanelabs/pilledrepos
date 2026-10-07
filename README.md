@@ -68,3 +68,7 @@ once an independent deployment exists. Its metadata serves a 1200×630 PNG.
 
 No daily schedule is active yet. The daily runner is ready; enable its schedule
 only after the independent GitHub project and hosting resources are approved.
+
+For local comparisons with public repos outside the index, run
+`bun run dev -- --use-gh`. This uses the existing GitHub CLI login for public reads
+and keeps a 24-hour local cache. The experiment token remains an alternative.

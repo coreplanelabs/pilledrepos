@@ -72,7 +72,7 @@ test("legacy preview cannot supply ranking or claim repo-wide share", async () =
 });
 test("missing history never invents movement", async () => {
   const s = await (await handler()(req("/org/repo"))).text();
-  assert.match(s, /after two complete daily reads/);
+  assert.doesNotMatch(s, /<h2>Change over time<\/h2>/);
   assert.doesNotMatch(s, /Up [0-9]|Down [0-9]/);
 });
 test("untrusted titles and descriptions are escaped", async () => {
@@ -106,4 +106,63 @@ test("an incomplete capture uses observed-sample copy and has no rank", async ()
   assert.match(s, /observed merged PRs/);
   assert.match(s, /Incomplete read/);
   assert.match(s, /Unranked/);
+});
+test("normal repo page compares with the actual #1 ranked repo by default", async () => {
+  const h = handler({
+    ...dataset,
+    reports: [report(100, 10, "low/repo"), report(200, 100, "leader/repo")],
+  });
+  const html = await (await h(req("/low/repo"))).text();
+  assert.match(html, /Against the #1 repo on the leaderboard/);
+  assert.match(html, /leader\/repo/);
+  assert.match(html, /100 \/ 200 merged PRs/);
+  assert.doesNotMatch(html, /<h2>PR evidence<\/h2>|up to six/);
+});
+test("leader page avoids comparing itself twice and allows a custom comparison", async () => {
+  const html = await (await handler()(req("/org/repo"))).text();
+  assert.match(html, /This repo leads the leaderboard/);
+  assert.match(html, /comparison-pair single/);
+  assert.match(html, /Compare with another repo/);
+  const chosen = await (
+    await handler()(req("/org/repo?compare=other%2Frepo"))
+  ).text();
+  assert.match(chosen, /comparison-pair"/);
+  assert.match(chosen, /other\/repo/);
+});
+test("header and footer use Polylane styling, accessible theme buttons, and attribution", async () => {
+  const html = await (await handler()(req("/org/repo"))).text();
+  assert.match(html, /class="masthead"/);
+  assert.match(html, /Built for fun by/);
+  assert.match(html, /polylane.com/);
+  assert.match(html, /data-theme-choice="system"[^>]*aria-label="System"/);
+  assert.doesNotMatch(html, /<select/);
+  assert.match(html, /Jul 9 – Oct 7, 2026/);
+  assert.doesNotMatch(html, />2026-10-07</);
+});
+test("a custom public repo outside the index is read on demand and stays outside pool ranks", async () => {
+  let requested = "";
+  const h = createHandler({
+    dataset: async () => dataset,
+    assets: async () => new Response("asset"),
+    png: async () => new Uint8Array(),
+    onDemand: async (repo) => {
+      requested = repo;
+      return report(100, 50, "outside/repo");
+    },
+  });
+  const s = await (await h(req("/org/repo?compare=outside%2Frepo"))).text();
+  assert.equal(requested, "outside/repo");
+  assert.match(s, /Comparison repo/);
+  assert.match(s, /50 \/ 100 merged PRs/);
+  const board = JSON.parse(await (await h(req("/api/leaderboard"))).text());
+  assert.equal(board.rows.length, 2);
+});
+test("small custom comparison windows show counts and an unranked label", async () => {
+  const h = handler({
+    ...dataset,
+    reports: [report(), report(1, 1, "small/repo")],
+  });
+  const s = await (await h(req("/org/repo?compare=small%2Frepo"))).text();
+  assert.match(s, /1 \/ 1 merged PRs/);
+  assert.match(s, /Small window · unranked/);
 });

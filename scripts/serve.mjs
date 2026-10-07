@@ -7,6 +7,9 @@ import { collectIndexedReport } from "../.server-dist/server/github-index.js";
 import { parseReport } from "../.server-dist/src/ai.js";
 import { githubReader } from "./github-api.mjs";
 import { readJson, atomicJson } from "./index-storage.mjs";
+const useGh = process.argv.includes("--use-gh");
+const onDemandRead =
+  useGh || process.env.AI_PILLED_GITHUB_TOKEN ? githubReader(useGh) : null;
 const root = resolve("dist"),
   index = resolve(".data/index");
 let cached, tag;
@@ -59,7 +62,7 @@ async function onDemand(repo) {
     if (Date.now() - Date.parse(r.capturedAt) < 86400000) return r;
   } catch {}
   const r = await collectIndexedReport(repo, {
-    read: githubReader(),
+    read: onDemandRead,
     now: Date.now(),
   });
   await atomicJson(file, r);
@@ -76,7 +79,7 @@ const handler = createHandler({
       ),
     ),
   ),
-  onDemand: process.env.AI_PILLED_GITHUB_TOKEN ? onDemand : undefined,
+  onDemand: onDemandRead ? onDemand : undefined,
 });
 const port = Number(process.env.AI_PILLED_PORT ?? 4189);
 if (!Number.isInteger(port) || port < 1024 || port > 65535)

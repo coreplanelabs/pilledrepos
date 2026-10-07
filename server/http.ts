@@ -52,7 +52,7 @@ export function createHandler(options: {
         Allow: "GET, HEAD",
       });
     if (
-      /^\/(assets\/|app\.js$|theme\.js$|theme-init\.js$|styles\.css$|favicon\.svg$)/.test(
+      /^\/(assets\/|app\.js$|theme\.js$|dates\.js$|theme-init\.js$|styles\.css$|favicon\.svg$)/.test(
         path,
       )
     )
