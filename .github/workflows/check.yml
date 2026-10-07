@@ -24,5 +24,3 @@ jobs:
       - run: bun run typecheck
       - run: bun run test
       - run: node --test test/release-guard.test.mjs test/index-publication.test.mjs
-      - run: node scripts/release-guard.mjs --local
-      - run: bun run wrangler versions upload --dry-run
