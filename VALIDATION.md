@@ -107,3 +107,21 @@ passed. D1 migration/import preserved all prior rows and newer reads, enrolled
 hash readback. The empty Worker has no active code version. GitHub passkey/read
 credential and first deployment remain pending. Npm registry returns 404 after
 unpublication. See `docs/production-data-proof.json` for the scoped data receipt.
+
+GitHub credential wiring: GitHub rejected the old `GITHUB_READ_TOKEN` secret name
+with HTTP 422 because `GITHUB_` is reserved. The production secret is now
+`AI_PILLED_GITHUB_TOKEN`; deployment maps it to the Worker environment credential,
+and daily indexing reads the same secret. GitHub secret creation and a real public
+GraphQL repository query passed. All 79 tests, frozen install, typecheck, build,
+config guard, Worker dry run, and whitespace checks passed on this wiring diff.
+
+First live launch: checked main `3ce26f19a0973e71f9f91a2f925a93bf19a20c41`,
+Worker version `652d5436-433c-4df6-971d-2d920c3d2f6d`. Read-only production
+preflight passed. The verified Cloudflare login performed the one-time domain
+bootstrap; the CI credential remained limited to the Worker. HTTP/HTTPS returned
+200 with the exact revision. Home, 2,400-row leaderboard, github/gh-aw detail,
+1200×630 PNG, CSS, and browser script checks passed with normal TLS certificate
+verification. The live check used an address returned by authoritative/public
+DNS because the local resolver cached the earlier empty answer. This proves the
+public service; it does not prove all resolver caches have expired. Receipt:
+`docs/production-live-proof.json`. The CI wiring PR remains unmerged.

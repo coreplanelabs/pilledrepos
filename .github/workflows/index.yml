@@ -34,7 +34,7 @@ jobs:
       - name: Refresh only existing indexed repos
         run: node scripts/ci-index.mjs
         env:
-          AI_PILLED_GITHUB_TOKEN: ${{ secrets.GITHUB_READ_TOKEN }}
+          AI_PILLED_GITHUB_TOKEN: ${{ secrets.AI_PILLED_GITHUB_TOKEN }}
           CLOUDFLARE_INDEX_TOKEN: ${{ secrets.CLOUDFLARE_INDEX_TOKEN }}
       - name: Update permanent repo metrics
         run: |
