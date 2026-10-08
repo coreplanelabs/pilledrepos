@@ -65,6 +65,7 @@ test("submitted public repos survive a restart and duplicate submissions keep on
   assert.equal(first.status, "ready");
   assert.equal((await store.record("org/repo")).indexed, 1);
   await store.add("ORG/REPO");
+  await store.add("www.github.com/org/repo");
   assert.equal(queries, 1);
   assert.equal(
     (await c.db.prepare("SELECT COUNT(*) n FROM repos").first()).n,

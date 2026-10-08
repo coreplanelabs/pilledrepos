@@ -48,6 +48,8 @@ export class ArcadeError extends Error {
 }
 export function parseRepository(input: string): string {
   let value = input.trim();
+  if (/^(?:www\.)?github\.com(?:\/|$)/i.test(value)) value = "https://" + value;
+  else if (value.startsWith("//")) value = "https:" + value;
   if (/^https?:/i.test(value)) {
     let url: URL;
     try {
@@ -59,7 +61,7 @@ export function parseRepository(input: string): string {
       );
     }
     if (
-      url.protocol !== "https:" ||
+      !["http:", "https:"].includes(url.protocol) ||
       !["github.com", "www.github.com"].includes(url.hostname) ||
       url.username ||
       url.password ||

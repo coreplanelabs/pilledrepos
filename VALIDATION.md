@@ -43,7 +43,7 @@ check the owned PID, index pointer, GET `/api/leaderboard?limit=1`, and
 | Rank jump                                                                        | Open Strix, click #3, inspect target row.                                                                               | Old hash/smooth behavior settled at the page top; native row anchor settles at 24px and keeps the matching highlight. Both href and landing row IDs are tested.                                                                            |
 | Data-backed pills                                                                | Click a technology pill.                                                                                                | Links open actual repo details, not a filter. Only complete 100+ PR reads receive a pill. The obsolete filter is removed; input label is accessible but hidden.                                                                            |
 | Card treatments | Open normal and #1 repo pages; move pointer to a card corner and leave. | Existing proof: gradient on all cards, pointer tilt resets on exit, and rank badge at top right. |
-| Repo header and emoji | Open PostHog and a short-description repo at desktop/mobile widths. | GitHub aligns with the title at desktop width and sits below the description on mobile. Read text is 12px beside Refresh on both sizes. Native GitHub emoji aliases render; custom GitHub images use the allowed asset host. Historical sections are omitted even with two daily reads. |
+| Repo header and emoji | Open PostHog and a short-description repo at desktop/mobile widths. | GitHub sits 24px after the desktop name. On mobile a 40px avatar sits beside the title, while description and action row use the full width. Read age and an icon-only Refresh button form one compact group; full local read time remains in the title/accessibility label. Native GitHub emoji aliases render; custom GitHub images use the allowed asset host. Historical sections are omitted even with two daily reads. |
 | Leaderboard information | Click or press Enter on the info button; dismiss with Escape or outside click. | Approved user copy appears in a native popover. Its 44px trigger and tooltip fit 1280×900 and 360×800. No page shift or table clipping. |
 | Top-ten confetti                                                                 | Open ranks 1, 10, and 11.                                                                                               | Real browser: burst on 1/10, none on 11, canvas removed afterward. Reduced-motion/touch exclusions are source-inspected; OS settings were not changed.                                                                                     |
 | Fixed raised loading                                                             | Use `node test/ui-review-server.mjs` after build/test; submit fixture repo and scroll during its three-second response. | Isolated UI proof: fixed 16px bottom offset before/after 800px scroll, no board shift, visible elevation. No GitHub or real catalog writes. Stop the owned fixture after capture.                                                          |
@@ -125,3 +125,24 @@ verification. The live check used an address returned by authoritative/public
 DNS because the local resolver cached the earlier empty answer. This proves the
 public service; it does not prove all resolver caches have expired. Receipt:
 `docs/production-live-proof.json`. The CI wiring PR remains unmerged.
+
+Repo header redesign verification: github/gh-aw, PostHog, and Kubernetes were
+driven locally at 1280px desktop and 360px/320px mobile widths. Mobile descriptions
+use the full content width; the avatar centers beside single-line and wrapped
+titles. The GitHub link, read age, and 40px Refresh target fit one mobile action
+row without overflow. Desktop uses typographic middle alignment for the GitHub circle immediately after the name and places
+read age/Refresh below the description. Full local capture time remains in the
+time element title and accessibility label; display age updates once per minute
+without provider requests. Formatter tests cover minute/hour/day boundaries and
+future clock skew. Earlier floating/italic timestamp experiments are superseded.
+
+Pasted URL regression: scheme-less GitHub input failed before normalization and
+passes afterward. Public repo names, github.com/www.github.com links, HTTP/HTTPS,
+and protocol-relative links resolve to the same owner/repo. Lookalike hosts,
+credentials, non-default ports, and deeper issue paths remain rejected. The real
+local Check repo form accepted bare github.com, bare www.github.com, and HTTP www
+Switchboard links; all opened the canonical repo without duplicates or recapturing
+its saved metrics. Desktop percentage right edges matched exactly across nine
+rows; the mobile stacked column matched across six rows and had no 320px overflow.
+Desktop GitHub artwork uses native middle alignment against the title’s x-height;
+wrapped mobile titles still fit. These changes update the unmerged PR #7.
