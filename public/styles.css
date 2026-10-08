@@ -394,6 +394,11 @@ tbody th a {
   color: var(--accent);
   margin-right: 16px;
 }
+.pr-share .mono {
+  display: inline-block;
+  width: 17ch;
+  text-align: right;
+}
 .mono {
   font:
     14px "DM Mono",
@@ -466,15 +471,22 @@ tbody th a {
   min-width: 0;
 }
 .repo-title-row {
-  display: flex;
-  align-items: baseline;
-  justify-content: flex-start;
-  gap: 24px;
+  font-size: clamp(28px, 3vw, 38px);
+  line-height: 1.15;
+  font-weight: 700;
   margin-bottom: 10px;
 }
 .desktop-github {
-  flex-shrink: 0;
+  display: inline-flex;
+  vertical-align: middle;
+  margin-left: 24px;
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 400;
   white-space: nowrap;
+}
+.desktop-github .external {
+  min-height: 32px;
 }
 .mobile-github {
   display: none;
@@ -486,8 +498,9 @@ tbody th a {
   margin-top: 4px;
 }
 .repo-identity h1 {
-  font-size: clamp(28px, 3vw, 38px);
-  line-height: 1.15;
+  display: inline;
+  font-size: inherit;
+  line-height: inherit;
   letter-spacing: -0.04em;
   margin: 0;
   overflow-wrap: anywhere;
@@ -952,6 +965,7 @@ tbody th a {
   }
   .pr-share .mono {
     display: block;
+    width: auto;
     font-size: 12px;
     margin-top: 5px;
   }
@@ -976,6 +990,7 @@ tbody th a {
     grid-row: 1;
   }
   .repo-title-row {
+    display: flex;
     margin-bottom: 0;
     min-height: 40px;
     align-items: center;

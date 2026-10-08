@@ -130,8 +130,19 @@ Repo header redesign verification: github/gh-aw, PostHog, and Kubernetes were
 driven locally at 1280px desktop and 360px/320px mobile widths. Mobile descriptions
 use the full content width; the avatar centers beside single-line and wrapped
 titles. The GitHub link, read age, and 40px Refresh target fit one mobile action
-row without overflow. Desktop keeps GitHub immediately after the name and places
+row without overflow. Desktop uses typographic middle alignment for the GitHub circle immediately after the name and places
 read age/Refresh below the description. Full local capture time remains in the
 time element title and accessibility label; display age updates once per minute
 without provider requests. Formatter tests cover minute/hour/day boundaries and
 future clock skew. Earlier floating/italic timestamp experiments are superseded.
+
+Pasted URL regression: scheme-less GitHub input failed before normalization and
+passes afterward. Public repo names, github.com/www.github.com links, HTTP/HTTPS,
+and protocol-relative links resolve to the same owner/repo. Lookalike hosts,
+credentials, non-default ports, and deeper issue paths remain rejected. The real
+local Check repo form accepted bare github.com, bare www.github.com, and HTTP www
+Switchboard links; all opened the canonical repo without duplicates or recapturing
+its saved metrics. Desktop percentage right edges matched exactly across nine
+rows; the mobile stacked column matched across six rows and had no 320px overflow.
+Desktop GitHub artwork uses native middle alignment against the title’s x-height;
+wrapped mobile titles still fit. These changes update the unmerged PR #7.
