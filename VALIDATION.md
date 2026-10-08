@@ -64,6 +64,17 @@ include old small-window eligibility flags and repo renames keyed by stable ID.
 The SQLite startup regression failed under a held writer lock, then passed with
 a bounded five-second busy timeout. The database was not reset.
 
+UI cleanup proof: the emoji rendering and populated-history removal checks failed
+before the change and passed afterward. All 81 tests and type/build checks passed.
+The real local preview on port 4189 was driven at 1280×900 and 360×800: PostHog's
+hedgehog rendered; GitHub/read/Refresh alignment, tooltip copy, viewport fit,
+keyboard open, Escape, and outside-click dismissal passed. No enrollment or
+refresh request was submitted during these UI checks. The source awaits user merge; production still runs the earlier app build.
+The final client build also passed a 320px mobile check and open-tooltip resize
+check. Light and dark desktop styles were inspected. Viewport and theme overrides
+were reset after verification.
+
+
 ## Merge deployment verification
 
 The affected entries are `check.yml`, `release.mjs`,
@@ -96,13 +107,3 @@ passed. D1 migration/import preserved all prior rows and newer reads, enrolled
 hash readback. The empty Worker has no active code version. GitHub passkey/read
 credential and first deployment remain pending. Npm registry returns 404 after
 unpublication. See `docs/production-data-proof.json` for the scoped data receipt.
-
-UI cleanup proof: the emoji rendering and populated-history removal checks failed
-before the change and passed afterward. All 81 tests and type/build checks passed.
-The real local preview on port 4189 was driven at 1280×900 and 360×800: PostHog's
-hedgehog rendered; GitHub/read/Refresh alignment, tooltip copy, viewport fit,
-keyboard open, Escape, and outside-click dismissal passed. No enrollment or
-refresh request was submitted during these UI checks. The source awaits user merge; production still runs the earlier app build.
-The final client build also passed a 320px mobile check and open-tooltip resize
-check. Light and dark desktop styles were inspected. Viewport and theme overrides
-were reset after verification.
