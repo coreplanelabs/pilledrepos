@@ -1,0 +1,25 @@
+{
+  "revision": "3ce26f19a0973e71f9f91a2f925a93bf19a20c41",
+  "repository": "github/gh-aw",
+  "total": 2400,
+  "checks": [
+    "home",
+    "leaderboard",
+    "repo",
+    "png",
+    "styles",
+    "script"
+  ],
+  "dns": "Authoritative Cloudflare and public 1.1.1.1 resolved the address; local resolver still cached the earlier negative result",
+  "tls": "normal hostname and certificate verification",
+  "publicResolvers": [
+    "katelyn.ns.cloudflare.com",
+    "1.1.1.1",
+    "8.8.8.8"
+  ],
+  "localResolver": {
+    "address": "192.168.1.198",
+    "state": "cached previous NOERROR answer with no A records",
+    "observedNegativeTtlSeconds": 851
+  }
+}

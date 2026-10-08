@@ -40,7 +40,8 @@ A failed read preserves registration and the previous complete dataset. Resume
 checkpoints with `--resume=RUN_ID`; partial results never become zeros.
 
 The GitHub CLI login is for local public reads. Unattended runs need the new
-project's dedicated `AI_PILLED_GITHUB_TOKEN` / production `GITHUB_READ_TOKEN`.
+project's dedicated `AI_PILLED_GITHUB_TOKEN`. CI maps that production secret to
+the Worker's `GITHUB_READ_TOKEN`.
 Never copy Repo Lore secrets. Production needs its own credentials and initialized data.
 
 ## One-off discovery and enrollment

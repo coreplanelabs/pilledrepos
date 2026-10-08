@@ -41,10 +41,12 @@ Never use Repo Lore's resources, environments, or credentials.
 2. After immediate user confirmation, create fresh scoped credentials. Store them
    in the 1Password CI vault and this repo's production environment secrets:
    `CLOUDFLARE_DEPLOY_TOKEN`, `CLOUDFLARE_ZONE_READ_TOKEN`,
-   `CLOUDFLARE_INDEX_TOKEN`, and `GITHUB_READ_TOKEN`. Restrict Cloudflare grants
+   `CLOUDFLARE_INDEX_TOKEN`, and `AI_PILLED_GITHUB_TOKEN`. Restrict Cloudflare grants
    to the named account/zone and supported Worker, zone-read, KV, and D1 operations.
    GitHub read access must cover public repositories only. The release installs
    `GITHUB_READ_TOKEN` as a Worker secret atomically with the code version.
+   GitHub forbids secret names starting with `GITHUB_`; the workflow maps
+   `AI_PILLED_GITHUB_TOKEN` to the Worker credential.
 3. Apply `config/migrations/0002-index-membership.sql` to the existing D1 database.
    Import only the reviewed active membership and complete captures, preserving
    user registrations and newer reads. Do not enroll the whole discovery archive.
@@ -61,8 +63,19 @@ bind the dedicated database and namespace and reject another account.
 The empty Worker record exists with no active version. D1 membership is initialized:
 2,401 enrolled repos, including all three user submissions. Existing registrations
 and newer reads were preserved; archived seed entries were not enrolled. Complete
-KV publication passed hash readback. The GitHub public-read credential and merge
-of the deployment-only PR remain pending. No code is deployed yet.
+KV publication passed hash readback. The public-read credential is stored in 1Password CI and GitHub production as
+`AI_PILLED_GITHUB_TOKEN`. It has public repository read access and no private
+repository or account permissions. The first launch deployed checked main
+`3ce26f1` through the verified Cloudflare login. This one-time bootstrap created
+the custom domain; Cloudflare custom domains do not support per-Worker roles.
+CI retains its per-Worker credential and uses version upload/activation for later
+releases. See [Cloudflare role limits](https://developers.cloudflare.com/workers/authorization/workers/#limitations).
+
+Authoritative Cloudflare, 1.1.1.1, and Google DNS return the site addresses. HTTP
+and HTTPS return 200 with the checked revision. The six live checks passed with
+2,400 complete nonempty rows. The local DNS server still cached its earlier empty
+answer; its observed remaining negative TTL was 851 seconds. The CI secret-name
+fix must merge for future deployments and daily refreshes to consume the token.
 
 The initial npm bootstrap package was unpublished at the user's request; the
 registry returns 404. `package.json` is private and CI has no npm publication step.
