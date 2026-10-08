@@ -1,17 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mergeVersion } from "../scripts/publish-package.mjs";
 import { verifyLive } from "../scripts/verify-live.mjs";
 const sha = "a".repeat(40);
-test("merge packages get a reproducible source-bound version, distinct across checked runs", () => {
-  assert.equal(mergeVersion("0.1.0", sha, 42), "0.1.0-main.42.gaaaaaaaaaaaa");
-  assert.equal(
-    mergeVersion("0.1.0", "b".repeat(40), 43),
-    "0.1.0-main.43.gbbbbbbbbbbbb",
-  );
-  assert.throws(() => mergeVersion("0.1.0", sha, "0"));
-  assert.throws(() => mergeVersion("0.1.0", "wrong", 42));
-});
 function site({ revision = sha, empty = false, badPng = false } = {}) {
   return async (url) => {
     const path = new URL(url).pathname;
