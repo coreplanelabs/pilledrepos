@@ -36,3 +36,12 @@ export function friendlyTimestamp(value: string, timeZone = "UTC"): string {
     timeZone,
   }).format(date);
 }
+export function readAge(value: string, now = Date.now()): string {
+  const captured = Date.parse(value);
+  if (!Number.isFinite(captured)) return "not available";
+  const minutes = Math.max(0, Math.floor((now - captured) / 60000));
+  if (minutes < 1) return "just now";
+  if (minutes < 60) return `${minutes}m ago`;
+  if (minutes < 1440) return `${Math.floor(minutes / 60)}h ago`;
+  return `${Math.floor(minutes / 1440)}d ago`;
+}

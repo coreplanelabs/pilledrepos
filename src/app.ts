@@ -1,5 +1,5 @@
 import { celebrateRank } from "./confetti.js";
-import { friendlyTimestamp } from "./dates.js";
+import { friendlyTimestamp, readAge } from "./dates.js";
 import {
   themePreference,
   resolveTheme,
@@ -59,10 +59,17 @@ window.addEventListener("resize", positionSelectionTooltip);
 window.addEventListener("scroll", () => {
   if (selectionTooltip?.matches(":popover-open")) selectionTooltip.hidePopover();
 }, { passive: true });
-const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-document
-  .querySelectorAll<HTMLTimeElement>("time[data-timestamp]")
-  .forEach((t) => (t.textContent = friendlyTimestamp(t.dateTime, zone)));
+const zone = Intl.DateTimeFormat().resolvedOptions().timeZone,
+  readTimes = document.querySelectorAll<HTMLTimeElement>("time[data-timestamp]");
+function updateReadTimes() {
+  readTimes.forEach((t) => {
+    t.textContent = readAge(t.dateTime);
+    t.title = friendlyTimestamp(t.dateTime, zone);
+    t.setAttribute("aria-label", t.title);
+  });
+}
+updateReadTimes();
+if (readTimes.length) setInterval(updateReadTimes, 60000);
 const loading = document.querySelector<HTMLElement>("#loading"),
   error = document.querySelector<HTMLElement>("#action-error"),
   whimsy = [
