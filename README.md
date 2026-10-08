@@ -41,7 +41,7 @@ checkpoints with `--resume=RUN_ID`; partial results never become zeros.
 
 The GitHub CLI login is for local public reads. Unattended runs need the new
 project's dedicated `AI_PILLED_GITHUB_TOKEN` / production `GITHUB_READ_TOKEN`.
-Never copy Repo Lore secrets. Remote activation is held for review.
+Never copy Repo Lore secrets. Production needs its own credentials and initialized data.
 
 ## One-off discovery and enrollment
 
@@ -88,4 +88,6 @@ npm pack --dry-run --ignore-scripts
 ```
 
 See [METHOD.md](METHOD.md), [VALIDATION.md](VALIDATION.md), and
-[DEPLOYMENT.md](DEPLOYMENT.md). Merge, npm publication, and deployment remain held.
+[DEPLOYMENT.md](DEPLOYMENT.md). Pull requests run validation. Each main merge
+must pass the same checks before publishing a source-bound npm version under
+`next`, deploying the exact checked revision, and validating the public site.

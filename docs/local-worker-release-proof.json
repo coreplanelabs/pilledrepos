@@ -1,0 +1,16 @@
+{
+  "environment": "isolated local Worker",
+  "sourceBase": "7c7b444e279ceaeee0e59b599b0d8004ce19fef9",
+  "revisionInput": "synthetic propagation marker",
+  "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "repository": "github/gh-aw",
+  "total": 111,
+  "checks": [
+    "home",
+    "leaderboard",
+    "repo",
+    "png",
+    "styles",
+    "script"
+  ]
+}

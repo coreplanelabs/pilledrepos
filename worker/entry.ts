@@ -8,10 +8,11 @@ interface Env {
   DATA: DataStore;
   REPOS: RepoDatabase;
   GITHUB_READ_TOKEN?: string;
+  SOURCE_SHA?: string;
 }
 let handler: ReturnType<typeof createHandler> | undefined;
 export default {
-  fetch(request: Request, env: Env): Promise<Response> {
+  async fetch(request: Request, env: Env): Promise<Response> {
     if (!handler) {
       const dataset = edgeDatasetReader(env.DATA),
         read = async (path: string, body?: unknown) => {
@@ -56,6 +57,14 @@ export default {
         ),
       });
     }
-    return handler(request);
+    const response = await handler(request);
+    const headers = new Headers(response.headers);
+    if (env.SOURCE_SHA && /^[a-f0-9]{40}$/.test(env.SOURCE_SHA))
+      headers.set("X-Pilledrepos-Revision", env.SOURCE_SHA);
+    return new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers,
+    });
   },
 };
