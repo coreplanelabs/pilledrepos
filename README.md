@@ -84,10 +84,10 @@ bun run test
 bun run build
 node scripts/release-guard.mjs --local
 bun run wrangler deploy --dry-run
-npm pack --dry-run --ignore-scripts
 ```
 
 See [METHOD.md](METHOD.md), [VALIDATION.md](VALIDATION.md), and
 [DEPLOYMENT.md](DEPLOYMENT.md). Pull requests run validation. Each main merge
-must pass the same checks before publishing a source-bound npm version under
-`next`, deploying the exact checked revision, and validating the public site.
+must pass the same checks before deploying the exact checked revision and
+validating the public site. This website is private in package.json and is not
+published to npm.

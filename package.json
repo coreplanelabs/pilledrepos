@@ -1,35 +1,17 @@
 {
   "name": "@coreplane/pilledrepos",
   "version": "0.1.0",
-  "private": false,
+  "private": true,
   "type": "module",
   "license": "MIT",
   "engines": {
     "node": ">=22"
   },
-  "files": [
-    "dist",
-    "src",
-    "server",
-    "worker",
-    "public",
-    "scripts",
-    "config",
-    "tsconfig*.json",
-    "bun.lock",
-    "README.md",
-    "METHOD.md",
-    "DEPLOYMENT.md",
-    "THIRD_PARTY.md",
-    "LICENSE",
-    "wrangler.json"
-  ],
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.server.json --noEmit",
     "test": "node scripts/clean.mjs --tests && tsc -p tsconfig.test.json && tsc -p tsconfig.server.json && node --test .test-dist/test/*.test.js test/*.test.mjs",
     "build": "node scripts/clean.mjs && tsc -p tsconfig.build.json && tsc -p tsconfig.server.json && node scripts/build.mjs",
     "dev": "node scripts/serve.mjs",
-    "prepublishOnly": "node scripts/package-guard.mjs",
     "index": "node scripts/refresh-index.mjs",
     "preview:seed": "node scripts/seed.mjs",
     "verify:registry": "node scripts/verify-registry.mjs",
@@ -52,18 +34,5 @@
     "url": "https://github.com/coreplanelabs/pilledrepos.git"
   },
   "homepage": "https://pilledrepos.com",
-  "description": "Verified AI-agent PR authorship metrics for public GitHub repositories",
-  "exports": {
-    ".": {
-      "types": "./dist/ai.d.ts",
-      "import": "./dist/ai.js"
-    },
-    "./core": {
-      "types": "./dist/core.d.ts",
-      "import": "./dist/core.js"
-    }
-  },
-  "publishConfig": {
-    "access": "public"
-  }
+  "description": "Verified AI-agent PR authorship metrics for public GitHub repositories"
 }
