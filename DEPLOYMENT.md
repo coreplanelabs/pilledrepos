@@ -41,10 +41,12 @@ Never use Repo Lore's resources, environments, or credentials.
 2. After immediate user confirmation, create fresh scoped credentials. Store them
    in the 1Password CI vault and this repo's production environment secrets:
    `CLOUDFLARE_DEPLOY_TOKEN`, `CLOUDFLARE_ZONE_READ_TOKEN`,
-   `CLOUDFLARE_INDEX_TOKEN`, and `GITHUB_READ_TOKEN`. Restrict Cloudflare grants
+   `CLOUDFLARE_INDEX_TOKEN`, and `AI_PILLED_GITHUB_TOKEN`. Restrict Cloudflare grants
    to the named account/zone and supported Worker, zone-read, KV, and D1 operations.
    GitHub read access must cover public repositories only. The release installs
    `GITHUB_READ_TOKEN` as a Worker secret atomically with the code version.
+   GitHub forbids secret names starting with `GITHUB_`; the workflow maps
+   `AI_PILLED_GITHUB_TOKEN` to the Worker credential.
 3. Apply `config/migrations/0002-index-membership.sql` to the existing D1 database.
    Import only the reviewed active membership and complete captures, preserving
    user registrations and newer reads. Do not enroll the whole discovery archive.

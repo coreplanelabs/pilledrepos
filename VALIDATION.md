@@ -96,3 +96,10 @@ passed. D1 migration/import preserved all prior rows and newer reads, enrolled
 hash readback. The empty Worker has no active code version. GitHub passkey/read
 credential and first deployment remain pending. Npm registry returns 404 after
 unpublication. See `docs/production-data-proof.json` for the scoped data receipt.
+
+GitHub credential wiring: GitHub rejected the old `GITHUB_READ_TOKEN` secret name
+with HTTP 422 because `GITHUB_` is reserved. The production secret is now
+`AI_PILLED_GITHUB_TOKEN`; deployment maps it to the Worker environment credential,
+and daily indexing reads the same secret. GitHub secret creation and a real public
+GraphQL repository query passed. All 79 tests, frozen install, typecheck, build,
+config guard, Worker dry run, and whitespace checks passed on this wiring diff.
