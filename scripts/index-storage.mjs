@@ -11,19 +11,20 @@ export async function readJson(path) {
   return JSON.parse(await readFile(path, "utf8"));
 }
 export async function publishLocal(root, runId, index) {
+  const records = index.pages ?? index.reports ?? [];
   if (
     !/^[a-z0-9-]+$/.test(runId) ||
     !index.complete ||
-    index.reports.length !== index.selected.length ||
+    records.length !== index.selected.length ||
     index.selected.length !== index.expected ||
-    new Set(index.reports.map((r) => r.repository.toLowerCase())).size !==
+    new Set(records.map((r) => r.repository.toLowerCase())).size !==
       index.expected
   )
     throw new Error("Incomplete index cannot be published.");
   if (
     index.selected.some(
       (name) =>
-        !index.reports.some(
+        !records.some(
           (r) =>
             (r.requestedRepository ?? r.repository).toLowerCase() ===
             name.toLowerCase(),
@@ -32,10 +33,10 @@ export async function publishLocal(root, runId, index) {
   )
     throw new Error("Repository pool does not match captured reports.");
   if (
-    index.reports.some(
+    records.some(
       (r) =>
         r.collector !== "merged-window-v2" ||
-        !r.coverage.periodComplete ||
+        !(r.analysis?.complete ?? r.coverage?.periodComplete) ||
         r.capturedAt !== index.capturedAt,
     ) ||
     !index.registryId

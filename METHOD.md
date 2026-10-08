@@ -52,12 +52,16 @@ one PR changes the share by at most one percentage point. This limits extreme
 small-window results, but is not a confidence guarantee. Smaller windows show
 counts and a small-window note. An empty window has no percentage.
 
-Rank is descending known AI share. Exact equal ratios share the same competition
-rank (1, 1, 3). Larger denominators order equal-share rows for display. The default
-comparison pool is the 1,000 highest-star public, active, non-fork repos found by
-GitHub repository search. The frozen pool, time, and capture count are stored with
-the index. Missing captures prevent publication. A named or limited pool is
-labeled as such. A repo outside the published pool has no pool rank.
+Rank is descending known AI share. Equal ratios rank by the number of merged PRs, then repository name.
+Ranks are unique and stay fixed when the table sort direction changes. The default pool uses 10,000 public, non-fork, non-archived software repos
+ranked by stars, pushed within 90 days, plus permanent user submissions.
+The frozen `config/repo-seed.json` records each stable repo ID and source URL.
+Discovery partitions star ranges rather than truncating search at 1,000 results.
+Curated lists and tutorials are excluded. No AI-config file is required.
+The home leaderboard excludes reads below 100 merged PRs; their detail pages
+and registrations remain available. Both sort directions apply before pagination.
+Missing captures prevent bulk publication. Named or limited diagnostic pools are
+labeled. Popularity and recent activity are selection proxies, not proof of ICP fit.
 
 ## Registry
 
@@ -77,19 +81,21 @@ The registry does not promise universal AI detection.
 
 ## Durable reads and history
 
-Daily indexing and the initial backfill execute `scripts/refresh-index.mjs`.
+Weekly indexing and the initial backfill execute `scripts/refresh-index.mjs`.
 A run freezes its capture time, pool, and registry; retries reuse those facts.
-Per-repo checkpoints make the run resumable. A local owner lock prevents overlapping writers. Only a complete index is written
+Per-repo checkpoints make the run resumable. Independent search reads are batched;
+each repo still validates its full census. The local published index stores compact
+metrics while raw PR captures remain in their individual checkpoint files. A local owner lock prevents overlapping writers. Only a complete index is written
 before an atomic rename switches `current.json`. Capture or write failure leaves
 the previous pointer intact. Nothing is published to Cloudflare by this script.
 
 Every eligible capture records its AI count, denominator, time, registry evidence
-version, and account-classification digest. History compares completed daily
+version, and account-classification digest. History compares completed
 observations with the same ID-to-agent mapping. Changing evidence fetch dates
 alone does not erase history. Changing the classification starts a new comparison
 series. Seed samples never create movement. The UI shows no change until two real
-daily reads exist. Rolling windows overlap; movement is not causal evidence.
+reads on separate dates exist. Rolling windows overlap; movement is not causal evidence.
 
 Percentages display one decimal at most. A nonzero share below 0.1% displays as
-less than 0.1%, rather than a false zero. Rank uses full ratios. Public PR links,
-account links, source links, sample scope, and count/denominator stay visible.
+less than 0.1%, rather than a false zero. Rank uses full ratios. Account and PR evidence stays in the saved metrics. The UI shows the count,
+denominator, capture time, and read scope.

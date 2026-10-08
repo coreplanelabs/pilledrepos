@@ -92,7 +92,7 @@ test("legacy and incomplete reads never rank despite large samples", () => {
   assert.equal(aiLeaderboard([legacy, r], registry).length, 0);
   assert.match(aiSummary(aiPage(legacy, registry)), /observed/);
 });
-test("share ranking uses denominator, ties share rank, and pool is explicit", () => {
+test("share ranking uses denominator, ties break by merged PR count, and pool is explicit", () => {
   const rows = aiLeaderboard(
     [
       report(100, 50, "a/one"),
@@ -102,8 +102,12 @@ test("share ranking uses denominator, ties share rank, and pool is explicit", ()
     registry,
   );
   assert.deepEqual(
-    rows.map((r) => r.rank),
-    [1, 1, 3],
+    rows.map((r) => [r.repository, r.rank]),
+    [
+      ["b/two", 1],
+      ["a/one", 2],
+      ["c/three", 3],
+    ],
   );
 });
 test("registry rejects duplicate IDs and insecure evidence", () => {

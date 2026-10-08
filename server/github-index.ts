@@ -43,6 +43,7 @@ export async function collectIndexedReport(
 ): Promise<Report> {
   const requested = parseRepository(repository),
     meta = (await options.read("/repos/" + requested)) as {
+      id: number;
       private: boolean;
       full_name: string;
       description: string | null;
@@ -175,6 +176,7 @@ export async function collectIndexedReport(
     Math.floor(options.now / 1000) * 1000 + 1000,
   );
   return {
+    repositoryId: meta.id,
     requestedRepository: requested,
     repository: name,
     url: `https://github.com/${name}`,

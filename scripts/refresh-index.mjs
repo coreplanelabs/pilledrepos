@@ -1,4 +1,6 @@
-import { mkdir, readFile } from "node:fs/promises";
+import { batchMergeReader } from "./batch-merges.mjs";
+import { SEED_SIZE } from "./repo-cohort.mjs";
+import { mkdir, readFile, stat } from "node:fs/promises";
 import { resolve } from "node:path";
 import { collectIndexedReport } from "../.server-dist/server/github-index.js";
 import { refreshAiRegistry } from "../.server-dist/server/ai-registry.js";
@@ -7,6 +9,7 @@ import {
   parseReport,
   botCandidates,
   analyzeAi,
+  aiPage,
 } from "../.server-dist/src/ai.js";
 import { parseRepository } from "../.server-dist/src/core.js";
 import { githubReader, verifySource, digest } from "./github-api.mjs";
@@ -23,14 +26,20 @@ if (
   )
 )
   throw new Error(
-    "Use --use-gh, --limit=1..1000, --resume=RUN_ID, or --repos=owner/repo,owner/repo.",
+    "Use --use-gh, --limit=1..10000, --resume=RUN_ID, or --repos=owner/repo,owner/repo.",
   );
 const limit = Number(
-  args.find((x) => x.startsWith("--limit="))?.slice(8) ?? 1000,
+  args.find((x) => x.startsWith("--limit="))?.slice(8) ?? SEED_SIZE,
 );
-if (!Number.isInteger(limit) || limit < 1 || limit > 1000)
-  throw new Error("Use --limit=1..1000.");
-const read = githubReader(args.includes("--use-gh")),
+if (!Number.isInteger(limit) || limit < 1 || limit > SEED_SIZE)
+  throw new Error("Use --limit=1..10000.");
+const read = batchMergeReader(githubReader(args.includes("--use-gh")), {
+    onWait: (until) =>
+      console.log(
+        "GitHub budget reserved; continuing after " +
+          new Date(until).toISOString(),
+      ),
+  }),
   root = resolve(".data/index"),
   resume = args.find((x) => x.startsWith("--resume="))?.slice(9);
 const runId =
@@ -63,30 +72,49 @@ if (!state) {
     ),
     selected = [];
   const explicit = args.find((x) => x.startsWith("--repos="))?.slice(8);
+  let cohort;
   if (explicit) selected.push(...explicit.split(",").map(parseRepository));
-  else
-    for (let page = 1; page <= Math.ceil(limit / 100); page++) {
-      const q = new URLSearchParams({
-          q: "is:public fork:false archived:false stars:>500",
-          sort: "stars",
-          order: "desc",
-          per_page: "100",
-          page: String(page),
-        }),
-        data = await read("/search/repositories?" + q);
-      if (data.incomplete_results || !Array.isArray(data.items))
-        throw new Error("Incomplete repository discovery.");
-      selected.push(
-        ...data.items
-          .filter((r) => r.private === false && !r.fork && !r.archived)
-          .map((r) => parseRepository(r.full_name)),
+  else {
+    cohort = JSON.parse(await readFile("config/repo-seed.json", "utf8"));
+    if (
+      cohort.version !== 2 ||
+      cohort.repositories.length !== SEED_SIZE ||
+      new Set(cohort.repositories.map((r) => r.id)).size !== SEED_SIZE
+    )
+      throw new Error("Invalid top-repo seed.");
+    selected.push(
+      ...cohort.repositories
+        .slice(0, limit)
+        .map((r) => parseRepository(r.repository)),
+    );
+    if (limit === SEED_SIZE && process.env.CLOUDFLARE_INDEX_TOKEN) {
+      const { cloudflare, ACCOUNT } = await import("./release-guard.mjs");
+      const d = await cloudflare(
+        "/accounts/" +
+          ACCOUNT +
+          "/d1/database/afc39784-ac54-48f4-863b-c526be1c0ab4/query",
+        process.env.CLOUDFLARE_INDEX_TOKEN,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            sql: "SELECT name FROM repos WHERE seeded=0",
+            params: [],
+          }),
+        },
       );
+      selected.push(...d.result[0].results.map((r) => parseRepository(r.name)));
+    } else if (limit === SEED_SIZE) {
+      const { localRepoDb } = await import("./local-repo-db.mjs");
+      const db = localRepoDb();
+      const rows = await db
+        .prepare("SELECT name FROM repos WHERE seeded=0")
+        .all();
+      selected.push(...rows.results.map((r) => parseRepository(r.name)));
+      db.close();
     }
-  const pool = [...new Set(selected)].slice(
-    0,
-    explicit ? selected.length : limit,
-  );
-  if (!pool.length || (!explicit && pool.length !== limit))
+  }
+  const pool = [...new Set(selected)].slice(0, selected.length);
+  if (!pool.length || (!explicit && pool.length < limit))
     throw new Error("Repository pool is incomplete.");
   state = {
     runId,
@@ -101,13 +129,16 @@ if (!state) {
     selected: pool,
     expected: pool.length,
     pool: explicit
-      ? "Selected repositories (" + pool.length + " repos)"
-      : "Top " + limit + " public non-fork, active repos by stars (500+ stars)",
+      ? "Selected repositories"
+      : "Top 10,000 active software repos and submitted repos",
+    seededCount: explicit ? 0 : Math.min(limit, SEED_SIZE),
+    poolId: cohort ? digest(cohort) : undefined,
   };
   await atomicJson(resolve(dir, "state.json"), state);
 }
 parseRegistry(state.registry);
-const reports = [];
+const pages = [],
+  candidateCounts = new Map();
 let failures = 0;
 async function capture(repository) {
   const file = resolve(
@@ -140,7 +171,18 @@ async function capture(repository) {
         try {
           return await readJson(cache);
         } catch {}
-        const value = await read(path, body);
+        let value;
+        if (path.startsWith("/repos/") && !body) {
+          try {
+            const file = resolve(
+              ".data/repo-discovery/metadata",
+              digest(path) + ".json",
+            );
+            if (Date.now() - (await stat(file)).mtimeMs < 3600000)
+              value = await readJson(file);
+          } catch {}
+        }
+        value ??= await read(path, body);
         if (!value.errors) await atomicJson(cache, value);
         return value;
       };
@@ -150,10 +192,17 @@ async function capture(repository) {
       });
       await atomicJson(file, report);
     }
-    reports.push(report);
+    pages.push(aiPage(report, state.registry));
+    for (const c of botCandidates([report], state.registry)) {
+      const prior = candidateCounts.get(c.id);
+      candidateCounts.set(c.id, {
+        ...c,
+        merges: c.merges + (prior?.merges ?? 0),
+      });
+    }
     if (!restored)
       console.log(
-        `${reports.length}/${state.expected} ${repository}: ${analyzeAi(report, state.registry).total} merges`,
+        `${pages.length}/${state.expected} ${repository}: ${analyzeAi(report, state.registry).total} merges`,
       );
   } catch (e) {
     failures++;
@@ -166,14 +215,16 @@ await Promise.all(
     while (next < state.selected.length) await capture(state.selected[next++]);
   }),
 );
-reports.sort((a, b) => a.repository.localeCompare(b.repository));
-const candidates = botCandidates(reports, state.registry);
+pages.sort((a, b) => a.repository.localeCompare(b.repository));
+const candidates = [...candidateCounts.values()].sort(
+  (a, b) => b.merges - a.merges || a.id - b.id,
+);
 await atomicJson(resolve(dir, "candidates.json"), {
   registryId: state.registryId,
   status: "Unverified automation; excluded from AI counts",
   candidates,
 });
-if (failures || reports.length !== state.expected)
+if (failures || pages.length !== state.expected)
   throw new Error(
     `${failures} captures failed. Previous index preserved. Resume with --resume=${runId} --use-gh or the experiment token.`,
   );
@@ -183,8 +234,8 @@ try {
   previous = await readJson(resolve(root, "runs", p.runId, "index.json"));
 } catch {}
 const history = { ...previous?.history };
-for (const report of reports) {
-  const a = analyzeAi(report, state.registry);
+for (const report of pages) {
+  const a = report.analysis;
   if (a.eligible) {
     const points = history[report.repository] ?? [];
     history[report.repository] = [
@@ -200,7 +251,7 @@ for (const report of reports) {
     ];
   }
 }
-const index = { ...state, complete: true, reports, history };
+const index = { ...state, complete: true, pages, history };
 await publishLocal(root, runId, index);
 releaseLock();
-console.log(`Published complete local index (${reports.length} repos).`);
+console.log(`Published complete local index (${pages.length} repos).`);

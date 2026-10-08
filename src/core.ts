@@ -25,6 +25,7 @@ export type RepositoryProfile = {
   language: string | null;
 };
 export type Report = {
+  repositoryId?: number;
   requestedRepository?: string;
   repository: string;
   url: string;

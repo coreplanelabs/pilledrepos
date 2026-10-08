@@ -1,10 +1,13 @@
 import { createServer } from "node:http";
+import { nodeRequest } from "./node-request.mjs";
 import { readFile, mkdir } from "node:fs/promises";
 import { resolve } from "node:path";
 import { createHandler } from "../.server-dist/server/http.js";
 import { pngRenderer } from "../.server-dist/server/og.js";
 import { collectIndexedReport } from "../.server-dist/server/github-index.js";
 import { parseReport } from "../.server-dist/src/ai.js";
+import { localRepoDb } from "./local-repo-db.mjs";
+import { RepoStore } from "../.server-dist/server/repo-store.js";
 import { githubReader } from "./github-api.mjs";
 import { readJson, atomicJson } from "./index-storage.mjs";
 const useGh = process.argv.includes("--use-gh");
@@ -68,9 +71,17 @@ async function onDemand(repo) {
   await atomicJson(file, r);
   return r;
 }
+const catalog = onDemandRead
+  ? new RepoStore(
+      localRepoDb(),
+      onDemandRead,
+      async () => (await dataset()).registry,
+    )
+  : undefined;
 const wasm = await readFile("node_modules/@resvg/resvg-wasm/index_bg.wasm");
 const handler = createHandler({
   dataset,
+  catalog,
   assets,
   png: pngRenderer(wasm, () =>
     Promise.all(
@@ -86,11 +97,7 @@ if (!Number.isInteger(port) || port < 1024 || port > 65535)
   throw new Error("Use a local port from 1024 to 65535.");
 createServer(async (req, res) => {
   try {
-    const r = await handler(
-      new Request(`http://127.0.0.1:${port}${req.url ?? "/"}`, {
-        method: req.method,
-      }),
-    );
+    const r = await handler(await nodeRequest(req, `http://127.0.0.1:${port}`));
     res.writeHead(r.status, Object.fromEntries(r.headers));
     res.end(Buffer.from(await r.arrayBuffer()));
   } catch {
