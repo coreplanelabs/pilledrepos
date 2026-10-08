@@ -52,7 +52,17 @@ Never use Repo Lore's resources, environments, or credentials.
    existing entries; it does not discover, reseed, or remove registrations.
 4. Review and merge the CI change. Its main push starts the checked release.
 
-As of October 8, 2026, the dedicated KV/D1 resources and active DNS delegation
-exist. Production credentials, current D1
-membership, KV activation, and the first Worker deployment are still pending.
-Local validation does not prove these provider steps.
+As of October 8, 2026, all three Cloudflare credentials are stored in the
+1Password CI vault and this repo's production environment. Deploy access is
+limited to the `pilledrepos` Worker and `pilledrepos.com` route. Zone verification
+is read-only for that zone. D1/KV grants are account-scoped by Cloudflare; scripts
+bind the dedicated database and namespace and reject another account.
+
+The empty Worker record exists with no active version. D1 membership is initialized:
+2,401 enrolled repos, including all three user submissions. Existing registrations
+and newer reads were preserved; archived seed entries were not enrolled. Complete
+KV publication passed hash readback. The GitHub public-read credential and merge
+of the deployment-only PR remain pending. No code is deployed yet.
+
+The initial npm bootstrap package was unpublished at the user's request; the
+registry returns 404. `package.json` is private and CI has no npm publication step.

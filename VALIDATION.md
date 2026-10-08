@@ -88,3 +88,11 @@ retain the real catalog and captures. Production preflight is read-only:
 The deployment-only diff passed **79 tests**, frozen install, typecheck, build,
 config guard, Worker dry run, and whitespace checks. Npm publication is removed. GitHub main now requires PRs and the `check`
 status; the production environment allows only the main branch.
+
+Production setup proof: three fresh Cloudflare credentials stored in 1Password CI
+and GitHub production secrets. Zone/account and per-Worker deployment read checks
+passed. D1 migration/import preserved all prior rows and newer reads, enrolled
+2,401 selected repos, and kept three user submissions active. KV publication passed
+hash readback. The empty Worker has no active code version. GitHub passkey/read
+credential and first deployment remain pending. Npm registry returns 404 after
+unpublication. See `docs/production-data-proof.json` for the scoped data receipt.
