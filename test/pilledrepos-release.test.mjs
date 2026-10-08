@@ -66,3 +66,17 @@ test("CI release rejects a fork, PR event, branch other than main, and wrong hea
   ])
     assert.throws(() => checkReleaseContext(e, sha));
 });
+test("merge deployment rejects tag pushes rather than treating them as checked-main releases", () => {
+  const sha = "a".repeat(40);
+  assert.throws(() =>
+    checkReleaseContext(
+      {
+        GITHUB_REPOSITORY: REPO,
+        GITHUB_EVENT_NAME: "push",
+        GITHUB_REF: "refs/tags/v0.1.0",
+        GITHUB_SHA: sha,
+      },
+      sha,
+    ),
+  );
+});

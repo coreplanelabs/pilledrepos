@@ -112,10 +112,7 @@ export async function preflight({ indexOnly = false } = {}) {
 export function checkReleaseContext(env, sha) {
   assert.equal(env.GITHUB_REPOSITORY, REPO);
   assert.equal(env.GITHUB_EVENT_NAME, "push");
-  assert.ok(
-    env.GITHUB_REF === "refs/heads/main" ||
-      /^refs\/tags\/v\d+\.\d+\.\d+$/.test(env.GITHUB_REF),
-  );
+  assert.equal(env.GITHUB_REF, "refs/heads/main");
   assert.equal(env.GITHUB_SHA, sha);
   assert.match(sha, /^[a-f0-9]{40}$/);
 }

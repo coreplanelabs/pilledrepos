@@ -1,7 +1,8 @@
 # Local verification and affected feature map
 
 October 8, 2026. Repo `coreplanelabs/pilledrepos`, branch
-`setup-pilledrepos-release`, base `b402d2b`. Production remains held for review.
+`setup-merge-deploy`, base `7c7b444`. PR #1 is merged; this CI change is unmerged.
+Production credentials and first deployment remain pending.
 
 ## Data evidence
 
@@ -50,14 +51,41 @@ check the owned PID, index pointer, GET `/api/leaderboard?limit=1`, and
 
 Gates: Node 22.22.2, Bun 1.3.0 frozen install, typecheck, tests, build, local release
 guard, Worker dry run, npm pack dry run, and whitespace checks. Current-head CI is
-separate from these local proofs. Merge, npm publication, and deployment are held.
+separate from these local proofs. The merged app passed main CI at `7c7b444`;
+this CI diff has not yet been merged, published, or deployed.
 
 Proof files: `docs/final-*.jpg`, `docs/oct8-*.jpg`, and the JSON audits. The temporary
 UI fixture is justified by fast real responses that otherwise hide loading layout.
 No new global verification process, recurring monitor, or review agent was created.
 
-Final local gates passed: **77 tests**, typecheck/build, release guard, Worker dry
+Previous app gates passed: **77 tests**, typecheck/build, release guard, Worker dry
 run, npm pack dry run, and whitespace checks. Known source compatibility cases
 include old small-window eligibility flags and repo renames keyed by stable ID.
 The SQLite startup regression failed under a held writer lock, then passed with
 a bounded five-second busy timeout. The database was not reset.
+
+## Merge deployment verification
+
+The affected entries are `check.yml`, `release.mjs`, `publish-package.mjs`,
+`verify-live.mjs`, and the Worker revision header. Main merges must pass validation,
+publish a unique source-bound npm version, activate that exact revision, and pass
+public checks. Tag pushes and stale-main releases are rejected.
+
+Local behavior tests cover merge versions, tag refusal, exact live revision,
+empty data, and invalid PNG refusal. A real isolated local Worker on port 4192
+passed home, leaderboard, repo, PNG, CSS, and browser-script checks with 111 complete
+nonempty rows. Its revision was a synthetic propagation marker, not a deployed
+commit. Proof is retained in `docs/local-worker-release-proof.json`. This proves
+Worker response handling and the validation CLI; it does not prove npm OIDC,
+Cloudflare deployment, public DNS/TLS, or live enrollment.
+
+To repeat after build: prepare isolated local KV with the complete compact dataset
+and current manifest, start Wrangler with a 40-hex `SOURCE_SHA`, then call
+`verifyLive(origin, sha)` from `scripts/verify-live.mjs`. Stop only that owned Worker;
+retain the real catalog and captures. Production preflight is read-only:
+`node scripts/release.mjs --preflight`, in the checked-main workflow context.
+
+Merge-pipeline local gates passed on the current diff: **80 tests**, Node 22.22.2,
+Bun 1.3.0 frozen install, typecheck, build, config guard, Worker dry run, npm pack
+dry run, and whitespace checks. GitHub main now requires PRs and the `check`
+status; the production environment allows only the main branch.
