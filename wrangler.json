@@ -1,0 +1,37 @@
+{
+  "name": "pilledrepos",
+  "account_id": "efbcecf27f8ef6ef0ceae56a78415cd0",
+  "compatibility_date": "2026-10-07",
+  "main": "worker/entry.ts",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+    "not_found_handling": "none"
+  },
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [
+    {
+      "pattern": "pilledrepos.com",
+      "custom_domain": true,
+      "zone_id": "ea3e04242d411869c7f8de1bfe1e3c31"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "DATA",
+      "id": "e97cbc79cf864745ad6a86525df56bba"
+    }
+  ],
+  "limits": {
+    "cpu_ms": 1000
+  },
+  "d1_databases": [
+    {
+      "binding": "REPOS",
+      "database_name": "pilledrepos",
+      "database_id": "afc39784-ac54-48f4-863b-c526be1c0ab4"
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "date": "2026-10-08",
+  "repo": "coreplanelabs/pilledrepos",
+  "branch": "setup-pilledrepos-release",
+  "base": "b402d2bfd4fed40d552aa58311e578ac29bcc6ff",
+  "sources": {
+    "public/styles.css": "ea7d2311551d345dc6cd1c95d788109435715cd18efc548cf47a09e3aea91037",
+    "server/html.ts": "0d70df5a972594f2426f797242d30e4d116af253aaa6cc0bfe06e4dee11d673f",
+    "server/http.ts": "53a3924cc5b253d77d6c32f8473c6a60a917ddd1ed68cac4b09803a2f68706c5",
+    "server/repo-store.ts": "d443f78752c1b05a66ae64d686c991272b194e19713de6a172c09932b5a2a981",
+    "server/edge-data.ts": "54da2032edc24c1030c84488777a95a67ed10b83543e2da801e82341cd0648ca",
+    "src/ai.ts": "956e5fee0aad06673daea460acfa36928013926e3bcaa1f51cd215aeeaae03d6",
+    "src/app.ts": "1f111840d27371cea9ca81b4946c27217a0a5a007a951d2b87086945b8919e3d",
+    "src/confetti.ts": "d9dd558893781ccd51aae8f010f9ecb321f205b39fa7b95b65936a783c663fee",
+    "src/curated-repos.ts": "e626b714b7ebaadb5891f0305709f53fa240b7aebf709f45d9deaa75175bb360",
+    "src/ui-icons.ts": "9315ee329ae89290a42a24c699829f18ceec728aa5c0200d9ccc8fae4a66e058",
+    "scripts/index-storage.mjs": "d26aac5f5cdbbdff16ca8c820ad92fdbe2ed5e7c9529fc72e40979eac796c56d",
+    "scripts/indexed-repos.mjs": "81c772e48f1fd5a215e4522a8a1a86c6eba149b2be0458b176fc966ab9f1ae26",
+    "scripts/enroll-index.mjs": "dd9dd56bd826f5f8793c8c3094b4e4f685838b628c18969319ffd464a2f415b8",
+    "scripts/refresh-index.mjs": "b88627698b41e8a11ec7b5592efff5d3a0a7b38f6c99d4398e2f362c542a7a55",
+    "scripts/ci-index.mjs": "8ab21479ad2223c30e51e9e9bf233fa450437a999260014186f9e3ee95f4262c",
+    "scripts/save-repo-snapshots.mjs": "fd7d54642d028d8a09341232bb401dbf5bafcd4062f0fcfd14424456eb788e31",
+    "scripts/local-repo-db.mjs": "67ccb42a7c1e3d66a3c9b1b42373d1569d8b73aaf5c85708fa327964d93fa4af",
+    "config/schema.sql": "98e19e4a2e9a7dd41b699433601ffaf79deeb09c64e461a509fe0d5e990d133e",
+    ".github/workflows/index.yml": "9c81c36da807c6adc817789b52f96f8203c80283010c8b56a87c47303e5b6eda"
+  },
+  "checks": {
+    "node": "22.22.2",
+    "bun": "1.3.0",
+    "tests": 77,
+    "typecheck": "pass",
+    "build": "pass",
+    "workerDryRun": "pass",
+    "packageDryRun": "pass"
+  },
+  "runtime": {
+    "environment": "local",
+    "url": "http://127.0.0.1:4189",
+    "indexedMembers": 2400,
+    "visibleMeasuredRows": 2399,
+    "dataOnlyRefresh": {
+      "completedMembers": 112,
+      "scope": "frozen membership before final enrollment"
+    },
+    "nativeRankJump": {
+      "repo": "usestrix/strix",
+      "hash": "#repo-usestrix--strix",
+      "settledTop": 23.890625
+    },
+    "pills": {
+      "verified": 13,
+      "minMerged": 100,
+      "directLinks": true
+    },
+    "filterRemoved": true,
+    "visibleInputLabelRemoved": true,
+    "placeholder": "e.g. usestrix/strix",
+    "card": {
+      "rankFont": 26,
+      "mouseTransform": "observed matrix3d",
+      "leaveResets": true,
+      "gradientAllCards": true,
+      "leaderRainbow": true
+    },
+    "mobile": {
+      "viewport": [
+        360,
+        800
+      ],
+      "horizontalOverflow": false,
+      "actionButtonsSameY": true,
+      "rankTop": 9,
+      "footer": "Built for fun by Polylane",
+      "timestamp": "hidden",
+      "githubLeft": 16,
+      "refreshRight": 344
+    },
+    "loading": {
+      "scope": "isolated UI boundary, no provider/database writes",
+      "bottomBefore": 16,
+      "bottomAfter": 16,
+      "scroll": 800,
+      "boardTopBefore": 402.890625,
+      "boardTopDuring": 402.890625
+    },
+    "reducedMotion": "source-inspected; OS settings not changed",
+    "desktopAlignment": {
+      "readLeft": 970.25,
+      "githubLeft": 970.25,
+      "actionsY": [
+        139,
+        139
+      ]
+    }
+  },
+  "stages": {
+    "local": "verified",
+    "ci": "await new head",
+    "review": "draft PR",
+    "merge": "held",
+    "npmPublication": "held",
+    "deployment": "held"
+  }
+}

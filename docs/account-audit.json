@@ -1,0 +1,149 @@
+{
+  "runId": "2026-10-08t02-25-21-515z",
+  "capturedAt": "2026-10-08T02:25:21.517Z",
+  "repositories": 10001,
+  "accounts": [
+    {
+      "name": "GitHub Copilot",
+      "id": 198982749,
+      "login": "Copilot",
+      "type": "Bot",
+      "identityMatch": true,
+      "app": "https://github.com/apps/copilot-swe-agent",
+      "matchedPRs": 5415,
+      "sample": "https://github.com/1Panel-dev/MaxKB/pull/6520",
+      "live": {
+        "authorId": 198982749,
+        "login": "Copilot",
+        "type": "Bot",
+        "mergedAt": "2026-07-28T02:36:25Z",
+        "match": true
+      }
+    },
+    {
+      "name": "Claude Code",
+      "id": 209825114,
+      "login": "claude[bot]",
+      "type": "Bot",
+      "identityMatch": true,
+      "app": "https://github.com/apps/claude",
+      "matchedPRs": 1070,
+      "sample": "https://github.com/anthropics/claude-plugins-official/pull/6373",
+      "live": {
+        "authorId": 209825114,
+        "login": "claude[bot]",
+        "type": "Bot",
+        "mergedAt": "2026-10-07T16:47:21Z",
+        "match": true
+      }
+    },
+    {
+      "name": "Cursor",
+      "id": 206951365,
+      "login": "cursor[bot]",
+      "type": "Bot",
+      "identityMatch": true,
+      "app": "https://github.com/apps/cursor",
+      "matchedPRs": 550,
+      "sample": "https://github.com/appwrite/appwrite/pull/14068",
+      "live": {
+        "authorId": 206951365,
+        "login": "cursor[bot]",
+        "type": "Bot",
+        "mergedAt": "2026-10-07T09:23:21Z",
+        "match": true
+      }
+    },
+    {
+      "name": "Devin",
+      "id": 158243242,
+      "login": "devin-ai-integration[bot]",
+      "type": "Bot",
+      "identityMatch": true,
+      "app": "https://github.com/apps/devin-ai-integration",
+      "matchedPRs": 3794,
+      "sample": "https://github.com/airbytehq/airbyte/pull/88286",
+      "live": {
+        "authorId": 158243242,
+        "login": "devin-ai-integration[bot]",
+        "type": "Bot",
+        "mergedAt": "2026-10-08T00:37:38Z",
+        "match": true
+      }
+    },
+    {
+      "name": "Jules",
+      "id": 161369871,
+      "login": "google-labs-jules[bot]",
+      "type": "Bot",
+      "identityMatch": true,
+      "app": "https://github.com/apps/google-labs-jules",
+      "matchedPRs": 1,
+      "sample": "https://github.com/cdcseacave/openMVS/pull/1246",
+      "live": {
+        "authorId": 161369871,
+        "login": "google-labs-jules[bot]",
+        "type": "Bot",
+        "mergedAt": "2026-09-11T23:57:04Z",
+        "match": true
+      }
+    },
+    {
+      "name": "Codex",
+      "id": 242516109,
+      "login": "Codex",
+      "type": "Bot",
+      "identityMatch": true,
+      "app": "https://github.com/apps/openai-code-agent",
+      "matchedPRs": 1,
+      "sample": "https://github.com/Project-OSRM/osrm-backend/pull/7662",
+      "live": {
+        "authorId": 242516109,
+        "login": "Codex",
+        "type": "Bot",
+        "mergedAt": "2026-07-31T14:02:03Z",
+        "match": true
+      }
+    },
+    {
+      "name": "Codex",
+      "id": 199175422,
+      "login": "chatgpt-codex-connector[bot]",
+      "type": "Bot",
+      "identityMatch": true,
+      "app": "https://github.com/apps/chatgpt-codex-connector",
+      "matchedPRs": 0
+    },
+    {
+      "name": "Codegen",
+      "id": 131295404,
+      "login": "codegen-sh[bot]",
+      "type": "Bot",
+      "identityMatch": true,
+      "app": "https://github.com/apps/codegen-sh",
+      "matchedPRs": 0
+    },
+    {
+      "name": "Claude Code",
+      "id": 242468646,
+      "login": "Claude",
+      "type": "Bot",
+      "identityMatch": true,
+      "app": "https://github.com/apps/anthropic-code-agent",
+      "matchedPRs": 27,
+      "sample": "https://github.com/camunda/camunda/pull/63099",
+      "live": {
+        "authorId": 242468646,
+        "login": "Claude",
+        "type": "Bot",
+        "mergedAt": "2026-09-15T16:57:40Z",
+        "match": true
+      }
+    }
+  ],
+  "totalMerged": 1477264,
+  "knownAgentMerged": 10858,
+  "accountIdChecks": true,
+  "matchedSampleChecks": true,
+  "scope": "Frozen 90-day public merged-PR census; one live PR sample per matched identity. Zero-match identities have live identity proof only."
+}

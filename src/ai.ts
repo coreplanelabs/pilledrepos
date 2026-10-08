@@ -37,6 +37,7 @@ export type AiAnalysis = {
   registryAt: string;
 };
 export type AiPage = {
+  repositoryId?: number;
   requestedRepository?: string;
   repository: string;
   url: string;
@@ -190,7 +191,7 @@ export function analyzeAi(report: Report, registry: AiRegistry): AiAnalysis {
     automation,
     unknown,
     share: total ? (ai / total) * 100 : null,
-    eligible: complete && total >= MIN_MERGES,
+    eligible: complete && total > 0,
     complete,
     agents: [...groups.values()].sort(
       (a, b) => b.count - a.count || a.name.localeCompare(b.name),
@@ -200,6 +201,7 @@ export function analyzeAi(report: Report, registry: AiRegistry): AiAnalysis {
 }
 export function aiPage(report: Report, registry: AiRegistry): AiPage {
   return {
+    repositoryId: report.repositoryId,
     requestedRepository: report.requestedRepository,
     repository: report.repository,
     url: report.url,
@@ -214,8 +216,10 @@ export function aiLeaderboard(
   reports: Report[],
   registry: AiRegistry,
 ): AiRow[] {
-  const pages = reports
-    .map((r) => aiPage(r, registry))
+  return aiLeaderboardPages(reports.map((r) => aiPage(r, registry)));
+}
+export function aiLeaderboardPages(input: AiPage[]): AiRow[] {
+  const pages = input
     .filter((p) => p.analysis.eligible)
     .sort(
       (a, b) =>
@@ -223,15 +227,7 @@ export function aiLeaderboard(
         b.analysis.total - a.analysis.total ||
         a.repository.localeCompare(b.repository),
     );
-  return pages.map((p) => ({
-    ...p,
-    rank:
-      1 +
-      pages.filter(
-        (o) =>
-          o.analysis.ai * p.analysis.total > p.analysis.ai * o.analysis.total,
-      ).length,
-  }));
+  return pages.map((p, i) => ({ ...p, rank: i + 1 }));
 }
 export function formatShare(share: number | null): string {
   return share === null

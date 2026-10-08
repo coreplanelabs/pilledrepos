@@ -1,0 +1,74 @@
+{
+  "pills": [
+    {
+      "repo": "microsoft/vscode",
+      "total": 5172,
+      "share": 3.4222737819025526
+    },
+    {
+      "repo": "kubernetes/kubernetes",
+      "total": 1006,
+      "share": 0
+    },
+    {
+      "repo": "PostHog/posthog",
+      "total": 16290,
+      "share": 0
+    },
+    {
+      "repo": "vercel/next.js",
+      "total": 1413,
+      "share": 0
+    },
+    {
+      "repo": "cloudflare/workerd",
+      "total": 461,
+      "share": 0
+    },
+    {
+      "repo": "supabase/supabase",
+      "total": 1726,
+      "share": 3.5921205098493627
+    },
+    {
+      "repo": "railwayapp/cli",
+      "total": 175,
+      "share": 0
+    },
+    {
+      "repo": "superfly/flyctl",
+      "total": 224,
+      "share": 0
+    },
+    {
+      "repo": "docker/cli",
+      "total": 119,
+      "share": 0
+    },
+    {
+      "repo": "hashicorp/terraform",
+      "total": 296,
+      "share": 0
+    },
+    {
+      "repo": "grafana/grafana",
+      "total": 3833,
+      "share": 1.7218888599008608
+    },
+    {
+      "repo": "aws/aws-cdk",
+      "total": 312,
+      "share": 0
+    },
+    {
+      "repo": "openai/codex",
+      "total": 2101,
+      "share": 0
+    }
+  ],
+  "visibleRows": 2399,
+  "allRowsComplete": true,
+  "allRowsRanked": true,
+  "zeroPercentRows": 2076,
+  "duplicateRows": 0
+}

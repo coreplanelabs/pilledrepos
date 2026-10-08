@@ -1,103 +1,63 @@
-# Local prototype validation
+# Local verification and affected feature map
 
-Validated on October 7, 2026. No production change or remote Git write occurred.
+October 8, 2026. Repo `coreplanelabs/pilledrepos`, branch
+`setup-pilledrepos-release`, base `b402d2b`. Production remains held for review.
 
-## Source checks
+## Data evidence
 
-- 45 offline tests passed on Node 22.18.0 and Node 26.6.0.
-- Bun 1.3.0 frozen install, test, typecheck, and build passed.
-- TypeScript browser and server checks passed. The index runner passed Node's
-  syntax check. Git whitespace checks passed.
-- Tests cover stable IDs, renamed logins, non-AI bots, missing authors, denominator
-  integrity, small windows, incomplete/legacy exclusion, tied ranks, registry
-  failures, date partitioning beyond 1,000 search matches, count reconciliation,
-  canonical URLs, comparison, escaping, image scope, and failed publication.
-- Failure tests prove that an incomplete capture, pool mismatch, mixed timestamps,
-  failed write, or attempt to replace an immutable dataset retains the old pointer.
-  Transient reads have a fixed three-attempt bound; access refusals and semantic
-  failures do not retry through new credentials.
+The one-off 10,001-repo capture completed at `2026-10-08T02:25:21.517Z` (October 7,
+7:25 PM PDT): 1,477,264 merged PRs and 10,858 known-agent authors. Its first attempt
+saved 9,880 reads; 121 GitHub read failures correctly kept the previous pointer.
+Resuming recovered all reads. No failure was turned into a zero.
 
-## Real capture
+[Account audit](docs/account-audit.json) independently tallies raw IDs. All nine
+identities were checked live; one real matched PR was verified for each of the
+seven IDs with corpus matches. Codegen and Codex connector had zero corpus matches:
+live identity proof plus local positive/negative ID tests, not matched-PR proof.
+[Denominator audit](docs/denominator-audit.json) separately checks GitHub counts for
+the leader, Kubernetes, and PostHog. These are spot checks, not universal provider proof.
 
-The same `scripts/refresh-index.mjs` ran the initial backfill and resume.
+The fixed active database currently contains 2,400 entries. A controlled data-only
+run completed all 112 members selected before the final one-off enrollment;
+remaining active rows use their saved complete captures with their own read times.
+[Visible data audit](docs/visible-data-audit.json) checks every displayed row for
+complete data, positive denominator, rank, unique identity, exact fraction, and
+category sums. Thirteen data-backed curated pills passed the 100-PR minimum. The placeholder is Strix;
+the obsolete filter and visible input label are removed.
+No AI-percentage filter, broad daily discovery, or automatic removal is used.
 
-- Complete pool: 1,000 public, active, non-fork repos, selected by stars.
-- Capture time: `2026-10-07T22:05:09.357Z`.
-- Eligible repos: 372, with complete windows and at least 100 merged PRs.
-- Merged PRs: 395,975. All four author groups sum to this denominator.
-- Known agent authors: 3,032 PRs from nine verified account IDs.
-- User accounts: 356,520 PRs. Other bots: 36,351. Unknown authors: 72.
-- Candidate queue: 126 bot IDs, retained outside the AI count for source review.
-- Registry evidence version:
-  `2f6a7148d577156c739aa67a0db568467d52a687c9254d7fc25064af282bc6f8`.
+## Existing app verification map
 
-Five initial reads failed. The prior complete nine-repo index remained active.
-Resuming the same run reused checkpoints and completed all 1,000 captures before
-switching the pointer. A previous update-ordered collector and an invalid repeated
-merge qualifier were rejected; their captures do not enter this leaderboard.
-The reviewed collector uses a single merge-date range, split below the search cap.
+Real preview: `/Users/justin/workspace/coreplanelabs/ai-pilled`, port 4189.
+Build with `bun run build`; launch `bun run dev -- --use-gh`. Read-only doctor:
+check the owned PID, index pointer, GET `/api/leaderboard?limit=1`, and
+`bun run list:index`. Stop only agent-owned processes; retain catalog and captures.
 
-Example: `usestrix/strix` has 142 known-agent authors among 277 merged PRs, or
-51.3%, ranked first among 372 eligible repos in this pool. Its old biased seed
-preview showed 58.6%. Search indexing can lag; this is the complete set of available
-search matches, not proof of all AI use or an atomic historical GitHub snapshot.
+| User outcome                                                                     | Entry and drive                                                                                                         | Evidence and boundaries                                                                                                                                                                                                                    |
+| -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Durable enrollment                                                               | Submit repo name/URL via Check repo; inspect SQLite, reopen the store, and list indexed names.                          | User rows remain selected at zero PRs and after read failure/restart. Private repos are refused. Daily selection does not admit high-score archive rows or remove low-score members.                                                       |
+| Separate discovery                                                               | Run capture with `--discover`; checkpoint completes without activating it.                                              | Regression failed when discovery replaced `current.json`; passes with the active pointer unchanged. Public publisher rejects discovery and partial cohorts.                                                                                |
+| Complete data-only refresh                                                       | Default `index` reads `indexed=1`; save with `--existing-only`.                                                         | Controlled 112-member provider run passed. Daily workflow excludes seed/enrollment commands. Production D1 migration/activation remains pending.                                                                                           |
+| Infinite ranking                                                                 | GET sorted `/api/leaderboard` pages; load past 100.                                                                     | All complete nonempty reads rank, including small samples and zero AI share. Empty windows remain enrolled without false percentages. Stable-ID rename regression prevents duplicate rows.                                                 |
+| Rank jump                                                                        | Open Strix, click #3, inspect target row.                                                                               | Old hash/smooth behavior settled at the page top; native row anchor settles at 24px and keeps the matching highlight. Both href and landing row IDs are tested.                                                                            |
+| Data-backed pills                                                                | Click a technology pill.                                                                                                | Links open actual repo details, not a filter. Only complete 100+ PR reads receive a pill. The obsolete filter is removed; input label is accessible but hidden.                                                                            |
+| Card treatments                                                                  | Open normal and #1 repo pages; move pointer to a card corner and leave.                                                 | All score cards have the gradient. Real pointer input produces a 3D transform and clears on exit. #1 has a rainbow edge; rank badge is 26px at top right. GitHub/Refresh share one action row with licensed icons. On mobile the timestamp |
+| is hidden, GitHub aligns left and Refresh right. Desktop timestamp/actions share |
+| the same left edge.                                                              |
+| Top-ten confetti                                                                 | Open ranks 1, 10, and 11.                                                                                               | Real browser: burst on 1/10, none on 11, canvas removed afterward. Reduced-motion/touch exclusions are source-inspected; OS settings were not changed.                                                                                     |
+| Fixed raised loading                                                             | Use `node test/ui-review-server.mjs` after build/test; submit fixture repo and scroll during its three-second response. | Isolated UI proof: fixed 16px bottom offset before/after 800px scroll, no board shift, visible elevation. No GitHub or real catalog writes. Stop the owned fixture after capture.                                                          |
+| Mobile type/spacing                                                              | 360×800 repo view.                                                                                                      | Claude Code is one line; header spacing is compact. Rank and repository headers use distinct type treatments and larger separation. Footer matches the requested credit and external-link mark.                                            |
 
-Checkpoints, raw read pages, registry evidence, history, and the published local
-index are retained under `.data/index/runs/2026-10-07t22-05-09-355z/`.
-The local pointer is `.data/index/current.json`. These public data artifacts are
-ignored by Git. The original copied seed remains in `.data/seed/repolore`.
+Gates: Node 22.22.2, Bun 1.3.0 frozen install, typecheck, tests, build, local release
+guard, Worker dry run, npm pack dry run, and whitespace checks. Current-head CI is
+separate from these local proofs. Merge, npm publication, and deployment are held.
 
-## Visual and browser checks
+Proof files: `docs/final-*.jpg`, `docs/oct8-*.jpg`, and the JSON audits. The temporary
+UI fixture is justified by fast real responses that otherwise hide loading layout.
+No new global verification process, recurring monitor, or review agent was created.
 
-- Desktop: 1440×1000, light theme. No horizontal overflow.
-- Mobile: 390×844, dark theme. No horizontal overflow.
-- Theme selection and system preference work; the final browser preference was
-  restored to System and the temporary viewport override was removed.
-- Comparison shows both counts and capture dates. Its canonical/share URL omits
-  the comparison query. The copy control showed its success state.
-- Browser console showed no errors or warnings in the tested result.
-- OG output is a real 1200×630 PNG with repo identity, percentage, numerator,
-  denominator, rank, time scope, and detection limits.
-- History stays empty until two genuine daily observations exist. The two reads
-  on the same day do not create a daily movement claim.
-
-Proof files:
-
-- `docs/prototype-desktop.jpg`
-- `docs/prototype-mobile.jpg`
-- `docs/prototype-og.png`
-
-Preview: http://127.0.0.1:4189. A browser panel was queued for this child chat.
-The local server stays running for review. No daily schedule is enabled yet.
-
-## Deployment boundary
-
-This repository has no remote or enabled deployment. Repo Lore's source, Worker,
-KV, domain, environments, and secrets were not changed or reused. Independent CI
-validation is prepared. Deployment setup stays pending the new repo/domain choice,
-verification of the actual DNS-owning Cloudflare account, separate resources, and
-new deployment authorization. Polycorp's DNS transfer is not assumed complete.
-
-## Polylane styling update
-
-The UI now uses Repo Lore's Polylane colors, DM Sans/DM Mono typography, header
-layout, three theme buttons, logo hover/focus motion, and footer attribution.
-The PR evidence card is removed. Agent source/PR links remain in a collapsed
-section. Comparison defaults to the actual #1 eligible repo; the leader's page
-avoids duplicate self-comparison. User choices override the default.
-
-52 offline tests, typecheck, and build passed after this update. Desktop and
-390-pixel mobile checks passed with no horizontal overflow or browser errors.
-Read times display in the viewer's timezone; measured window dates use UTC and
-readable month names. The footer shows “Built for fun by Polylane.” The footer has the same attribution and “View the source” links as Repo Lore.
-The source link points to the independent `coreplanelabs/pilledrepos` repository. The home page has no redundant “Try” links; the leaderboard supplies
-repo choices. “View on GitHub” uses the GitHub icon.
-
-A real on-demand comparison with `octocat/Hello-World`, outside the indexed pool,
-succeeded through the existing read-only GitHub CLI login and the local cache.
-The comparison showed an empty merged-PR window and an unranked label. The
-published 1,000-repo index was not changed. Start the local server with
-`bun run dev -- --use-gh` to enable public lookups outside the index.
-
-Current visual proof: `docs/polylane-desktop.jpg`, `docs/polylane-mobile.jpg`, and
-`docs/polylane-og.png`. Earlier screenshots remain as the initial prototype proof.
+Final local gates passed: **77 tests**, typecheck/build, release guard, Worker dry
+run, npm pack dry run, and whitespace checks. Known source compatibility cases
+include old small-window eligibility flags and repo renames keyed by stable ID.
+The SQLite startup regression failed under a held writer lock, then passed with
+a bounded five-second busy timeout. The database was not reset.

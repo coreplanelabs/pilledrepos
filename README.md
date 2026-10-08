@@ -1,74 +1,91 @@
 # AI Pilled
 
-A local experiment for comparing known AI-agent PR authors on public GitHub repos.
-Built from Repo Lore main `bfaf2427228118dda65869ddb54ac35cb2eda447`.
-The original project stays unchanged.
+Merged PRs authored by known AI-agent accounts across public GitHub repos.
+Built for fun by Polylane. [Public source](https://github.com/coreplanelabs/pilledrepos).
 
-## Start
+## Local preview
 
-Use Node 22 or newer and Bun.
+Use Node 22.22+ and Bun 1.3. Existing indexed data is stored in `.data/repos.sqlite`.
 
 ```sh
 bun install --frozen-lockfile
 bun run build
-bun run preview:seed
-bun run dev
+bun run dev -- --use-gh
 ```
 
-Open http://127.0.0.1:4189. Set `AI_PILLED_PORT` to change the port.
-Seed previews use the copied public checkpoints in `.data/seed/repolore`.
-They are biased samples, so they cannot supply ranks or history.
+Open http://127.0.0.1:4189. The hero accepts `owner/repo` or a GitHub URL.
+User enrollment sets durable database membership immediately, including when the
+first read fails. It remains active regardless of stars, PR volume, or AI share.
+The next daily run includes it. No TTL, daily reseeding, or automatic removal is used.
 
-## Capture real data
+Every complete read with merged PRs receives a rank. Sort the full list by AI share;
+infinite scroll has no 100-row or percentage cap. Empty windows remain enrolled but
+do not create a false percentage row. Counts stay visible for small samples.
+Rank links use native row anchors and highlight the target. One-click pills open
+repo pages directly and require complete reads with at least 100 merged PRs.
+
+## Daily data refresh
 
 ```sh
-bun run build
-bun run verify:registry -- --use-gh
-bun run backfill -- --use-gh
-# On later days, use the same script:
-bun run index -- --use-gh
-# Resume a failed run using the ID printed by the script:
-bun run index -- --use-gh --resume=RUN_ID
+bun run list:index                 # read the fixed database list
+bun run index -- --use-gh          # refresh only that list
+node scripts/save-repo-snapshots.mjs --existing-only
 ```
 
-The default pool is the top 1,000 public, active, non-fork repos with more than 500 stars, sorted by stars.
-A run freezes its repo pool, capture time, and verified registry. It checkpoints
-each repo. It switches the local `current.json` pointer only when every capture
-passes. A failed run keeps the previous complete index.
+GitHub Actions runs at 10:00 UTC daily. The job queries `repos WHERE indexed=1`.
+It never runs discovery, seeds a new list, inserts new catalog records, or changes
+membership. It updates existing metrics and publishes only the complete captured
+cohort. User additions made during a run are included in the following daily run.
+A failed read preserves registration and the previous complete dataset. Resume
+checkpoints with `--resume=RUN_ID`; partial results never become zeros.
 
-For a smaller local check, use `--limit=10`. To capture named repos, use
-`--repos=microsoft/vscode,openai/codex,vercel/next.js`. These results rank only
-within that stated pool. A later complete run replaces the active pool.
+The GitHub CLI login is for local public reads. Unattended runs need the new
+project's dedicated `AI_PILLED_GITHUB_TOKEN` / production `GITHUB_READ_TOKEN`.
+Never copy Repo Lore secrets. Remote activation is held for review.
 
-`--use-gh` uses the existing GitHub CLI login for public reads. Unattended jobs
-should instead use a separate read-only `AI_PILLED_GITHUB_TOKEN`. The local server
-uses that token only if present, to cache on-demand public repo reads for 24 hours.
-Do not copy tokens from Repo Lore. Without a token, the server reads local data.
+## One-off discovery and enrollment
 
-A backfill is an initial census of the current 90-day window. It does not create
-past daily observations. Change over time needs two real daily captures with the
-same account classification.
-
-## Check
+These commands are operator actions, separate from the daily workflow:
 
 ```sh
-bun run test
+bun run seed:repos -- --use-gh              # discover a candidate pool
+bun run backfill -- --use-gh               # capture it once; active pointer stays unchanged
+node scripts/seed-repo-db.mjs              # register candidate metadata as archive
+node scripts/save-repo-snapshots.mjs --run=DISCOVERY_RUN_ID
+bun run enroll:index                      # choose active membership once
+bun run index -- --use-gh                  # refresh the selected database entries
+```
+
+The frozen broad pool starts with 10,000 public, non-fork, non-archived software
+repos ranked by stars, pushed within 90 days. It requires a primary language and
+excludes named tutorial/curated-resource lists. Search partitions star ranges to
+avoid GitHub's 1,000-result cap. The initial selected star cutoff was 3,357.
+This is a discovery starting point, not a daily query or an ICP qualification claim.
+
+One-off enrollment admits complete candidates with at least 100 merged PRs,
+without an AI-percentage threshold. It also includes reviewed technology overrides
+in `src/curated-repos.ts` and all user submissions. Lower-star candidates from the
+previous agent-tool discovery remain available; Terreno and Weave are included.
+The local active list currently has 2,400 entries. Captured archives remain stored;
+being in the archive does not make a repo part of daily refresh.
+
+[Polylane's ICP](https://personas.polylane.com/icp) is teams building with AI daily,
+at any scale, with commercial intent. Stars, activity, and agent-authored PRs are
+public discovery signals, not proof of that temperament or intent. Familiar
+technologies such as Kubernetes and PostHog are reviewed overrides even at low
+agent shares. AI-assisted PRs submitted under a person's account do not count as
+known-agent authorship. Do not use this metric alone to qualify prospects.
+
+## Checks and release
+
+```sh
 bun run typecheck
+bun run test
 bun run build
+node scripts/release-guard.mjs --local
+bun run wrangler deploy --dry-run
+npm pack --dry-run --ignore-scripts
 ```
 
-The offline suite checks ID matching, neutral author counts, complete merge
-pagination, limits, registry failures, ranking ties, source evidence, canonical
-URLs, escaping, and atomic publication. See [METHOD.md](METHOD.md),
-[RESEARCH.md](RESEARCH.md), [VALIDATION.md](VALIDATION.md), and
-[DEPLOYMENT.md](DEPLOYMENT.md).
-
-There is no remote or enabled deployment. Share the normal `owner/repo` page URL
-once an independent deployment exists. Its metadata serves a 1200×630 PNG.
-
-No daily schedule is active yet. The daily runner is ready; enable its schedule
-only after the independent GitHub project and hosting resources are approved.
-
-For local comparisons with public repos outside the index, run
-`bun run dev -- --use-gh`. This uses the existing GitHub CLI login for public reads
-and keeps a 24-hour local cache. The experiment token remains an alternative.
+See [METHOD.md](METHOD.md), [VALIDATION.md](VALIDATION.md), and
+[DEPLOYMENT.md](DEPLOYMENT.md). Merge, npm publication, and deployment remain held.

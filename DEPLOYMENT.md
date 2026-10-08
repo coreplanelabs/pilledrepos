@@ -1,30 +1,52 @@
-# Independent deployment setup
+# Pilled Repos deployment
 
-This prototype is local. GitHub repo, domain, and Cloudflare account are not chosen.
-There is no enabled Worker, KV binding, cron, deployment workflow, or remote.
-`wrangler.example.json` is an inactive placeholder. It cannot be used as a release.
+Target: public **pilledrepos.com**, source **coreplanelabs/pilledrepos**, package
+**@coreplane/pilledrepos**. Merge, npm publication, and deployment are held for
+user review. This PR prepares the release path; it does not launch the site.
 
-When Justin selects the new repository and domain:
+## Resources
 
-1. Create or attach that independent GitHub repo and push this reviewed source.
-   Use its own branch protection and CI. Open a PR; do not push to Repo Lore.
-2. Read the selected domain's actual Cloudflare zone. Record zone ID, account ID,
-   owner, and DNS transfer state. All experiment DNS, Worker, and KV services must
-   use that DNS-owning account. Polycorp stays unavailable until its transfer is
-   confirmed complete. Do not assume a transfer date or `coreplane-infra`.
-3. Create a new Worker, new KV namespace, and a separate production environment.
-   Bind only experiment resources. Use a new read-only GitHub token and separate
-   least-privilege Cloudflare credentials in the selected secret store. Never use
-   Repo Lore secrets, environments, domains, Worker, or KV.
-4. Add an edge adapter for this handler and an atomic immutable dataset publisher.
-   Validate the published dataset before switching its pointer. The current
-   index publisher writes local files only. Add a dedicated deployment guard that
-   checks the chosen zone/account/resource identities before any write.
-5. Schedule the same index script with a persistent checkpoint store and a
-   non-overlap lock. Keep repo captures and registry source versions as artifacts.
-   Restore checkpoints before resuming an interrupted job. The reference file in
-   `.github/` is deliberately inactive until these resources are approved.
-6. Require build, typecheck, tests, review, and desktop/mobile/OG evidence on the
-   exact release head. Deploy only with new explicit deployment authorization.
+The domain's active DNS zone belongs to Polycorp account
+`efbcecf27f8ef6ef0ceae56a78415cd0`, zone `ea3e04242d411869c7f8de1bfe1e3c31`.
+Public nameservers match `katelyn.ns.cloudflare.com` and
+`zahir.ns.cloudflare.com`. The config binds only these dedicated resources:
 
-No production resource or security change is authorized by the original handoff.
+- Worker: `pilledrepos` (not deployed).
+- KV: `PILLEDREPOS_DATA`, `e97cbc79cf864745ad6a86525df56bba`.
+- D1: `pilledrepos`, `afc39784-ac54-48f4-863b-c526be1c0ab4`.
+
+D1 already holds the schema, the earlier 1,000 seed registrations, and their real complete
+90-day metrics. The replacement backfill completed locally with 10,001 repos. Remote seed replacement,
+KV activation, and Worker deployment remain held for review.
+Never use Repo Lore's Worker, database, namespace, environments, or secrets.
+
+## Before first release
+
+1. Review and merge this PR only after user approval. Configure protected main and
+   the GitHub `production` environment with the required review gate.
+2. Create fresh scoped credentials after approval. Store them in the CI vault in
+   1Password and the new repository's production environment secrets:
+   `CLOUDFLARE_DEPLOY_TOKEN`, `CLOUDFLARE_ZONE_READ_TOKEN`, and
+   `CLOUDFLARE_INDEX_TOKEN`. Restrict them to this DNS-owning account and the
+   required Worker, zone-read, KV, and D1 operations. Never reuse another project's
+   secret. The Worker also needs a dedicated public GitHub read token as
+   `GITHUB_READ_TOKEN`; the daily job also needs a dedicated public-read token in its new production
+   environment (`GITHUB_READ_TOKEN`).
+3. Bootstrap the npm package under the approved account, then configure npm's
+   trusted publisher for `coreplanelabs/pilledrepos`, `release.yml`, environment
+   `production`. Use OIDC for CI publication. Initial package creation may require
+   npm 2FA. Choose the next unpublished version for the first CI release.
+4. Validate the exact reviewed config and active zone with the remote release
+   guard. Publish the complete KV dataset with verified readback. Bootstrap the
+   named Worker, custom domain, bindings, and GitHub-read secret only after launch
+   approval. Before enabling the daily job, apply `config/migrations/0002-index-membership.sql`
+   to the existing D1 database, import the reviewed capture with `save-repo-snapshots.mjs --run=... --remote`,
+   then generate/apply `enroll-index.mjs --remote` SQL once. This initializes membership;
+   the daily workflow performs only existing-row metric updates. Later releases use Worker version upload and activation.
+5. Tag the checked current main as `v<package version>`. The release workflow
+   checks tag/version and current main, publishes npm via OIDC, then deploys and
+   verifies public HTML, repo details, pagination API, and OG images.
+
+A merge alone does not deploy or publish npm. The release workflow uses tags;
+daily remote indexing needs its scoped production secrets. Do not create a tag
+or enable live writes before the user approves launch.

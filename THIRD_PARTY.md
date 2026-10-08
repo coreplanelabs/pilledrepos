@@ -10,3 +10,7 @@
   License: https://github.com/yisibl/resvg-js/blob/main/LICENSE
 - GitHub avatars and public repository metadata come from GitHub's public API.
   Photos retain their owners' rights and are not relicensed as this app's code.
+
+- GitHub glyph: Font Awesome Free 6.7.2, CC BY 4.0, Fonticons, Inc.
+  License: public/assets/fontawesome-LICENSE.txt. Agent logos use verified
+  GitHub app avatars from the public GitHub API.
