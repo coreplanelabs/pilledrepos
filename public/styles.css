@@ -446,11 +446,7 @@ tbody th a {
   padding-top: 24px;
 }
 .repo-heading {
-  display: flex;
-  align-items: start;
-  justify-content: space-between;
-  gap: 32px;
-  margin-bottom: 32px;
+  margin-bottom: 16px;
 }
 .repo-identity {
   display: flex;
@@ -463,6 +459,21 @@ tbody th a {
 }
 .repo-identity > div {
   min-width: 0;
+  flex: 1;
+}
+.repo-title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 10px;
+}
+.desktop-github {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.mobile-github {
+  display: none;
 }
 .repo-avatar {
   border: 1px solid var(--line);
@@ -473,7 +484,7 @@ tbody th a {
   font-size: clamp(28px, 3vw, 38px);
   line-height: 1.15;
   letter-spacing: -0.04em;
-  margin: 0 0 10px;
+  margin: 0;
   overflow-wrap: anywhere;
 }
 .repo-identity h1 a:hover {
@@ -483,7 +494,13 @@ tbody th a {
   font-size: 16px;
   color: var(--muted);
   max-width: 68ch;
-  margin: 0 0 12px;
+  margin: 0;
+}
+.github-emoji {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  object-fit: contain;
 }
 .external {
   display: inline-flex;
@@ -497,25 +514,27 @@ tbody th a {
   color: var(--ink);
 }
 .read-controls {
-  text-align: right;
-  flex-shrink: 0;
   display: flex;
-  flex-direction: column;
-  align-items: end;
-  gap: 8px;
-  max-width: 210px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 4px;
+  min-height: 36px;
 }
 .read-controls > span {
-  font-size: 14px;
+  font-size: 12px;
+  line-height: 1.4;
   color: var(--muted);
 }
 .refresh-button {
   background: transparent;
   color: var(--muted);
-  min-height: 44px;
-  padding: 8px 10px;
+  min-height: 36px;
+  padding: 6px 8px;
+  margin-right: -8px;
   font-size: 14px;
   gap: 8px;
+  flex-shrink: 0;
 }
 .refresh-button:hover {
   color: var(--ink);
@@ -638,8 +657,7 @@ tbody th a {
 .agent-mix {
   width: 100%;
 }
-.agent-mix h2,
-.history h2 {
+.agent-mix h2 {
   font-size: 26px;
   letter-spacing: -0.035em;
   font-weight: 600;
@@ -699,20 +717,6 @@ tbody th a {
 .empty {
   color: var(--muted);
   font-size: 16px;
-}
-.history {
-  margin-top: 40px;
-}
-.history ol {
-  list-style: none;
-  padding: 0;
-}
-.history li {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 16px 0;
-  border-bottom: 1px solid var(--line);
 }
 .loading {
   display: flex;
@@ -849,16 +853,6 @@ tbody th a {
     grid-template-columns: 1fr;
     gap: 28px;
   }
-  .repo-heading {
-    flex-wrap: wrap;
-  }
-  .read-controls {
-    width: 100%;
-    max-width: none;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
 }
 @media (max-width: 700px) {
   .masthead,
@@ -960,10 +954,6 @@ tbody th a {
   .repo-result {
     padding-top: 20px;
   }
-  .repo-heading {
-    gap: 8px;
-    margin-bottom: 16px;
-  }
   .repo-identity {
     gap: 14px;
     width: 100%;
@@ -979,7 +969,6 @@ tbody th a {
   .description {
     font-size: 16px;
   }
-  .read-controls > span,
   .refresh-button {
     font-size: 14px;
   }
@@ -1014,8 +1003,7 @@ tbody th a {
     height: 7px;
     margin-right: 4px;
   }
-  .agent-mix h2,
-  .history h2 {
+  .agent-mix h2 {
     font-size: 24px;
   }
   .agent-row {
@@ -1111,7 +1099,7 @@ tbody th a {
 }
 caption {
   text-align: left;
-  padding: 16px 22px;
+  padding: 8px 22px;
   color: var(--ink);
   font-weight: 600;
   font-size: 20px;
@@ -1120,7 +1108,7 @@ caption {
 }
 @media (max-width: 700px) {
   caption {
-    padding: 14px 10px;
+    padding: 6px 10px;
     font-size: 18px;
   }
 }
@@ -1224,18 +1212,6 @@ tbody th {
 .score-count {
   margin-right: 0;
 }
-.read-controls {
-  max-width: none;
-}
-.repo-actions {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 12px;
-}
-.repo-actions .external {
-  white-space: nowrap;
-}
 .footer-credit {
   color: var(--ink);
   font-size: 14px;
@@ -1296,12 +1272,6 @@ tbody th {
     flex: 1;
     min-width: 0;
   }
-  .read-controls {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 4px;
-    text-align: left;
-  }
   .score-shell {
     margin-bottom: 32px;
   }
@@ -1329,15 +1299,54 @@ tbody th {
 tbody tr {
   scroll-margin-top: 24px;
 }
-.read-controls {
-  align-items: stretch;
+
+.board-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.info-button {
+  width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+}
+.info-button:hover {
+  background: var(--panel);
+  color: var(--ink);
+}
+.selection-tooltip {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  width: min(320px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+  color: var(--muted);
+  box-shadow: 0 16px 44px #00000035, 0 2px 8px #00000015;
+  font-size: 15px;
+  line-height: 1.5;
   text-align: left;
 }
-.repo-actions {
-  justify-content: space-between;
-}
 @media (max-width: 700px) {
-  .read-controls > span {
+  .desktop-github {
     display: none;
+  }
+  .mobile-github {
+    display: block;
+    margin-top: 4px;
+  }
+  .mobile-github .external {
+    min-height: 36px;
+  }
+  .read-controls {
+    gap: 8px;
+    margin-top: 0;
   }
 }

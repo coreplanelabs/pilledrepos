@@ -1,11 +1,11 @@
-import { friendlyDate, friendlyTimestamp } from "../src/dates.js";
+import { friendlyTimestamp } from "../src/dates.js";
 import { curatedRepos } from "../src/curated-repos.js";
 import { githubIcon, refreshIcon, externalIcon } from "../src/ui-icons.js";
 import { agentLogos } from "../src/agent-logos.js";
+import { githubEmojis } from "./github-emojis.js";
 import {
   formatShare,
   MIN_MERGES,
-  comparableHistory,
   type AiPage,
   type AiRegistry,
   type AiRow,
@@ -97,6 +97,16 @@ function note(p: AiPage): string {
       : "";
 }
 
+function descriptionHtml(text: string): string {
+  return e(text).replace(/:([a-z0-9_+-]+):/g, (token, alias: string) => {
+    if (!Object.hasOwn(githubEmojis, alias)) return token;
+    const emoji = githubEmojis[alias];
+    return emoji.startsWith("https://")
+      ? `<img class="github-emoji" alt="${token}" src="${e(emoji)}" width="20" height="20">`
+      : e(emoji);
+  });
+}
+
 function agentMix(p: AiPage): string {
   const a = p.analysis,
     groups = [...a.agents].sort(
@@ -107,16 +117,8 @@ function agentMix(p: AiPage): string {
 function result(p: AiPage, v: View): string {
   const a = p.analysis,
     row = v.board.find((r) => r.repository === p.repository),
-    points = comparableHistory(
-      v.history[p.repository] ?? [],
-      v.classificationId,
-    ),
-    daily = points.filter(
-      (x, i, arr) =>
-        i === 0 ||
-        x.capturedAt.slice(0, 10) !== arr[i - 1].capturedAt.slice(0, 10),
-    );
-  return `<section class="repo-result${row?.rank === 1 ? " leader-repo" : ""}" data-repository="${e(p.repository)}"${row ? ` data-rank="${row.rank}"` : ""}><div class="repo-heading"><div class="repo-identity"><a href="${p.url}" target="_blank" rel="noopener noreferrer" aria-label="${e(p.repository)} on GitHub"><img class="repo-avatar" src="https://avatars.githubusercontent.com/u/${p.profile?.owner?.id ?? 0}?s=160" alt="" width="64" height="64"></a><div><h1><a href="${p.url}" target="_blank" rel="noopener noreferrer">${e(p.repository).replace("/", "/<wbr>")}</a></h1><p class="description">${e(p.description)}</p></div></div><div class="read-controls"><span>Read <time data-timestamp datetime="${e(p.capturedAt)}">${friendlyTimestamp(p.capturedAt)}</time></span><div class="repo-actions"><a class="external" href="${p.url}" target="_blank" rel="noopener noreferrer">${githubIcon}View on GitHub</a><button id="refresh" class="refresh-button" type="button">${refreshIcon}Refresh</button></div></div></div>${note(p)}${loadingMarkup()}<div class="score-shell"><div class="score-card">${row ? `<a class="ranking" href="/?focus=${encodeURIComponent(p.repository)}#${rowId(p.repository)}" title="See rank #${row.rank} on the leaderboard">#${row.rank}</a>` : ""}<div class="score-copy"><div class="score-line"><strong class="score">${percent(a.share)}</strong><span>Merged PRs by AI agents</span></div></div><div class="score-detail"><p class="score-count">${number(a.ai)} / ${number(a.total)} merged PRs · 90 days</p><div class="meter" role="img" aria-label="${a.ai} AI-agent PRs out of ${a.total} merged PRs">${[
+    githubLink = `<a class="external" href="${p.url}" target="_blank" rel="noopener noreferrer">${githubIcon}View on GitHub</a>`;
+  return `<section class="repo-result${row?.rank === 1 ? " leader-repo" : ""}" data-repository="${e(p.repository)}"${row ? ` data-rank="${row.rank}"` : ""}><div class="repo-heading"><div class="repo-identity"><a href="${p.url}" target="_blank" rel="noopener noreferrer" aria-label="${e(p.repository)} on GitHub"><img class="repo-avatar" src="https://avatars.githubusercontent.com/u/${p.profile?.owner?.id ?? 0}?s=160" alt="" width="64" height="64"></a><div><div class="repo-title-row"><h1><a href="${p.url}" target="_blank" rel="noopener noreferrer">${e(p.repository).replace("/", "/<wbr>")}</a></h1><span class="desktop-github">${githubLink}</span></div><p class="description">${descriptionHtml(p.description)}</p></div></div><div class="mobile-github">${githubLink}</div><div class="read-controls"><span class="read-meta">Read <time data-timestamp datetime="${e(p.capturedAt)}">${friendlyTimestamp(p.capturedAt)}</time></span><button id="refresh" class="refresh-button" type="button">${refreshIcon}Refresh</button></div></div>${note(p)}${loadingMarkup()}<div class="score-shell"><div class="score-card">${row ? `<a class="ranking" href="/?focus=${encodeURIComponent(p.repository)}#${rowId(p.repository)}" title="See rank #${row.rank} on the leaderboard">#${row.rank}</a>` : ""}<div class="score-copy"><div class="score-line"><strong class="score">${percent(a.share)}</strong><span>Merged PRs by AI agents</span></div></div><div class="score-detail"><p class="score-count">${number(a.ai)} / ${number(a.total)} merged PRs · 90 days</p><div class="meter" role="img" aria-label="${a.ai} AI-agent PRs out of ${a.total} merged PRs">${[
     ["ai", a.ai],
     ["accounts", a.accounts],
     ["automation", a.automation],
@@ -129,17 +131,7 @@ function result(p: AiPage, v: View): string {
     )
     .join(
       "",
-    )}</div><dl class="count-grid"><div><dt><i class="dot ai"></i>AI agents</dt><dd>${number(a.ai)}</dd></div><div><dt><i class="dot accounts"></i>User accounts</dt><dd>${number(a.accounts)}</dd></div><div><dt><i class="dot automation"></i>Other bots</dt><dd>${number(a.automation)}</dd></div></dl></div></div></div>${agentMix(p)}${
-    daily.length >= 2
-      ? `<section class="history"><h2>Over time</h2><ol>${daily
-          .slice(-14)
-          .map(
-            (h) =>
-              `<li><time>${friendlyDate(h.capturedAt)}</time><b>${percent((h.ai / h.total) * 100)}</b><span>${number(h.ai)} / ${number(h.total)}</span></li>`,
-          )
-          .join("")}</ol></section>`
-      : ""
-  }</section>`;
+    )}</div><dl class="count-grid"><div><dt><i class="dot ai"></i>AI agents</dt><dd>${number(a.ai)}</dd></div><div><dt><i class="dot accounts"></i>User accounts</dt><dd>${number(a.accounts)}</dd></div><div><dt><i class="dot automation"></i>Other bots</dt><dd>${number(a.automation)}</dd></div></dl></div></div></div>${agentMix(p)}</section>`;
 }
 function home(v: View, focus?: string, sort: SortDirection = "desc"): string {
   const rows = listing(v, sort),
@@ -169,7 +161,7 @@ function home(v: View, focus?: string, sort: SortDirection = "desc"): string {
     )
     .join(
       "",
-    )}</nav></section><section class="board" id="repos"><div class="table-scroll"><table><caption>Tracked repos</caption><thead><tr><th scope="col">Rank</th><th scope="col" class="repo-label">Repository</th><th scope="col" class="pr-share" aria-sort="${sort === "asc" ? "ascending" : "descending"}"><a class="sort-link" href="?sort=${sort === "asc" ? "desc" : "asc"}#repos" aria-label="Sort AI PR share ${sort === "asc" ? "descending" : "ascending"}">AI PRs <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${sort === "asc" ? "M12 19V5m-6 6 6-6 6 6" : "M12 5v14m-6-6 6 6 6-6"}"/></svg></a></th></tr></thead><tbody id="repo-rows">${rowsMarkup(first)}</tbody></table></div><div id="scroll-sentinel" data-offset="${first.length}" data-sort="${sort}" data-version="${e(viewVersion(v))}" ${first.length >= rows.length ? "hidden" : ""}><button id="more-repos" type="button">Load more</button></div><p id="list-status" role="status"></p></section>`;
+    )}</nav></section><section class="board" id="repos"><p id="repo-selection" class="selection-tooltip" popover="auto" role="tooltip">Repos with 100+ merged PRs in the last 90 days, plus repos added by you. Refreshed daily.</p><div class="table-scroll"><table><caption><span class="board-title">Leaderboard<button id="leaderboard-info" class="info-button" type="button" popovertarget="repo-selection" aria-label="How repos are selected" aria-describedby="repo-selection"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7" r="1" fill="currentColor" stroke="none"/></svg></button></span></caption><thead><tr><th scope="col">Rank</th><th scope="col" class="repo-label">Repository</th><th scope="col" class="pr-share" aria-sort="${sort === "asc" ? "ascending" : "descending"}"><a class="sort-link" href="?sort=${sort === "asc" ? "desc" : "asc"}#repos" aria-label="Sort AI PR share ${sort === "asc" ? "descending" : "ascending"}">AI PRs <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${sort === "asc" ? "M12 19V5m-6 6 6-6 6 6" : "M12 5v14m-6-6 6 6 6-6"}"/></svg></a></th></tr></thead><tbody id="repo-rows">${rowsMarkup(first)}</tbody></table></div><div id="scroll-sentinel" data-offset="${first.length}" data-sort="${sort}" data-version="${e(viewVersion(v))}" ${first.length >= rows.length ? "hidden" : ""}><button id="more-repos" type="button">Load more</button></div><p id="list-status" role="status"></p></section>`;
 }
 export function pageHtml(
   v: View,

@@ -35,7 +35,7 @@ const headers = {
   "Referrer-Policy": "no-referrer",
   "X-Frame-Options": "DENY",
   "Content-Security-Policy":
-    "default-src 'self'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' https://avatars.githubusercontent.com data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'",
+    "default-src 'self'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' https://avatars.githubusercontent.com https://github.githubassets.com data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'",
 };
 export function createHandler(options: {
   dataset: () => Promise<Dataset>;

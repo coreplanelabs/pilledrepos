@@ -14,3 +14,9 @@
 - GitHub glyph: Font Awesome Free 6.7.2, CC BY 4.0, Fonticons, Inc.
   License: public/assets/fontawesome-LICENSE.txt. Agent logos use verified
   GitHub app avatars from the public GitHub API.
+
+- GitHub emoji aliases: github/gemoji at commit
+  fadaeaf1f1a9be82b321316a6c5502e43138b2f6, MIT. License:
+  public/assets/gemoji-LICENSE.txt. Standard emoji use native Unicode; additional
+  GitHub emoji images use URLs returned by GitHub's public emoji API.
+  https://github.com/github/gemoji
