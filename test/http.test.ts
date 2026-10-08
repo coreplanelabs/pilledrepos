@@ -86,6 +86,17 @@ test("untrusted repo descriptions are escaped and canonical URLs omit query para
     /<link rel="canonical" href="http:\/\/localhost:4189\/org\/repo">/,
   );
 });
+test("repo descriptions render GitHub emoji aliases while escaping markup and preserving unknown names", async () => {
+  const r = report();
+  r.description = ":hedgehog: Ship :rocket: :octocat: :constructor: <script>bad</script>";
+  const response = await handler({ ...dataset, reports: [r] })(req("/org/repo"));
+  const s = await response.text();
+  assert.match(s, /class="description">🦔 Ship 🚀/);
+  assert.match(s, /class="github-emoji"[^>]*alt=":octocat:"/);
+  assert.match(s, /:constructor: &lt;script&gt;bad&lt;\/script&gt;/);
+  assert.doesNotMatch(s, /<script>bad<\/script>/);
+  assert.match(response.headers.get("Content-Security-Policy")!, /https:\/\/github\.githubassets\.com/);
+});
 test("write endpoints require a same-origin JSON request", async () => {
   assert.equal((await handler()(req("/api/repos", "POST"))).status, 403);
   assert.equal((await handler()(req("/", "POST"))).status, 405);
@@ -97,6 +108,28 @@ test("small complete windows get a rank without invented history", async () => {
   assert.match(s, /class="ranking"[^>]*>#1/);
   assert.doesNotMatch(s, /Unranked|unranked/);
   assert.doesNotMatch(s, /<h2>Over time/);
+});
+test("repo details omit historical sections even when daily reads exist", async () => {
+  const s = await (
+    await handler({
+      ...dataset,
+      history: {
+        "org/repo": ["2026-10-06T12:00:00Z", "2026-10-07T12:00:00Z"].map(
+          (capturedAt) => ({
+            capturedAt,
+            ai: 27,
+            total: 100,
+            registryId: "digest",
+            classificationId: "ids",
+            collector: "merged-window-v2" as const,
+          }),
+        ),
+      },
+    })(req("/org/repo"))
+  ).text();
+  assert.match(s, /27%<\/strong><span>Merged PRs by AI agents/);
+  assert.match(s, /<h2>Agents<\/h2>/);
+  assert.doesNotMatch(s, /Over time|class="history"/);
 });
 test("HEAD has no body and OG output remains 1200 by 630", async () => {
   assert.equal(await (await handler()(req("/org/repo", "HEAD"))).text(), "");

@@ -42,9 +42,9 @@ check the owned PID, index pointer, GET `/api/leaderboard?limit=1`, and
 | Infinite ranking                                                                 | GET sorted `/api/leaderboard` pages; load past 100.                                                                     | All complete nonempty reads rank, including small samples and zero AI share. Empty windows remain enrolled without false percentages. Stable-ID rename regression prevents duplicate rows.                                                 |
 | Rank jump                                                                        | Open Strix, click #3, inspect target row.                                                                               | Old hash/smooth behavior settled at the page top; native row anchor settles at 24px and keeps the matching highlight. Both href and landing row IDs are tested.                                                                            |
 | Data-backed pills                                                                | Click a technology pill.                                                                                                | Links open actual repo details, not a filter. Only complete 100+ PR reads receive a pill. The obsolete filter is removed; input label is accessible but hidden.                                                                            |
-| Card treatments                                                                  | Open normal and #1 repo pages; move pointer to a card corner and leave.                                                 | All score cards have the gradient. Real pointer input produces a 3D transform and clears on exit. #1 has a rainbow edge; rank badge is 26px at top right. GitHub/Refresh share one action row with licensed icons. On mobile the timestamp |
-| is hidden, GitHub aligns left and Refresh right. Desktop timestamp/actions share |
-| the same left edge.                                                              |
+| Card treatments | Open normal and #1 repo pages; move pointer to a card corner and leave. | Existing proof: gradient on all cards, pointer tilt resets on exit, and rank badge at top right. |
+| Repo header and emoji | Open PostHog and a short-description repo at desktop/mobile widths. | GitHub aligns with the title at desktop width and sits below the description on mobile. Read text is 12px beside Refresh on both sizes. Native GitHub emoji aliases render; custom GitHub images use the allowed asset host. Historical sections are omitted even with two daily reads. |
+| Leaderboard information | Click or press Enter on the info button; dismiss with Escape or outside click. | Approved user copy appears in a native popover. Its 44px trigger and tooltip fit 1280×900 and 360×800. No page shift or table clipping. |
 | Top-ten confetti                                                                 | Open ranks 1, 10, and 11.                                                                                               | Real browser: burst on 1/10, none on 11, canvas removed afterward. Reduced-motion/touch exclusions are source-inspected; OS settings were not changed.                                                                                     |
 | Fixed raised loading                                                             | Use `node test/ui-review-server.mjs` after build/test; submit fixture repo and scroll during its three-second response. | Isolated UI proof: fixed 16px bottom offset before/after 800px scroll, no board shift, visible elevation. No GitHub or real catalog writes. Stop the owned fixture after capture.                                                          |
 | Mobile type/spacing                                                              | 360×800 repo view.                                                                                                      | Claude Code is one line; header spacing is compact. Rank and repository headers use distinct type treatments and larger separation. Footer matches the requested credit and external-link mark.                                            |
@@ -96,3 +96,13 @@ passed. D1 migration/import preserved all prior rows and newer reads, enrolled
 hash readback. The empty Worker has no active code version. GitHub passkey/read
 credential and first deployment remain pending. Npm registry returns 404 after
 unpublication. See `docs/production-data-proof.json` for the scoped data receipt.
+
+UI cleanup proof: the emoji rendering and populated-history removal checks failed
+before the change and passed afterward. All 81 tests and type/build checks passed.
+The real local preview on port 4189 was driven at 1280×900 and 360×800: PostHog's
+hedgehog rendered; GitHub/read/Refresh alignment, tooltip copy, viewport fit,
+keyboard open, Escape, and outside-click dismissal passed. No enrollment or
+refresh request was submitted during these UI checks. The source awaits user merge; production still runs the earlier app build.
+The final client build also passed a 320px mobile check and open-tooltip resize
+check. Light and dark desktop styles were inspected. Viewport and theme overrides
+were reset after verification.

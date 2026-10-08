@@ -37,6 +37,28 @@ document
       apply();
     }),
   );
+const selectionButton = document.querySelector<HTMLButtonElement>("#leaderboard-info"),
+  selectionTooltip = document.querySelector<HTMLElement>("#repo-selection");
+selectionTooltip?.addEventListener("beforetoggle", () => {
+  if (!selectionButton) return;
+  const rect = selectionButton.getBoundingClientRect(),
+    width = Math.min(320, innerWidth - 32);
+  selectionTooltip.style.left = `${Math.max(16, Math.min(rect.left, innerWidth - width - 16))}px`;
+  selectionTooltip.style.top = `${rect.bottom + 8}px`;
+});
+function positionSelectionTooltip() {
+  if (!selectionButton || !selectionTooltip?.matches(":popover-open")) return;
+  const rect = selectionButton.getBoundingClientRect(),
+    height = selectionTooltip.offsetHeight,
+    width = selectionTooltip.offsetWidth;
+  selectionTooltip.style.left = `${Math.max(16, Math.min(rect.left, innerWidth - width - 16))}px`;
+  selectionTooltip.style.top = `${rect.bottom + height + 8 <= innerHeight - 16 ? rect.bottom + 8 : Math.max(16, rect.top - height - 8)}px`;
+}
+selectionTooltip?.addEventListener("toggle", positionSelectionTooltip);
+window.addEventListener("resize", positionSelectionTooltip);
+window.addEventListener("scroll", () => {
+  if (selectionTooltip?.matches(":popover-open")) selectionTooltip.hidePopover();
+}, { passive: true });
 const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 document
   .querySelectorAll<HTMLTimeElement>("time[data-timestamp]")
