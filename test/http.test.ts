@@ -90,11 +90,12 @@ test("write endpoints require a same-origin JSON request", async () => {
   assert.equal((await handler()(req("/api/repos", "POST"))).status, 403);
   assert.equal((await handler()(req("/", "POST"))).status, 405);
 });
-test("small windows remain unranked and no empty history claims movement", async () => {
+test("small complete windows get a rank without invented history", async () => {
   const s = await (
     await handler({ ...dataset, reports: [report(1, 1)] })(req("/org/repo"))
   ).text();
-  assert.match(s, /small window · unranked/);
+  assert.match(s, /class="ranking"[^>]*>#1/);
+  assert.doesNotMatch(s, /Unranked|unranked/);
   assert.doesNotMatch(s, /<h2>Over time/);
 });
 test("HEAD has no body and OG output remains 1200 by 630", async () => {
@@ -123,7 +124,7 @@ test("sorting covers the full leaderboard before pagination and keeps ranks whil
         ),
       )
     ).json();
-    assert.equal(first.total, 70);
+    assert.equal(first.total, 71);
     const shares = [...first.rows, ...next.rows].map(
       (r: { analysis: { share: number } }) => r.analysis.share,
     );
@@ -135,7 +136,7 @@ test("sorting covers the full leaderboard before pagination and keeps ranks whil
     );
     assert.equal(
       first.rows[0].repository,
-      sort === "asc" ? "org/repo-0" : "org/repo-69",
+      sort === "asc" ? "org/repo-0" : "org/small-window",
     );
     const home = await (await h(req(`/?sort=${sort}`))).text();
     assert.match(
@@ -143,7 +144,7 @@ test("sorting covers the full leaderboard before pagination and keeps ranks whil
       new RegExp(`aria-sort="${sort === "asc" ? "ascending" : "descending"}"`),
     );
     assert.match(home, new RegExp(`data-sort="${sort}"`));
-    assert.doesNotMatch(home, /org\/small-window|org\/no-merges/);
+    assert.match(home, /data-offset/);
   }
   assert.equal((await h(req("/api/leaderboard?sort=wrong"))).status, 400);
   const tie = handler({
@@ -154,5 +155,60 @@ test("sorting covers the full leaderboard before pagination and keeps ranks whil
   assert.deepEqual(
     rows.rows.map((r: { rank: number }) => r.rank),
     [1, 2],
+  );
+});
+test("only the leader gets a motif and detail ranks drive the top-ten celebration", async () => {
+  const h = handler({
+    ...dataset,
+    reports: Array.from({ length: 12 }, (_, i) =>
+      report(100, 80 - i, `org/r${i + 1}`),
+    ),
+  });
+  const home = await (await h(req("/"))).text();
+  assert.equal((home.match(/class="leader-row"/g) ?? []).length, 1);
+  const leader = await (await h(req("/org/r1"))).text();
+  assert.match(leader, /class="repo-result leader-repo"[^>]*data-rank="1"/);
+  const tenth = await (await h(req("/org/r10"))).text();
+  assert.match(tenth, /data-rank="10"/);
+  assert.doesNotMatch(tenth, /leader-repo/);
+  const eleventh = await (await h(req("/org/r11"))).text();
+  assert.match(eleventh, /data-rank="11"/);
+  assert.equal(await (await h(req("/confetti.js"))).text(), "asset");
+});
+test("all complete nonempty tracked repos rank without a percentage or row cap", async () => {
+  const h = handler({
+    ...dataset,
+    reports: [
+      ...Array.from({ length: 120 }, (_, i) =>
+        report(200, 120 - i, `org/r${i + 1}`),
+      ),
+      report(100, 0, "kubernetes/kubernetes"),
+      report(1, 0, "org/submitted"),
+      report(0, 0, "org/empty"),
+    ],
+  });
+  const rows = await (
+    await h(req("/api/leaderboard?sort=asc&limit=100"))
+  ).json();
+  assert.equal(rows.total, 122);
+  assert.equal(rows.rows[0].repository, "kubernetes/kubernetes");
+  assert.equal(rows.nextOffset, 100);
+  const tail = await (await h(req("/api/leaderboard?offset=100"))).json();
+  assert.equal(tail.rows.length, 22);
+  assert.ok(tail.rows.every((r: { rank: number }) => Number.isInteger(r.rank)));
+  const small = await (await h(req("/org/submitted"))).text();
+  assert.match(small, /class="ranking"/);
+  assert.doesNotMatch(small, /Unranked/);
+  const home = await (await h(req("/"))).text();
+  assert.doesNotMatch(home, /repo-filter|list-controls/);
+  assert.match(home, /e.g. usestrix\/strix/);
+  const badge = /class="ranking" href="([^"]+)"/.exec(
+    await (await h(req("/org/r101"))).text(),
+  )![1];
+  const anchor = new URL(badge, "http://localhost");
+  const landing = await (await h(req(anchor.pathname + anchor.search))).text();
+  assert.match(
+    landing,
+    new RegExp(`id="${anchor.hash.slice(1)}"[^>]*data-href="/org/r101"`),
   );
 });

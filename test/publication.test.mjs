@@ -113,3 +113,20 @@ test("a published dataset stays immutable even when its run is retried", async (
     await rm(root, { recursive: true, force: true });
   }
 });
+test("a one-off discovery stores its checkpoint without replacing the active data pointer", async () => {
+  const root = await mkdtemp(resolve(tmpdir(), "pilled-discovery-"));
+  try {
+    await publishLocal(root, "active", index());
+    await publishLocal(root, "discovery", index(), { activate: false });
+    assert.equal(
+      (await readJson(resolve(root, "current.json"))).runId,
+      "active",
+    );
+    assert.equal(
+      (await readJson(resolve(root, "runs/discovery/index.json"))).complete,
+      true,
+    );
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});

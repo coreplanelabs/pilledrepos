@@ -19,6 +19,9 @@ const reg = {
 };
 function dataset() {
   return {
+    kind: "indexed",
+    expected: 1000,
+    selected: Array.from({ length: 1000 }, (_, i) => `org/r${i}`),
     pages: Array.from({ length: 1000 }, (_, i) => ({
       repository: `org/r${i}`,
       url: `https://github.com/org/r${i}`,
@@ -79,5 +82,26 @@ test("verified publication retains a prior complete key for edge-region fallback
       })
     ).unchanged,
     true,
+  );
+});
+
+test("a small complete fixed index publishes, while partial or discovery cohorts do not", async () => {
+  const d = dataset();
+  d.pages = d.pages.slice(0, 2);
+  d.selected = d.selected.slice(0, 2);
+  d.expected = 2;
+  const map = new Map(),
+    store = {
+      get: async (k) => map.get(k) ?? null,
+      put: async (k, v) => map.set(k, v),
+    };
+  assert.equal((await publishSnapshot(d, store)).repositories, 2);
+  await assert.rejects(
+    publishSnapshot({ ...d, expected: 3 }, store),
+    /complete indexed cohort/,
+  );
+  await assert.rejects(
+    publishSnapshot({ ...d, kind: "discovery" }, store),
+    /complete indexed cohort/,
   );
 });

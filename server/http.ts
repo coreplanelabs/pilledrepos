@@ -79,7 +79,7 @@ export function createHandler(options: {
         "application/json",
       );
     if (
-      /^\/(assets\/|app\.js$|theme\.js$|dates\.js$|theme-init\.js$|styles\.css$|favicon\.svg$)/.test(
+      /^\/(assets\/|app\.js$|confetti\.js$|theme\.js$|dates\.js$|theme-init\.js$|styles\.css$|favicon\.svg$)/.test(
         path,
       )
     )
@@ -104,10 +104,19 @@ export function createHandler(options: {
       let view = base;
       if (options.catalog) {
         try {
-          const extras = await options.catalog.extras(base.capturedAt);
+          const extras = await options.catalog.extras(
+            base.capturedAt,
+            base.pages.map((p) => p.repositoryId ?? 0),
+          );
           if (extras.length) {
-            const map = new Map(base.pages.map((p) => [p.repository, p]));
-            for (const p of extras) map.set(p.repository, p);
+            const map = new Map(
+              base.pages.map((p) => [
+                p.repositoryId ?? p.repository.toLowerCase(),
+                p,
+              ]),
+            );
+            for (const p of extras)
+              map.set(p.repositoryId ?? p.repository.toLowerCase(), p);
             const pages = [...map.values()];
             view = {
               ...base,

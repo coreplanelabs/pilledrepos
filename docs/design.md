@@ -3,7 +3,7 @@
 Follow the user's Polylane and Repo Lore direction: DM Sans for copy, DM Mono for
 numbers, Polylane green, existing animated pill mark, and the source/attribution
 footer. Use a 16px body scale, 14px supporting text, consistent 8px spacing steps,
-and a separate visible label and bordered repo input. Keep the main actions easy
+and a bordered repo input with an accessible hidden label. Keep the main actions easy
 to tap. The compact theme selector stays in the header.
 
 Review the whole app against these official skills before final visual approval:

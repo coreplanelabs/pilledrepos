@@ -16,7 +16,7 @@ Public nameservers match `katelyn.ns.cloudflare.com` and
 - D1: `pilledrepos`, `afc39784-ac54-48f4-863b-c526be1c0ab4`.
 
 D1 already holds the schema, the earlier 1,000 seed registrations, and their real complete
-90-day metrics. The 10,000-repo replacement backfill runs locally first. Remote seed replacement,
+90-day metrics. The replacement backfill completed locally with 10,001 repos. Remote seed replacement,
 KV activation, and Worker deployment remain held for review.
 Never use Repo Lore's Worker, database, namespace, environments, or secrets.
 
@@ -30,7 +30,7 @@ Never use Repo Lore's Worker, database, namespace, environments, or secrets.
    `CLOUDFLARE_INDEX_TOKEN`. Restrict them to this DNS-owning account and the
    required Worker, zone-read, KV, and D1 operations. Never reuse another project's
    secret. The Worker also needs a dedicated public GitHub read token as
-   `GITHUB_READ_TOKEN`; the weekly job also needs a dedicated public-read token in its new production
+   `GITHUB_READ_TOKEN`; the daily job also needs a dedicated public-read token in its new production
    environment (`GITHUB_READ_TOKEN`).
 3. Bootstrap the npm package under the approved account, then configure npm's
    trusted publisher for `coreplanelabs/pilledrepos`, `release.yml`, environment
@@ -39,11 +39,14 @@ Never use Repo Lore's Worker, database, namespace, environments, or secrets.
 4. Validate the exact reviewed config and active zone with the remote release
    guard. Publish the complete KV dataset with verified readback. Bootstrap the
    named Worker, custom domain, bindings, and GitHub-read secret only after launch
-   approval. Later releases use Worker version upload and activation.
+   approval. Before enabling the daily job, apply `config/migrations/0002-index-membership.sql`
+   to the existing D1 database, import the reviewed capture with `save-repo-snapshots.mjs --run=... --remote`,
+   then generate/apply `enroll-index.mjs --remote` SQL once. This initializes membership;
+   the daily workflow performs only existing-row metric updates. Later releases use Worker version upload and activation.
 5. Tag the checked current main as `v<package version>`. The release workflow
    checks tag/version and current main, publishes npm via OIDC, then deploys and
    verifies public HTML, repo details, pagination API, and OG images.
 
 A merge alone does not deploy or publish npm. The release workflow uses tags;
-weekly remote indexing needs its scoped production secrets. Do not create a tag
+daily remote indexing needs its scoped production secrets. Do not create a tag
 or enable live writes before the user approves launch.

@@ -191,7 +191,7 @@ export function analyzeAi(report: Report, registry: AiRegistry): AiAnalysis {
     automation,
     unknown,
     share: total ? (ai / total) * 100 : null,
-    eligible: complete && total >= MIN_MERGES,
+    eligible: complete && total > 0,
     complete,
     agents: [...groups.values()].sort(
       (a, b) => b.count - a.count || a.name.localeCompare(b.name),

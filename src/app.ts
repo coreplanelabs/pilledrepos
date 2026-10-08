@@ -1,3 +1,4 @@
+import { celebrateRank } from "./confetti.js";
 import { friendlyTimestamp } from "./dates.js";
 import {
   themePreference,
@@ -80,7 +81,7 @@ async function readRepo(repository: string, refresh = false) {
     }
     if (error) {
       error.textContent =
-        body.message ?? "Repo saved. Its read will finish in the weekly job.";
+        body.message ?? "Repo saved. Its read will finish in the daily job.";
       error.hidden = false;
     }
   } catch (e) {
@@ -177,6 +178,52 @@ if (focus) {
     );
   if (row) {
     row.classList.add("focused-row");
-    row.scrollIntoView({ block: "center", behavior: "smooth" });
   }
+}
+
+celebrateRank(
+  Number(document.querySelector<HTMLElement>(".repo-result")?.dataset.rank),
+);
+// Press the hovered corner toward the page; the stable shell avoids feedback jitter.
+if (
+  matchMedia("(hover: hover) and (pointer: fine)").matches &&
+  !matchMedia("(prefers-reduced-motion: reduce)").matches
+) {
+  document.querySelectorAll<HTMLElement>(".score-shell").forEach((shell) => {
+    const card = shell.querySelector<HTMLElement>(".score-card")!;
+    let rect: DOMRect | undefined,
+      frame = 0,
+      x = 0,
+      y = 0;
+    const reset = () => {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      rect = undefined;
+      card.style.removeProperty("--tilt-x");
+      card.style.removeProperty("--tilt-y");
+    };
+    shell.addEventListener("pointermove", (e) => {
+      if (e.pointerType !== "mouse") return;
+      rect ??= shell.getBoundingClientRect();
+      x = e.clientX;
+      y = e.clientY;
+      if (!frame)
+        frame = requestAnimationFrame(() => {
+          frame = 0;
+          const px = Math.max(
+            -0.5,
+            Math.min(0.5, (x - rect!.left) / rect!.width - 0.5),
+          );
+          const py = Math.max(
+            -0.5,
+            Math.min(0.5, (y - rect!.top) / rect!.height - 0.5),
+          );
+          card.style.setProperty("--tilt-x", `${-py * 6}deg`);
+          card.style.setProperty("--tilt-y", `${px * 6}deg`);
+        });
+    });
+    shell.addEventListener("pointerleave", reset);
+    shell.addEventListener("pointercancel", reset);
+    window.addEventListener("scroll", reset, { passive: true });
+  });
 }

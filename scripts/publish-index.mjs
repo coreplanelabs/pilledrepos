@@ -5,8 +5,25 @@ import { digest } from "./github-api.mjs";
 import { readJson } from "./index-storage.mjs";
 export async function publishSnapshot(data, store) {
   const compact = compactDataset(data);
-  if (compact.pages.length < 1000)
-    throw new Error("Publication requires the complete seeded pool.");
+  if (
+    data.kind !== "indexed" ||
+    !Number.isSafeInteger(data.expected) ||
+    data.expected < 1 ||
+    data.selected?.length !== data.expected ||
+    compact.pages.length !== data.expected ||
+    new Set(data.selected.map((n) => n.toLowerCase())).size !== data.expected ||
+    data.selected.some(
+      (n) =>
+        !compact.pages.some(
+          (p) =>
+            (p.requestedRepository ?? p.repository).toLowerCase() ===
+            n.toLowerCase(),
+        ),
+    )
+  )
+    throw new Error(
+      "Publication requires the complete indexed cohort, not discovery or partial data.",
+    );
   const text = JSON.stringify(compact),
     sha = digest(text),
     key = "dataset:" + sha;

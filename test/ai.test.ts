@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
@@ -80,9 +81,9 @@ test("only merges inside inclusive 90-day boundary count; duplicate cannot infla
   ];
   assert.equal(analyzeAi(r, registry).total, 2);
 });
-test("zero and small samples have no eligible score", () => {
+test("every complete nonempty sample ranks; empty samples do not", () => {
   assert.equal(analyzeAi(report(0), registry).share, null);
-  assert.equal(analyzeAi(report(99), registry).eligible, false);
+  assert.equal(analyzeAi(report(99), registry).eligible, true);
   assert.equal(analyzeAi(report(100), registry).eligible, true);
 });
 test("legacy and incomplete reads never rank despite large samples", () => {
@@ -170,4 +171,23 @@ test("history requires real complete reads with matching account classification"
 test("a very small positive AI share cannot round to a false zero", () => {
   const r = report(10000, 1);
   assert.match(aiSummary(aiPage(r, registry)), /<0\.1%/);
+});
+test("configured zero-match accounts still count by ID and lookalike names do not", () => {
+  const full = parseRegistry(
+    JSON.parse(
+      readFileSync(
+        new URL("../../config/ai-agents.json", import.meta.url),
+        "utf8",
+      ),
+    ),
+  );
+  const r = report(0);
+  r.facts.closed = [
+    pull(1, 199175422, true, "renamed-connector"),
+    pull(2, 131295404, true, "renamed-codegen"),
+    pull(3, 42, true, "codegen-sh[bot]"),
+    pull(4, 43, false, "chatgpt-codex-connector[bot]"),
+  ];
+  const a = analyzeAi(r, full);
+  assert.deepEqual([a.ai, a.automation, a.accounts], [2, 1, 1]);
 });

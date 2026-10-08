@@ -4,6 +4,7 @@ import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { resolve } from "node:path";
 import { localRepoDb } from "../scripts/local-repo-db.mjs";
+import { indexedRepos } from "../scripts/indexed-repos.mjs";
 import { RepoStore } from "../.server-dist/server/repo-store.js";
 const meta = {
   id: 17,
@@ -62,6 +63,7 @@ test("submitted public repos survive a restart and duplicate submissions keep on
   const store = new RepoStore(c.db, read, async () => agents);
   const first = await store.add("org/repo");
   assert.equal(first.status, "ready");
+  assert.equal((await store.record("org/repo")).indexed, 1);
   await store.add("ORG/REPO");
   assert.equal(queries, 1);
   assert.equal(
@@ -74,6 +76,10 @@ test("submitted public repos survive a restart and duplicate submissions keep on
     (await new RepoStore(reopened, read, async () => agents).page("org/repo"))
       .analysis.total,
     0,
+  );
+  assert.deepEqual(
+    (await indexedRepos(reopened)).map((r) => r.name),
+    ["org/repo"],
   );
   await c.cleanup(reopened);
 });

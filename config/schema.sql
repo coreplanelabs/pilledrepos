@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS repos (
   description TEXT NOT NULL DEFAULT '',
   owner_id INTEGER NOT NULL,
   seeded INTEGER NOT NULL DEFAULT 0,
+  indexed INTEGER NOT NULL DEFAULT 0 CHECK(indexed IN (0,1)),
   fit_score INTEGER,
   fit_evidence TEXT,
   created_at TEXT NOT NULL,

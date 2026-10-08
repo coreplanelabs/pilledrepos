@@ -1,5 +1,6 @@
 import { friendlyDate, friendlyTimestamp } from "../src/dates.js";
-import { githubIcon } from "../src/ui-icons.js";
+import { curatedRepos } from "../src/curated-repos.js";
+import { githubIcon, refreshIcon, externalIcon } from "../src/ui-icons.js";
 import { agentLogos } from "../src/agent-logos.js";
 import {
   formatShare,
@@ -21,6 +22,8 @@ export const escapeHtml = (s: string) =>
 const e = escapeHtml,
   number = (n: number) => n.toLocaleString("en-US"),
   percent = (s: number | null) => e(formatShare(s));
+export const rowId = (repo: string) =>
+  "repo-" + repo.toLowerCase().replace("/", "--");
 export const repoPath = (r: string) =>
   "/" + r.split("/").map(encodeURIComponent).join("/");
 export type View = {
@@ -73,13 +76,13 @@ function masthead(): string {
   return `<header class="masthead"><a class="brand" href="/" aria-label="AI Pilled home"><span class="brand-icon" aria-hidden="true"><span class="pill-mark"></span></span>AI PILLED</a>${themePicker()}</header>`;
 }
 function footer(): string {
-  return `<footer class="site-footer"><span>Built for fun by <a href="https://polylane.com/?utm_source=ai-pilled" target="_blank" rel="noopener noreferrer">Polylane</a>.</span><div class="footer-actions"><a href="https://github.com/coreplanelabs/pilledrepos" target="_blank" rel="noopener noreferrer">${githubIcon} View the source</a></div></footer>`;
+  return `<footer class="site-footer"><span class="footer-credit">Built for fun by <a href="https://polylane.com/?utm_source=ai-pilled" target="_blank" rel="noopener noreferrer">Polylane${externalIcon}</a></span><div class="footer-actions"><a href="https://github.com/coreplanelabs/pilledrepos" target="_blank" rel="noopener noreferrer">${githubIcon} View the source</a></div></footer>`;
 }
 export function rowsMarkup(rows: (AiPage & { rank?: number })[]): string {
   return rows
     .map(
       (p) =>
-        `<tr data-href="${repoPath(p.repository)}"><td class="rank">${p.rank ? "#" + p.rank : "—"}</td><th scope="row"><a href="${repoPath(p.repository)}"><span class="repo-name"><img src="https://avatars.githubusercontent.com/u/${p.profile?.owner?.id ?? 0}?s=64" alt="" width="30" height="30" loading="lazy"><span><span class="owner">${e(p.repository.split("/")[0])} / </span>${e(p.repository.split("/")[1])}</span></span></a></th><td class="pr-share" title="${p.analysis.ai} of ${p.analysis.total} merged PRs in 90 days"><b>${percent(p.analysis.share)}</b><span class="mono">${number(p.analysis.ai)} / ${number(p.analysis.total)}</span>${!p.analysis.eligible ? "<small>Unranked</small>" : ""}</td></tr>`,
+        `<tr id="${rowId(p.repository)}"${p.rank === 1 ? ' class="leader-row"' : ""} data-href="${repoPath(p.repository)}"><td class="rank">${p.rank ? "#" + p.rank : "—"}</td><th scope="row"><a href="${repoPath(p.repository)}"><span class="repo-name"><img src="https://avatars.githubusercontent.com/u/${p.profile?.owner?.id ?? 0}?s=64" alt="" width="30" height="30" loading="lazy"><span><span class="owner">${e(p.repository.split("/")[0])} / </span>${e(p.repository.split("/")[1])}</span></span></a></th><td class="pr-share" title="${p.analysis.ai} of ${p.analysis.total} merged PRs in 90 days"><b>${percent(p.analysis.share)}</b><span class="mono">${number(p.analysis.ai)} / ${number(p.analysis.total)}</span></td></tr>`,
     )
     .join("");
 }
@@ -88,19 +91,18 @@ export function loadingMarkup(): string {
 }
 function note(p: AiPage): string {
   return !p.analysis.complete
-    ? '<p class="notice">Partial preview · unranked</p>'
-    : p.analysis.total === 0
+    ? '<p class="notice">Partial read</p>'
+    : !p.analysis.total
       ? '<p class="notice">No merged PRs in the last 90 days.</p>'
-      : p.analysis.total < MIN_MERGES
-        ? `<p class="notice">${p.analysis.total} merged PRs · small window · unranked</p>`
-        : "";
+      : "";
 }
+
 function agentMix(p: AiPage): string {
   const a = p.analysis,
     groups = [...a.agents].sort(
       (x, y) => y.count - x.count || x.name.localeCompare(y.name),
     );
-  return `<section class="agent-mix"><h2>Agents</h2><div class="agent-chart">${groups.length ? groups.map((g) => `<div class="agent-row" title="${number(g.count)} of ${number(a.ai)} AI-agent PRs"><div class="agent-identity"><img src="${e(agentLogos[g.identities[0].id] ?? "https://avatars.githubusercontent.com/u/" + g.identities[0].id)}" alt="" width="28" height="28"><b>${e(g.name)}</b></div><div class="agent-track"><span style="--portion:${(g.count / a.ai) * 100}%"></span></div><div class="agent-share"><b>${percent((g.count / a.ai) * 100)}</b><span>${number(g.count)} PRs</span></div></div>`).join("") : '<p class="empty">No AI-agent authors in this read.</p>'}</div></section>`;
+  return `<section class="agent-mix"><h2>Agents</h2><div class="agent-chart">${groups.length ? groups.map((g) => `<div class="agent-row" title="${number(g.count)} of ${number(a.ai)} AI-agent PRs"><div class="agent-identity"><img src="${e(agentLogos[g.identities[0].id] ?? "https://avatars.githubusercontent.com/u/" + g.identities[0].id)}" alt="" width="28" height="28"><b>${e(g.name)}</b></div><div class="agent-track"><span style="--portion:${(g.count / a.ai) * 100}%"></span></div><div class="agent-share"><b>${percent((g.count / a.ai) * 100)}</b><span>${number(g.count)} ${g.count === 1 ? "PR" : "PRs"}</span></div></div>`).join("") : '<p class="empty">No AI-agent authors in this read.</p>'}</div></section>`;
 }
 function result(p: AiPage, v: View): string {
   const a = p.analysis,
@@ -114,7 +116,7 @@ function result(p: AiPage, v: View): string {
         i === 0 ||
         x.capturedAt.slice(0, 10) !== arr[i - 1].capturedAt.slice(0, 10),
     );
-  return `<section class="repo-result" data-repository="${e(p.repository)}"><div class="repo-heading"><div class="repo-identity"><a href="${p.url}" target="_blank" rel="noopener noreferrer" aria-label="${e(p.repository)} on GitHub"><img class="repo-avatar" src="https://avatars.githubusercontent.com/u/${p.profile?.owner?.id ?? 0}?s=160" alt="" width="64" height="64"></a><div><h1><a href="${p.url}" target="_blank" rel="noopener noreferrer">${e(p.repository)}</a></h1><p class="description">${e(p.description)}</p><a class="external" href="${p.url}" target="_blank" rel="noopener noreferrer">${githubIcon}View on GitHub</a></div></div><div class="read-controls"><span>Read <time data-timestamp datetime="${e(p.capturedAt)}">${friendlyTimestamp(p.capturedAt)}</time></span><button id="refresh" class="refresh-button" type="button">${icon("refresh")}Refresh</button></div></div>${note(p)}${loadingMarkup()}<div class="score-card"><div class="score-copy"><div class="score-line"><strong class="score">${percent(a.share)}</strong><span>Merged PRs by AI agents</span></div></div><div class="score-detail"><p class="score-count">${number(a.ai)} / ${number(a.total)} merged PRs · 90 days</p>${row ? `<a class="ranking" href="/?focus=${encodeURIComponent(p.repository)}#repos">#${row.rank}</a>` : ""}<div class="meter" role="img" aria-label="${a.ai} AI-agent PRs out of ${a.total} merged PRs">${[
+  return `<section class="repo-result${row?.rank === 1 ? " leader-repo" : ""}" data-repository="${e(p.repository)}"${row ? ` data-rank="${row.rank}"` : ""}><div class="repo-heading"><div class="repo-identity"><a href="${p.url}" target="_blank" rel="noopener noreferrer" aria-label="${e(p.repository)} on GitHub"><img class="repo-avatar" src="https://avatars.githubusercontent.com/u/${p.profile?.owner?.id ?? 0}?s=160" alt="" width="64" height="64"></a><div><h1><a href="${p.url}" target="_blank" rel="noopener noreferrer">${e(p.repository).replace("/", "/<wbr>")}</a></h1><p class="description">${e(p.description)}</p></div></div><div class="read-controls"><span>Read <time data-timestamp datetime="${e(p.capturedAt)}">${friendlyTimestamp(p.capturedAt)}</time></span><div class="repo-actions"><a class="external" href="${p.url}" target="_blank" rel="noopener noreferrer">${githubIcon}View on GitHub</a><button id="refresh" class="refresh-button" type="button">${refreshIcon}Refresh</button></div></div></div>${note(p)}${loadingMarkup()}<div class="score-shell"><div class="score-card">${row ? `<a class="ranking" href="/?focus=${encodeURIComponent(p.repository)}#${rowId(p.repository)}" title="See rank #${row.rank} on the leaderboard">#${row.rank}</a>` : ""}<div class="score-copy"><div class="score-line"><strong class="score">${percent(a.share)}</strong><span>Merged PRs by AI agents</span></div></div><div class="score-detail"><p class="score-count">${number(a.ai)} / ${number(a.total)} merged PRs · 90 days</p><div class="meter" role="img" aria-label="${a.ai} AI-agent PRs out of ${a.total} merged PRs">${[
     ["ai", a.ai],
     ["accounts", a.accounts],
     ["automation", a.automation],
@@ -127,7 +129,7 @@ function result(p: AiPage, v: View): string {
     )
     .join(
       "",
-    )}</div><dl class="count-grid"><div><dt><i class="dot ai"></i>AI agents</dt><dd>${number(a.ai)}</dd></div><div><dt><i class="dot accounts"></i>User accounts</dt><dd>${number(a.accounts)}</dd></div><div><dt><i class="dot automation"></i>Other bots</dt><dd>${number(a.automation)}</dd></div></dl></div></div>${agentMix(p)}${
+    )}</div><dl class="count-grid"><div><dt><i class="dot ai"></i>AI agents</dt><dd>${number(a.ai)}</dd></div><div><dt><i class="dot accounts"></i>User accounts</dt><dd>${number(a.accounts)}</dd></div><div><dt><i class="dot automation"></i>Other bots</dt><dd>${number(a.automation)}</dd></div></dl></div></div></div>${agentMix(p)}${
     daily.length >= 2
       ? `<section class="history"><h2>Over time</h2><ol>${daily
           .slice(-14)
@@ -152,7 +154,22 @@ function home(v: View, focus?: string, sort: SortDirection = "desc"): string {
           : 30,
       ),
     );
-  return `<section class="hero"><h1>How much of your repo <br>comes from <span>AI agents?</span></h1><form class="lookup" id="repo-form" action="/" method="get"><label for="repo-input">GitHub repository</label><div class="repo-input-wrap"><span class="input-symbol">${githubIcon}</span><input id="repo-input" name="repo" placeholder="e.g. kubernetes/kubernetes" maxlength="200" required autocomplete="off" autocapitalize="none" spellcheck="false"></div><button>Check repo</button></form>${loadingMarkup()}</section><section class="board" id="repos"><div class="table-scroll"><table><thead><tr><th scope="col">Rank</th><th scope="col">Repository</th><th scope="col" class="pr-share" aria-sort="${sort === "asc" ? "ascending" : "descending"}"><a class="sort-link" href="?sort=${sort === "asc" ? "desc" : "asc"}#repos" aria-label="Sort AI PR share ${sort === "asc" ? "descending" : "ascending"}">AI PRs <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${sort === "asc" ? "M12 19V5m-6 6 6-6 6 6" : "M12 5v14m-6-6 6 6 6-6"}"/></svg></a></th></tr></thead><tbody id="repo-rows">${rowsMarkup(first)}</tbody></table></div><div id="scroll-sentinel" data-offset="${first.length}" data-sort="${sort}" data-version="${e(viewVersion(v))}" ${first.length >= rows.length ? "hidden" : ""}><button id="more-repos" type="button">Load more</button></div><p id="list-status" role="status"></p></section>`;
+  return `<section class="hero"><h1>How much of your repo <br>comes from <span>AI agents?</span></h1><form class="lookup" id="repo-form" action="/" method="get"><label class="sr-only" for="repo-input">GitHub repository</label><div class="repo-input-wrap"><span class="input-symbol">${githubIcon}</span><input id="repo-input" name="repo" placeholder="e.g. usestrix/strix" maxlength="200" required autocomplete="off" autocapitalize="none" spellcheck="false"></div><button>Check repo</button></form>${loadingMarkup()}<nav class="stack-repos" aria-label="Explore familiar technologies">${curatedRepos
+    .filter((r) =>
+      v.pages.some(
+        (p) =>
+          p.repositoryId === r.id &&
+          p.analysis.complete &&
+          p.analysis.total >= 100,
+      ),
+    )
+    .map(
+      (r) =>
+        `<a href="${repoPath(r.repository)}"><img src="https://avatars.githubusercontent.com/u/${r.ownerId}?s=48" width="22" height="22" alt="">${e(r.label)}</a>`,
+    )
+    .join(
+      "",
+    )}</nav></section><section class="board" id="repos"><div class="table-scroll"><table><caption>Tracked repos</caption><thead><tr><th scope="col">Rank</th><th scope="col" class="repo-label">Repository</th><th scope="col" class="pr-share" aria-sort="${sort === "asc" ? "ascending" : "descending"}"><a class="sort-link" href="?sort=${sort === "asc" ? "desc" : "asc"}#repos" aria-label="Sort AI PR share ${sort === "asc" ? "descending" : "ascending"}">AI PRs <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${sort === "asc" ? "M12 19V5m-6 6 6-6 6 6" : "M12 5v14m-6-6 6 6 6-6"}"/></svg></a></th></tr></thead><tbody id="repo-rows">${rowsMarkup(first)}</tbody></table></div><div id="scroll-sentinel" data-offset="${first.length}" data-sort="${sort}" data-version="${e(viewVersion(v))}" ${first.length >= rows.length ? "hidden" : ""}><button id="more-repos" type="button">Load more</button></div><p id="list-status" role="status"></p></section>`;
 }
 export function pageHtml(
   v: View,

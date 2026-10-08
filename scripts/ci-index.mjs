@@ -1,5 +1,5 @@
 import { digest } from "./github-api.mjs";
-import { SEED_SIZE } from "./repo-cohort.mjs";
+import { loadIndexedRepos } from "./indexed-repos.mjs";
 import { readdir, readFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import { resolve } from "node:path";
@@ -8,9 +8,7 @@ let runs = [];
 try {
   runs = await readdir(root);
 } catch {}
-const poolId = digest(
-  JSON.parse(await readFile("config/repo-seed.json", "utf8")),
-);
+const poolId = digest(await loadIndexedRepos());
 let resume;
 for (const id of runs.sort().reverse()) {
   try {
@@ -18,7 +16,7 @@ for (const id of runs.sort().reverse()) {
       await readFile(resolve(root, id, "state.json"), "utf8"),
     );
     if (
-      state.seededCount !== SEED_SIZE ||
+      state.kind !== "indexed" ||
       state.poolId !== poolId ||
       Date.now() - Date.parse(state.capturedAt) > 7 * 86400000
     )

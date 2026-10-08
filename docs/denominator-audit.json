@@ -1,0 +1,24 @@
+{
+  "capturedAt": "2026-10-08T02:25:21.517Z",
+  "window": "2026-07-10T02:25:21+00:00..2026-10-08T02:25:21+00:00",
+  "results": [
+    {
+      "repo": "github/gh-aw",
+      "indexedMerged": 3777,
+      "githubMerged": 3777,
+      "match": true
+    },
+    {
+      "repo": "kubernetes/kubernetes",
+      "indexedMerged": 1001,
+      "githubMerged": 1001,
+      "match": true
+    },
+    {
+      "repo": "PostHog/posthog",
+      "indexedMerged": 16233,
+      "githubMerged": 16233,
+      "match": true
+    }
+  ]
+}

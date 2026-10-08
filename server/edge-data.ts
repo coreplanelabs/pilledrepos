@@ -39,7 +39,8 @@ export function validatePage(
     a.share !== (a.total ? (a.ai / a.total) * 100 : null) ||
     a.registryAt !== registry.verifiedAt ||
     typeof a.complete !== "boolean" ||
-    a.eligible !== (a.complete && a.total >= MIN_MERGES) ||
+    (a.eligible !== (a.complete && a.total > 0) &&
+      a.eligible !== (a.complete && a.total >= MIN_MERGES)) ||
     (a.complete && p.collector !== "merged-window-v2")
   )
     throw new Error("Invalid compact counts or registry binding.");
@@ -85,7 +86,11 @@ export function validatePage(
       )
         throw new Error("Invalid PR evidence link.");
   }
-  return { ...p, url: `https://github.com/${p.repository}` };
+  return {
+    ...p,
+    analysis: { ...a, eligible: a.complete && a.total > 0 },
+    url: `https://github.com/${p.repository}`,
+  };
 }
 export function compactDataset(dataset: Dataset): Dataset {
   const registry = parseRegistry(dataset.registry),
@@ -146,7 +151,7 @@ export function edgeDatasetReader(
       if (
         manifest.version !== 1 ||
         !Number.isSafeInteger(manifest.repositories) ||
-        manifest.repositories < 1000 ||
+        manifest.repositories < 1 ||
         manifest.key !== "dataset:" + manifest.sha ||
         !/^[a-f0-9]{64}$/.test(manifest.sha)
       )

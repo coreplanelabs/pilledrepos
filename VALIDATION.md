@@ -1,27 +1,63 @@
-# Local review evidence
+# Local verification and affected feature map
 
-Updated October 7, 2026. Merge, npm publication, and deployment remain held.
+October 8, 2026. Repo `coreplanelabs/pilledrepos`, branch
+`setup-pilledrepos-release`, base `b402d2b`. Production remains held for review.
 
-- Source checks: 68 tests, TypeScript checks, and build pass. Tests cover complete
-  merge pagination, exact IDs, counts, partial failures, durable submissions,
-  refresh preservation, canonical renames, real Node HTTP POST forwarding,
-  sorting before pagination, rank tie breakers, batched response isolation,
-  rate-limit waiting, seed discovery beyond 1,000 results, and KV fallback.
-- Node 22.22.2, Bun 1.3.0 frozen install, release guard, Worker dry run, and npm pack
-  dry run passed with the final mobile and larger-seed source changes.
-- Real browser submission accepts both `owner/repo` and a full GitHub URL, saves
-  `octocat/Hello-World`, and opens its completed result. SQLite retains that repo
-  and `mattermost/mattermost` as permanent submissions.
-- The earlier complete 1,000-repo capture read 64,641 merged PRs: 751 known AI-agent
-  authors, 52,541 user accounts, 11,348 other bots, and one deleted author. 371 repos
-  had no merged PRs; 875 were below the 100-PR ranking minimum. Spot checks on
-  GitHub confirmed empty windows and non-empty zero-agent results.
-- Replacement seed: 10,000 active public software repos ranked by stars, without
-  requiring agent configuration. Kubernetes and PostHog are included;
-  `thijsmat/rolodink` is excluded. The larger backfill is in progress and does not
-  replace the complete index until every capture passes.
-- Desktop and mobile screenshots are in `docs/pilledrepos-*.jpg`. Mobile review
-  covers 390×844 and 360×800 viewports, with a separate bordered input, larger body/data text,
-  22px SVG sort arrows, and a 44px sort touch target.
+## Data evidence
 
-No source changes were made to the original Repo Lore repository or its resources.
+The one-off 10,001-repo capture completed at `2026-10-08T02:25:21.517Z` (October 7,
+7:25 PM PDT): 1,477,264 merged PRs and 10,858 known-agent authors. Its first attempt
+saved 9,880 reads; 121 GitHub read failures correctly kept the previous pointer.
+Resuming recovered all reads. No failure was turned into a zero.
+
+[Account audit](docs/account-audit.json) independently tallies raw IDs. All nine
+identities were checked live; one real matched PR was verified for each of the
+seven IDs with corpus matches. Codegen and Codex connector had zero corpus matches:
+live identity proof plus local positive/negative ID tests, not matched-PR proof.
+[Denominator audit](docs/denominator-audit.json) separately checks GitHub counts for
+the leader, Kubernetes, and PostHog. These are spot checks, not universal provider proof.
+
+The fixed active database currently contains 2,400 entries. A controlled data-only
+run completed all 112 members selected before the final one-off enrollment;
+remaining active rows use their saved complete captures with their own read times.
+[Visible data audit](docs/visible-data-audit.json) checks every displayed row for
+complete data, positive denominator, rank, unique identity, exact fraction, and
+category sums. Thirteen data-backed curated pills passed the 100-PR minimum. The placeholder is Strix;
+the obsolete filter and visible input label are removed.
+No AI-percentage filter, broad daily discovery, or automatic removal is used.
+
+## Existing app verification map
+
+Real preview: `/Users/justin/workspace/coreplanelabs/ai-pilled`, port 4189.
+Build with `bun run build`; launch `bun run dev -- --use-gh`. Read-only doctor:
+check the owned PID, index pointer, GET `/api/leaderboard?limit=1`, and
+`bun run list:index`. Stop only agent-owned processes; retain catalog and captures.
+
+| User outcome                                                                     | Entry and drive                                                                                                         | Evidence and boundaries                                                                                                                                                                                                                    |
+| -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Durable enrollment                                                               | Submit repo name/URL via Check repo; inspect SQLite, reopen the store, and list indexed names.                          | User rows remain selected at zero PRs and after read failure/restart. Private repos are refused. Daily selection does not admit high-score archive rows or remove low-score members.                                                       |
+| Separate discovery                                                               | Run capture with `--discover`; checkpoint completes without activating it.                                              | Regression failed when discovery replaced `current.json`; passes with the active pointer unchanged. Public publisher rejects discovery and partial cohorts.                                                                                |
+| Complete data-only refresh                                                       | Default `index` reads `indexed=1`; save with `--existing-only`.                                                         | Controlled 112-member provider run passed. Daily workflow excludes seed/enrollment commands. Production D1 migration/activation remains pending.                                                                                           |
+| Infinite ranking                                                                 | GET sorted `/api/leaderboard` pages; load past 100.                                                                     | All complete nonempty reads rank, including small samples and zero AI share. Empty windows remain enrolled without false percentages. Stable-ID rename regression prevents duplicate rows.                                                 |
+| Rank jump                                                                        | Open Strix, click #3, inspect target row.                                                                               | Old hash/smooth behavior settled at the page top; native row anchor settles at 24px and keeps the matching highlight. Both href and landing row IDs are tested.                                                                            |
+| Data-backed pills                                                                | Click a technology pill.                                                                                                | Links open actual repo details, not a filter. Only complete 100+ PR reads receive a pill. The obsolete filter is removed; input label is accessible but hidden.                                                                            |
+| Card treatments                                                                  | Open normal and #1 repo pages; move pointer to a card corner and leave.                                                 | All score cards have the gradient. Real pointer input produces a 3D transform and clears on exit. #1 has a rainbow edge; rank badge is 26px at top right. GitHub/Refresh share one action row with licensed icons. On mobile the timestamp |
+| is hidden, GitHub aligns left and Refresh right. Desktop timestamp/actions share |
+| the same left edge.                                                              |
+| Top-ten confetti                                                                 | Open ranks 1, 10, and 11.                                                                                               | Real browser: burst on 1/10, none on 11, canvas removed afterward. Reduced-motion/touch exclusions are source-inspected; OS settings were not changed.                                                                                     |
+| Fixed raised loading                                                             | Use `node test/ui-review-server.mjs` after build/test; submit fixture repo and scroll during its three-second response. | Isolated UI proof: fixed 16px bottom offset before/after 800px scroll, no board shift, visible elevation. No GitHub or real catalog writes. Stop the owned fixture after capture.                                                          |
+| Mobile type/spacing                                                              | 360×800 repo view.                                                                                                      | Claude Code is one line; header spacing is compact. Rank and repository headers use distinct type treatments and larger separation. Footer matches the requested credit and external-link mark.                                            |
+
+Gates: Node 22.22.2, Bun 1.3.0 frozen install, typecheck, tests, build, local release
+guard, Worker dry run, npm pack dry run, and whitespace checks. Current-head CI is
+separate from these local proofs. Merge, npm publication, and deployment are held.
+
+Proof files: `docs/final-*.jpg`, `docs/oct8-*.jpg`, and the JSON audits. The temporary
+UI fixture is justified by fast real responses that otherwise hide loading layout.
+No new global verification process, recurring monitor, or review agent was created.
+
+Final local gates passed: **77 tests**, typecheck/build, release guard, Worker dry
+run, npm pack dry run, and whitespace checks. Known source compatibility cases
+include old small-window eligibility flags and repo renames keyed by stable ID.
+The SQLite startup regression failed under a held writer lock, then passed with
+a bounded five-second busy timeout. The database was not reset.

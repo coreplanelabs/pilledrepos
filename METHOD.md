@@ -47,21 +47,21 @@ are local preview evidence only. They do not qualify for ranking or history.
 
 ## Ranking
 
-Only complete 90-day reads with at least 100 merged PRs qualify. At this minimum,
-one PR changes the share by at most one percentage point. This limits extreme
-small-window results, but is not a confidence guarantee. Smaller windows show
-counts and a small-window note. An empty window has no percentage.
+Every complete, nonempty 90-day read receives a rank. Empty and partial windows
+never manufacture a percentage or rank. Small windows display their actual count
+and denominator. Rank is descending known-agent share, then merged PR count, then
+repository name. The list has no hard row or percentage cap.
 
-Rank is descending known AI share. Equal ratios rank by the number of merged PRs, then repository name.
-Ranks are unique and stay fixed when the table sort direction changes. The default pool uses 10,000 public, non-fork, non-archived software repos
-ranked by stars, pushed within 90 days, plus permanent user submissions.
-The frozen `config/repo-seed.json` records each stable repo ID and source URL.
-Discovery partitions star ranges rather than truncating search at 1,000 results.
-Curated lists and tutorials are excluded. No AI-config file is required.
-The home leaderboard excludes reads below 100 merged PRs; their detail pages
-and registrations remain available. Both sort directions apply before pagination.
-Missing captures prevent bulk publication. Named or limited diagnostic pools are
-labeled. Popularity and recent activity are selection proxies, not proof of ICP fit.
+Activity requirements choose automatic enrollment once: complete candidates with
+at least 100 merged PRs may be admitted. Reviewed technology overrides and user
+submissions bypass that requirement. This is distinct from display ranking.
+
+Discovery starts from the frozen public software pool in `config/repo-seed.json`,
+plus reviewed lower-star candidates and technology choices. It is an operator-run
+process. Discovery captures remain immutable archives and do not switch the active
+pointer. The daily job reads fixed database membership, refreshes its data, and
+never enrolls or removes entries. Familiar technologies are curated for relevance;
+no public GitHub signal alone proves commercial intent or daily AI use.
 
 ## Registry
 
@@ -81,13 +81,13 @@ The registry does not promise universal AI detection.
 
 ## Durable reads and history
 
-Weekly indexing and the initial backfill execute `scripts/refresh-index.mjs`.
+Daily indexing and the initial backfill execute `scripts/refresh-index.mjs`.
 A run freezes its capture time, pool, and registry; retries reuse those facts.
 Per-repo checkpoints make the run resumable. Independent search reads are batched;
 each repo still validates its full census. The local published index stores compact
 metrics while raw PR captures remain in their individual checkpoint files. A local owner lock prevents overlapping writers. Only a complete index is written
 before an atomic rename switches `current.json`. Capture or write failure leaves
-the previous pointer intact. Nothing is published to Cloudflare by this script.
+the previous pointer intact. Cloud publication is a separate verified readback step.
 
 Every eligible capture records its AI count, denominator, time, registry evidence
 version, and account-classification digest. History compares completed

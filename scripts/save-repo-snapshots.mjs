@@ -2,13 +2,17 @@ import { writeFile } from "node:fs/promises";
 import { readJson } from "./index-storage.mjs";
 import { localRepoDb } from "./local-repo-db.mjs";
 import { aiPage } from "../.server-dist/src/ai.js";
-const pointer = await readJson(".data/index/current.json"),
+const selectedRun = process.argv.find((a) => a.startsWith("--run="))?.slice(6);
+const pointer = selectedRun
+    ? { runId: selectedRun }
+    : await readJson(".data/index/current.json"),
   index = await readJson(".data/index/runs/" + pointer.runId + "/index.json");
 if (!index.complete)
   throw new Error("Only a complete capture can populate saved metrics.");
 const remote = process.argv.includes("--remote"),
   db = remote ? null : localRepoDb(),
-  sql = [];
+  sql = [],
+  existingOnly = process.argv.includes("--existing-only");
 const quote = (v) =>
   v === null
     ? "NULL"
@@ -34,16 +38,18 @@ for (const r of index.pages ?? index.reports) {
       "UPDATE repos SET snapshot=?,read_at=?,status='ready',last_error=NULL WHERE id=? AND (read_at IS NULL OR read_at<=?) AND lease_until<=?",
     uv = [snapshot, r.capturedAt, r.repositoryId, r.capturedAt, Date.now()];
   if (db) {
-    await db
-      .prepare(insert)
-      .bind(...iv)
-      .run();
+    if (!existingOnly)
+      await db
+        .prepare(insert)
+        .bind(...iv)
+        .run();
     await db
       .prepare(update)
       .bind(...uv)
       .run();
   } else {
-    sql.push(insert.replaceAll("?", () => quote(iv.shift())) + ";");
+    if (!existingOnly)
+      sql.push(insert.replaceAll("?", () => quote(iv.shift())) + ";");
     sql.push(update.replaceAll("?", () => quote(uv.shift())) + ";");
   }
 }

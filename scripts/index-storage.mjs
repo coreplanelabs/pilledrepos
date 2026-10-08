@@ -10,7 +10,12 @@ export async function atomicJson(path, value) {
 export async function readJson(path) {
   return JSON.parse(await readFile(path, "utf8"));
 }
-export async function publishLocal(root, runId, index) {
+export async function publishLocal(
+  root,
+  runId,
+  index,
+  { activate = true } = {},
+) {
   const records = index.pages ?? index.reports ?? [];
   if (
     !/^[a-z0-9-]+$/.test(runId) ||
@@ -54,7 +59,7 @@ export async function publishLocal(root, runId, index) {
       throw new Error("A published dataset is immutable. Start a new run.");
   } else await atomicJson(path, index);
   // One pointer switches readers to a fully written dataset. No external publication.
-  await atomicJson(resolve(root, "current.json"), { runId });
+  if (activate) await atomicJson(resolve(root, "current.json"), { runId });
 }
 
 export function acquireLock(root) {

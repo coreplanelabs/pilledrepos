@@ -33,9 +33,11 @@
     "index": "node scripts/refresh-index.mjs",
     "preview:seed": "node scripts/seed.mjs",
     "verify:registry": "node scripts/verify-registry.mjs",
-    "backfill": "node scripts/refresh-index.mjs",
+    "backfill": "node scripts/refresh-index.mjs --discover",
     "publish:index": "node scripts/publish-index.mjs",
-    "seed:repos": "node scripts/seed-top-repos.mjs"
+    "seed:repos": "node scripts/seed-top-repos.mjs",
+    "enroll:index": "node scripts/enroll-index.mjs",
+    "list:index": "node scripts/indexed-repos.mjs"
   },
   "devDependencies": {
     "@types/node": "22.18.6",

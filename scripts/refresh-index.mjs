@@ -1,3 +1,4 @@
+import { loadIndexedRepos } from "./indexed-repos.mjs";
 import { batchMergeReader } from "./batch-merges.mjs";
 import { SEED_SIZE } from "./repo-cohort.mjs";
 import { mkdir, readFile, stat } from "node:fs/promises";
@@ -22,11 +23,13 @@ import {
 const args = process.argv.slice(2);
 if (
   args.some(
-    (x) => !["--use-gh"].includes(x) && !/^--(limit|resume|repos)=/.test(x),
+    (x) =>
+      !["--use-gh", "--discover"].includes(x) &&
+      !/^--(limit|resume|repos)=/.test(x),
   )
 )
   throw new Error(
-    "Use --use-gh, --limit=1..10000, --resume=RUN_ID, or --repos=owner/repo,owner/repo.",
+    "Use --use-gh, --discover, --limit=1..10000, --resume=RUN_ID, or --repos=owner/repo,owner/repo.",
   );
 const limit = Number(
   args.find((x) => x.startsWith("--limit="))?.slice(8) ?? SEED_SIZE,
@@ -72,52 +75,37 @@ if (!state) {
     ),
     selected = [];
   const explicit = args.find((x) => x.startsWith("--repos="))?.slice(8);
+  const discovery = args.includes("--discover");
   let cohort;
   if (explicit) selected.push(...explicit.split(",").map(parseRepository));
-  else {
+  else if (discovery) {
     cohort = JSON.parse(await readFile("config/repo-seed.json", "utf8"));
     if (
       cohort.version !== 2 ||
       cohort.repositories.length !== SEED_SIZE ||
       new Set(cohort.repositories.map((r) => r.id)).size !== SEED_SIZE
     )
-      throw new Error("Invalid top-repo seed.");
+      throw new Error("Invalid discovery seed.");
     selected.push(
       ...cohort.repositories
         .slice(0, limit)
         .map((r) => parseRepository(r.repository)),
     );
-    if (limit === SEED_SIZE && process.env.CLOUDFLARE_INDEX_TOKEN) {
-      const { cloudflare, ACCOUNT } = await import("./release-guard.mjs");
-      const d = await cloudflare(
-        "/accounts/" +
-          ACCOUNT +
-          "/d1/database/afc39784-ac54-48f4-863b-c526be1c0ab4/query",
-        process.env.CLOUDFLARE_INDEX_TOKEN,
-        {
-          method: "POST",
-          body: JSON.stringify({
-            sql: "SELECT name FROM repos WHERE seeded=0",
-            params: [],
-          }),
-        },
+  } else {
+    cohort = await loadIndexedRepos();
+    if (!cohort.length)
+      throw new Error(
+        "The active index is empty. Run one-off enrollment first; discovery will not run automatically.",
       );
-      selected.push(...d.result[0].results.map((r) => parseRepository(r.name)));
-    } else if (limit === SEED_SIZE) {
-      const { localRepoDb } = await import("./local-repo-db.mjs");
-      const db = localRepoDb();
-      const rows = await db
-        .prepare("SELECT name FROM repos WHERE seeded=0")
-        .all();
-      selected.push(...rows.results.map((r) => parseRepository(r.name)));
-      db.close();
-    }
+    selected.push(...cohort.map((r) => parseRepository(r.name)));
+    if (args.some((x) => x.startsWith("--limit="))) selected.splice(limit);
   }
   const pool = [...new Set(selected)].slice(0, selected.length);
-  if (!pool.length || (!explicit && pool.length < limit))
+  if (!pool.length || (discovery && pool.length < limit))
     throw new Error("Repository pool is incomplete.");
   state = {
     runId,
+    kind: explicit ? "diagnostic" : discovery ? "discovery" : "indexed",
     capturedAt,
     registry,
     registryId: digest(registry),
@@ -126,12 +114,18 @@ if (!state) {
         .map((a) => ({ id: a.id, name: a.name }))
         .sort((a, b) => a.id - b.id),
     ),
+    identities:
+      !explicit && !discovery
+        ? Object.fromEntries(cohort.map((r) => [r.name.toLowerCase(), r.id]))
+        : undefined,
     selected: pool,
     expected: pool.length,
     pool: explicit
       ? "Selected repositories"
-      : "Top 10,000 active software repos and submitted repos",
-    seededCount: explicit ? 0 : Math.min(limit, SEED_SIZE),
+      : discovery
+        ? "One-off software discovery"
+        : "Tracked public repos",
+    seededCount: discovery ? Math.min(limit, SEED_SIZE) : 0,
     poolId: cohort ? digest(cohort) : undefined,
   };
   await atomicJson(resolve(dir, "state.json"), state);
@@ -183,6 +177,15 @@ async function capture(repository) {
           } catch {}
         }
         value ??= await read(path, body);
+        if (
+          state.kind === "indexed" &&
+          path.startsWith("/repos/") &&
+          state.identities &&
+          value.id !== state.identities[repository.toLowerCase()]
+        )
+          throw new Error(
+            "Indexed repository identity changed; membership is preserved.",
+          );
         if (!value.errors) await atomicJson(cache, value);
         return value;
       };
@@ -252,6 +255,10 @@ for (const report of pages) {
   }
 }
 const index = { ...state, complete: true, pages, history };
-await publishLocal(root, runId, index);
+await publishLocal(root, runId, index, {
+  activate: state.kind === "indexed" || !state.kind,
+});
 releaseLock();
-console.log(`Published complete local index (${pages.length} repos).`);
+console.log(
+  `${state.kind === "discovery" || state.kind === "diagnostic" ? "Saved one-off capture; active index unchanged" : "Published complete local index"} (${pages.length} repos).`,
+);

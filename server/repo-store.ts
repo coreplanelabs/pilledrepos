@@ -23,6 +23,7 @@ export type RepoRecord = {
   description: string;
   owner_id: number;
   seeded: number;
+  indexed: number;
   created_at: string;
   read_at: string | null;
   snapshot: string | null;
@@ -59,16 +60,22 @@ export class RepoStore {
       return validatePage(saved.page, parseRegistry(saved.agents));
     return aiPage(parseReport(saved), await this.agents());
   }
-  async extras(capturedAt: string): Promise<AiPage[]> {
+  async extras(
+    capturedAt: string,
+    publishedIds: number[] = [],
+  ): Promise<AiPage[]> {
     const rows = await this.db
       .prepare(
-        "SELECT snapshot FROM repos WHERE snapshot IS NOT NULL AND (seeded=0 OR read_at>?)",
+        "SELECT id,snapshot FROM repos WHERE indexed=1 AND snapshot IS NOT NULL AND (seeded=0 OR read_at>? OR id NOT IN (SELECT value FROM json_each(?)))",
       )
-      .bind(capturedAt)
-      .all<{ snapshot: string }>();
+      .bind(capturedAt, JSON.stringify(publishedIds))
+      .all<{ id: number; snapshot: string }>();
     return rows.results.map((r) => {
       const data = JSON.parse(r.snapshot);
-      return validatePage(data.page, parseRegistry(data.agents));
+      return validatePage(
+        { ...data.page, repositoryId: data.page.repositoryId ?? r.id },
+        parseRegistry(data.agents),
+      );
     });
   }
   async status(name: string): Promise<RepoRead> {
@@ -108,7 +115,7 @@ export class RepoStore {
     const stamp = new Date(this.now()).toISOString();
     await this.db
       .prepare(
-        "INSERT INTO repos(id,name,description,owner_id,created_at) VALUES(?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name,description=excluded.description,owner_id=excluded.owner_id",
+        "INSERT INTO repos(id,name,description,owner_id,created_at,indexed) VALUES(?,?,?,?,?,1) ON CONFLICT(id) DO UPDATE SET name=excluded.name,description=excluded.description,owner_id=excluded.owner_id,seeded=0,indexed=1",
       )
       .bind(meta.id, canonical, meta.description ?? "", meta.owner.id, stamp)
       .run();
@@ -153,7 +160,7 @@ export class RepoStore {
         .prepare(
           "UPDATE repos SET status='queued',lease=NULL,lease_until=0,last_error=? WHERE id=? AND lease=?",
         )
-        .bind("Saved. This read will finish in the weekly job.", meta.id, lease)
+        .bind("Saved. This read will finish in the daily job.", meta.id, lease)
         .run();
       return this.status(canonical);
     }
