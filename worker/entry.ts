@@ -19,7 +19,7 @@ export default {
           const r = await fetch("https://api.github.com" + path, {
             method: body ? "POST" : "GET",
             body: body ? JSON.stringify(body) : undefined,
-            redirect: "error",
+            redirect: "manual",
             signal: AbortSignal.timeout(20000),
             headers: {
               Authorization: "Bearer " + env.GITHUB_READ_TOKEN,

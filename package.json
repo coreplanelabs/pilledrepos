@@ -24,7 +24,9 @@
   "devDependencies": {
     "@types/node": "22.18.6",
     "typescript": "5.9.3",
-    "wrangler": "4.148.0"
+    "wrangler": "4.148.0",
+    "esbuild": "0.28.1",
+    "miniflare": "5.20261006.0-alpha"
   },
   "dependencies": {
     "@resvg/resvg-wasm": "2.6.2"
