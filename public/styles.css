@@ -1167,6 +1167,26 @@ caption {
   overflow-x: auto;
   padding: 16px 2px 4px;
   margin-top: 8px;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.stack-repos.is-scrolling {
+  scrollbar-color: var(--muted) transparent;
+}
+.stack-repos::-webkit-scrollbar {
+  height: 6px;
+}
+.stack-repos::-webkit-scrollbar-track,
+.stack-repos::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+.stack-repos::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+}
+.stack-repos.is-scrolling::-webkit-scrollbar-thumb {
+  background: var(--muted);
 }
 .stack-repos a {
   flex-shrink: 0;
