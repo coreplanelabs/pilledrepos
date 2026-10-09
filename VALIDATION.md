@@ -146,3 +146,14 @@ its saved metrics. Desktop percentage right edges matched exactly across nine
 rows; the mobile stacked column matched across six rows and had no 320px overflow.
 Desktop GitHub artwork uses native middle alignment against the title’s x-height;
 wrapped mobile titles still fit. These changes update the unmerged PR #7.
+
+Worker refresh regression (October 8 evening): live POST
+`/api/repos/refresh` for usestrix/strix reproduced the unsupported redirect-mode
+error on revision 9188ff3. The same failure was reproduced in Miniflare/workerd
+using the bundled production Worker entry, actual local KV/D1 bindings, and mocked
+GitHub responses. Switching the Worker fetch to manual redirects makes the real
+refresh endpoint return ready, complete REST/GraphQL reads, and persist the new
+snapshot. A redirect response is rejected before forwarding credentials or
+changing the prior saved counts/membership. Node CLI redirect policy is unchanged.
+The runtime tests dispose their Worker processes and temporary files; no preview
+service is left running. Production validation remains pending user merge/deploy.
