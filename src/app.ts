@@ -37,8 +37,45 @@ document
       apply();
     }),
   );
+const stackRepos = document.querySelector<HTMLElement>(".stack-repos");
+let scrollIdle: ReturnType<typeof setTimeout>;
+stackRepos?.addEventListener("scroll", () => {
+  stackRepos.classList.add("is-scrolling");
+  clearTimeout(scrollIdle);
+  scrollIdle = setTimeout(() => stackRepos.classList.remove("is-scrolling"), 700);
+}, { passive: true });
 const selectionButton = document.querySelector<HTMLButtonElement>("#leaderboard-info"),
-  selectionTooltip = document.querySelector<HTMLElement>("#repo-selection");
+  selectionTooltip = document.querySelector<HTMLElement>("#repo-selection"),
+  desktopHover = matchMedia("(min-width: 701px) and (hover: hover) and (pointer: fine)");
+let tooltipExit: ReturnType<typeof setTimeout>;
+function showSelectionTooltip() {
+  clearTimeout(tooltipExit);
+  selectionTooltip?.showPopover();
+}
+function hideSelectionTooltip() {
+  clearTimeout(tooltipExit);
+  if (selectionTooltip?.matches(":popover-open")) selectionTooltip.hidePopover();
+}
+for (const target of [selectionButton, selectionTooltip]) {
+  target?.addEventListener("pointerenter", (event) => {
+    if (desktopHover.matches && event.pointerType === "mouse") showSelectionTooltip();
+  });
+  target?.addEventListener("pointerleave", (event) => {
+    if (desktopHover.matches && event.pointerType === "mouse")
+      tooltipExit = setTimeout(hideSelectionTooltip, 150);
+  });
+}
+selectionButton?.addEventListener("focus", () => {
+  if (selectionButton.matches(":focus-visible")) showSelectionTooltip();
+});
+selectionButton?.addEventListener("blur", hideSelectionTooltip);
+selectionButton?.addEventListener("click", (event) => {
+  // Hover/focus already opened it. Mobile taps keep the native toggle.
+  if (event.detail === 0 || (desktopHover.matches && event instanceof PointerEvent && event.pointerType === "mouse")) {
+    event.preventDefault();
+    showSelectionTooltip();
+  }
+});
 selectionTooltip?.addEventListener("beforetoggle", () => {
   if (!selectionButton) return;
   const rect = selectionButton.getBoundingClientRect(),
@@ -56,9 +93,7 @@ function positionSelectionTooltip() {
 }
 selectionTooltip?.addEventListener("toggle", positionSelectionTooltip);
 window.addEventListener("resize", positionSelectionTooltip);
-window.addEventListener("scroll", () => {
-  if (selectionTooltip?.matches(":popover-open")) selectionTooltip.hidePopover();
-}, { passive: true });
+window.addEventListener("scroll", hideSelectionTooltip, { passive: true });
 const zone = Intl.DateTimeFormat().resolvedOptions().timeZone,
   readTimes = document.querySelectorAll<HTMLTimeElement>("time[data-timestamp]");
 function updateReadTimes() {
