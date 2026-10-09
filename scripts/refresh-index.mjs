@@ -1,7 +1,8 @@
 import { loadIndexedRepos } from "./indexed-repos.mjs";
 import { batchMergeReader } from "./batch-merges.mjs";
+import { retryCapture } from "./capture-retry.mjs";
 import { SEED_SIZE } from "./repo-cohort.mjs";
-import { mkdir, readFile, stat } from "node:fs/promises";
+import { mkdir, readFile, rm, stat } from "node:fs/promises";
 import { resolve } from "node:path";
 import { collectIndexedReport } from "../.server-dist/server/github-index.js";
 import { refreshAiRegistry } from "../.server-dist/server/ai-registry.js";
@@ -154,14 +155,14 @@ async function capture(repository) {
     } catch {}
     if (report) restored = true;
     if (!report) {
+      const reads = resolve(
+        dir,
+        "reads",
+        repository.toLowerCase().replace("/", "--"),
+      );
       const cachedRead = async (path, body) => {
         const key = digest({ collector: "merged-window-v2", path, body }),
-          cache = resolve(
-            dir,
-            "reads",
-            repository.toLowerCase().replace("/", "--"),
-            key + ".json",
-          );
+          cache = resolve(reads, key + ".json");
         try {
           return await readJson(cache);
         } catch {}
@@ -189,10 +190,18 @@ async function capture(repository) {
         if (!value.errors) await atomicJson(cache, value);
         return value;
       };
-      report = await collectIndexedReport(repository, {
-        read: cachedRead,
-        now: Date.parse(state.capturedAt),
-      });
+      report = await retryCapture(
+        () =>
+          collectIndexedReport(repository, {
+            read: cachedRead,
+            now: Date.parse(state.capturedAt),
+          }),
+        {
+          onRetry: async () => {
+            await rm(reads, { recursive: true, force: true });
+          },
+        },
+      );
       await atomicJson(file, report);
     }
     pages.push(aiPage(report, state.registry));
