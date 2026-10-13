@@ -1,4 +1,5 @@
 import { celebrateRank } from "./confetti.js";
+import { drawLanes } from "./lanes.js";
 import { friendlyTimestamp, readAge } from "./dates.js";
 import {
   themePreference,
@@ -39,11 +40,20 @@ document
   );
 const stackRepos = document.querySelector<HTMLElement>(".stack-repos");
 let scrollIdle: ReturnType<typeof setTimeout>;
+// Fade an edge only while more chips sit past it.
+function updateStackFades() {
+  if (!stackRepos) return;
+  const end = stackRepos.scrollWidth - stackRepos.clientWidth;
+  stackRepos.classList.toggle("fade-start", stackRepos.scrollLeft > 1);
+  stackRepos.classList.toggle("fade-end", stackRepos.scrollLeft < end - 1);
+}
 stackRepos?.addEventListener("scroll", () => {
   stackRepos.classList.add("is-scrolling");
   clearTimeout(scrollIdle);
   scrollIdle = setTimeout(() => stackRepos.classList.remove("is-scrolling"), 700);
+  updateStackFades();
 }, { passive: true });
+if (stackRepos) new ResizeObserver(updateStackFades).observe(stackRepos);
 const selectionButton = document.querySelector<HTMLButtonElement>("#leaderboard-info"),
   selectionTooltip = document.querySelector<HTMLElement>("#repo-selection"),
   desktopHover = matchMedia("(min-width: 701px) and (hover: hover) and (pointer: fine)");
@@ -248,46 +258,5 @@ if (focus) {
 celebrateRank(
   Number(document.querySelector<HTMLElement>(".repo-result")?.dataset.rank),
 );
-// Press the hovered corner toward the page; the stable shell avoids feedback jitter.
-if (
-  matchMedia("(hover: hover) and (pointer: fine)").matches &&
-  !matchMedia("(prefers-reduced-motion: reduce)").matches
-) {
-  document.querySelectorAll<HTMLElement>(".score-shell").forEach((shell) => {
-    const card = shell.querySelector<HTMLElement>(".score-card")!;
-    let rect: DOMRect | undefined,
-      frame = 0,
-      x = 0,
-      y = 0;
-    const reset = () => {
-      cancelAnimationFrame(frame);
-      frame = 0;
-      rect = undefined;
-      card.style.removeProperty("--tilt-x");
-      card.style.removeProperty("--tilt-y");
-    };
-    shell.addEventListener("pointermove", (e) => {
-      if (e.pointerType !== "mouse") return;
-      rect ??= shell.getBoundingClientRect();
-      x = e.clientX;
-      y = e.clientY;
-      if (!frame)
-        frame = requestAnimationFrame(() => {
-          frame = 0;
-          const px = Math.max(
-            -0.5,
-            Math.min(0.5, (x - rect!.left) / rect!.width - 0.5),
-          );
-          const py = Math.max(
-            -0.5,
-            Math.min(0.5, (y - rect!.top) / rect!.height - 0.5),
-          );
-          card.style.setProperty("--tilt-x", `${-py * 6}deg`);
-          card.style.setProperty("--tilt-y", `${px * 6}deg`);
-        });
-    });
-    shell.addEventListener("pointerleave", reset);
-    shell.addEventListener("pointercancel", reset);
-    window.addEventListener("scroll", reset, { passive: true });
-  });
-}
+const lanes = document.querySelector<HTMLCanvasElement>(".hero-lanes");
+if (lanes) drawLanes(lanes);
