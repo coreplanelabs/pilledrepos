@@ -154,7 +154,8 @@ using the bundled production Worker entry, actual local KV/D1 bindings, and mock
 GitHub responses. Switching the Worker fetch to manual redirects makes the real
 refresh endpoint return ready, complete REST/GraphQL reads, and persist the new
 snapshot. A redirect response is rejected before forwarding credentials or
-changing the prior saved counts/membership. Node CLI redirect policy is unchanged.
+changing the prior saved counts/membership. Node CLI redirect policy was unchanged
+then; the October 18 entry below changes it for same-host rename redirects only.
 The runtime tests dispose their Worker processes and temporary files; no preview
 service is left running. Production validation remains pending user merge/deploy.
 
@@ -168,3 +169,24 @@ the final pill scrolled the native row horizontally; the thumb appeared during
 scroll and hid on idle, with row height unchanged. Native momentum is retained
 by CSS/native overflow; physical iOS inertia was not measured. No provider reads
 or enrollments were submitted. Screenshots and check logs remain in `.data`.
+
+Daily index availability handling (October 18, 2026): before the change, all nine
+scheduled "Daily index" runs failed, so the workflow never reached its D1 snapshot
+and publication steps and the public index stayed on the October 8 capture. Three
+indexed members fail deterministically: experientiallabs/experiential and
+PCA-SDS/operis return 404, and GrayCodeAI/rho answers with GitHub's rename redirect
+(301 to `https://api.github.com/repositories/1225263558`, now `GrayCodeAI/reflect`),
+which the reader refused as an unsupported redirect mode. Two more members,
+coreplanelabs/cli and coreplanelabs/switchboard, answer 403 to the CI credential
+while an unauthenticated read returns 200, so their refusal still needs the
+credential owner's check. After the change, a same-host rename redirect is
+followed, a member the provider refuses (403, 404, 410) is named and left out of
+that day's dataset while its catalog row, saved metrics, and history stay active,
+and more than 25 refusals or one percent of the cohort stops the run. Proof:
+`test/read-redirect.test.mjs` covers the followed same-host rename, the refused
+off-host redirect with a single request, the provider's own failure reason, and the
+search read that never follows a redirect; `test/repository-availability.test.mjs`
+covers the refusal classification, the pool filter, and the 25 / one-percent bound.
+A live unauthenticated probe confirmed the rho redirect target and both 404s. The
+nine failing runs' full failure lists were not retrievable, so further refused
+members may exist; the names and statuses in the next run's log are the check.
