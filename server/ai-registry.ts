@@ -5,7 +5,7 @@ import {
   type Source,
 } from "../src/ai.js";
 export const PARTNER_SOURCE =
-  "/repos/github/docs/contents/content/copilot/concepts/agents/about-third-party-coding-agents.md";
+  "/repos/github/docs/contents/content/copilot/concepts/agent-capabilities/about-agents/about-third-party-coding-agents.md";
 export const PARTNER_URL =
   "https://docs.github.com/en/copilot/concepts/agents/about-third-party-coding-agents";
 /** Names are used only to resolve explicit install declarations, never to classify observed bots. */
