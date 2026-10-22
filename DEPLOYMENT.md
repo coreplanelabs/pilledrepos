@@ -51,7 +51,11 @@ Never use Repo Lore's resources, environments, or credentials.
    Import only the reviewed active membership and complete captures, preserving
    user registrations and newer reads. Do not enroll the whole discovery archive.
    Publish the complete KV dataset with verified readback. Daily refresh updates
-   existing entries; it does not discover, reseed, or remove registrations.
+   existing entries; it does not discover, reseed, or remove registrations. A
+   member that GitHub refuses to serve is named in the run log and left out of
+   that day's dataset, while its catalog row, saved metrics, and history stay
+   active. More than 25 refused members, or one percent of the cohort, stops the
+   run so a credential or provider fault cannot shrink the index.
 4. Review and merge the CI change. Its main push starts the checked release.
 
 As of October 8, 2026, all three Cloudflare credentials are stored in the

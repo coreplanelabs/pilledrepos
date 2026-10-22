@@ -1,13 +1,38 @@
 import { spawn } from "node:child_process";
 import { createHash } from "node:crypto";
+const ALLOWED_READ =
+  /^\/(repos\/|repositories\/\d+$|user\/\d+$|users\/|search\/repositories\?|graphql$)/;
 export class GitHubReadError extends Error {
-  constructor(status, transient = status === 429 || status >= 500) {
+  constructor(status, transient = status === 429 || status >= 500, reason = "") {
     super(
-      `GitHub read failed${status ? ` (${status})` : ""}. Resume after checking access and rate limits.`,
+      `GitHub read failed${status ? ` (${status})` : ""}${reason ? `: ${reason}` : ""}. Resume after checking access and rate limits.`,
     );
     this.status = status;
     this.transient = transient;
   }
+}
+async function failureReason(response) {
+  try {
+    const message = JSON.parse(await response.text())?.message;
+    return typeof message === "string"
+      ? message.replace(/\s+/g, " ").trim().slice(0, 160)
+      : "";
+  } catch {
+    return "";
+  }
+}
+/** GitHub sends a renamed or transferred repository to its stable ID on the same host. */
+function movedRead(response) {
+  const location = response.headers.get("location"),
+    target = location ? new URL(location, "https://api.github.com") : null;
+  if (
+    !target ||
+    target.protocol !== "https:" ||
+    target.hostname !== "api.github.com"
+  )
+    return null;
+  const path = target.pathname + target.search;
+  return ALLOWED_READ.test(path) ? path : null;
 }
 export async function retryRead(
   read,
@@ -33,11 +58,9 @@ export function githubReader(useGh = false) {
     throw new Error(
       "Set AI_PILLED_GITHUB_TOKEN or pass --use-gh for read-only captures.",
     );
-  const once = async (path, body) => {
+  const once = async (path, body, hops = 1) => {
     if (
-      !/^\/(repos\/|user\/\d+$|users\/|search\/repositories\?|graphql$)/.test(
-        path,
-      )
+      !ALLOWED_READ.test(path)
     )
       throw new Error("Unexpected GitHub read.");
     if (useGh)
@@ -87,7 +110,7 @@ export function githubReader(useGh = false) {
     const r = await fetch("https://api.github.com" + path, {
       method: body ? "POST" : "GET",
       body: body ? JSON.stringify(body) : undefined,
-      redirect: "error",
+      redirect: "manual",
       signal: AbortSignal.timeout(60000),
       headers: {
         Authorization: "Bearer " + token,
@@ -96,7 +119,17 @@ export function githubReader(useGh = false) {
         "User-Agent": "AI-Pilled",
       },
     });
-    if (!r.ok) throw new GitHubReadError(r.status);
+    if (r.status >= 300 && r.status < 400) {
+      const moved = !body && hops ? movedRead(r) : null;
+      if (moved) return once(moved, body, hops - 1);
+      throw new GitHubReadError(
+        r.status,
+        false,
+        "the read moves away from api.github.com",
+      );
+    }
+    if (!r.ok)
+      throw new GitHubReadError(r.status, undefined, await failureReason(r));
     const s = await r.text();
     if (s.length > 8000000) throw new Error("Oversized GitHub response.");
     return JSON.parse(s);
