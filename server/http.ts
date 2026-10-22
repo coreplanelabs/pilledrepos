@@ -79,7 +79,7 @@ export function createHandler(options: {
         "application/json",
       );
     if (
-      /^\/(assets\/|app\.js$|confetti\.js$|theme\.js$|dates\.js$|theme-init\.js$|styles\.css$|favicon\.svg$)/.test(
+      /^\/(assets\/|app\.js$|confetti\.js$|lanes\.js$|theme\.js$|dates\.js$|theme-init\.js$|styles\.css$|favicon\.svg$)/.test(
         path,
       )
     )

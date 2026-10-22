@@ -1,5 +1,8 @@
 # Third-party assets and libraries
 
+- Geist and Geist Mono fonts (v1.7.2 variable WOFF2): SIL Open Font License 1.1.
+  Full license in public/assets/geist-OFL.txt.
+  https://github.com/vercel/geist-font
 - DM Sans and DM Mono fonts: SIL Open Font License 1.1. Local WOFF files and
   ASCII TTF subsets use the same licensed families. Full licenses are in
   public/assets/dmsans-OFL.txt and public/assets/dmmono-OFL.txt.
