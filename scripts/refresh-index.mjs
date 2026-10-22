@@ -16,6 +16,13 @@ import {
 import { parseRepository } from "../.server-dist/src/core.js";
 import { githubReader, verifySource, digest } from "./github-api.mjs";
 import {
+  RepositoryRefused,
+  poolWithoutRefused,
+  refusalStatus,
+  refusedBound,
+  refusedSummary,
+} from "./repository-availability.mjs";
+import {
   atomicJson,
   readJson,
   publishLocal,
@@ -133,7 +140,8 @@ if (!state) {
 }
 parseRegistry(state.registry);
 const pages = [],
-  candidateCounts = new Map();
+  candidateCounts = new Map(),
+  refused = [];
 let failures = 0;
 async function capture(repository) {
   const file = resolve(
@@ -177,7 +185,17 @@ async function capture(repository) {
               value = await readJson(file);
           } catch {}
         }
-        value ??= await read(path, body);
+        try {
+          value ??= await read(path, body);
+        } catch (error) {
+          const status =
+            state.kind === "indexed" && path.startsWith("/repos/") && !body
+              ? refusalStatus(error)
+              : null;
+          throw status === null
+            ? error
+            : new RepositoryRefused(repository, status);
+        }
         if (
           state.kind === "indexed" &&
           path.startsWith("/repos/") &&
@@ -217,6 +235,11 @@ async function capture(repository) {
         `${pages.length}/${state.expected} ${repository}: ${analyzeAi(report, state.registry).total} merges`,
       );
   } catch (e) {
+    if (e instanceof RepositoryRefused) {
+      refused.push({ repository: e.repository, status: e.status });
+      console.warn(e.message);
+      return;
+    }
     failures++;
     console.warn(repository + ": " + e.message);
   }
@@ -236,7 +259,19 @@ await atomicJson(resolve(dir, "candidates.json"), {
   status: "Unverified automation; excluded from AI counts",
   candidates,
 });
-if (failures || pages.length !== state.expected)
+if (refused.length) {
+  if (refused.length > refusedBound(state.expected))
+    throw new Error(
+      `${refused.length} indexed repositories are unavailable (${refusedSummary(refused)}); that is a credential or provider fault, so the previous index stays active.`,
+    );
+  console.warn(
+    `${refused.length} indexed repositories are unavailable (${refusedSummary(refused)}); publishing the other ${state.expected - refused.length}.`,
+  );
+}
+const published = refused.length
+  ? poolWithoutRefused(state.selected, refused)
+  : state.selected;
+if (failures || pages.length !== published.length)
   throw new Error(
     `${failures} captures failed. Previous index preserved. Resume with --resume=${runId} --use-gh or the experiment token.`,
   );
@@ -263,7 +298,15 @@ for (const report of pages) {
     ];
   }
 }
-const index = { ...state, complete: true, pages, history };
+const index = {
+  ...state,
+  selected: published,
+  expected: published.length,
+  refused,
+  complete: true,
+  pages,
+  history,
+};
 await publishLocal(root, runId, index, {
   activate: state.kind === "indexed" || !state.kind,
 });
