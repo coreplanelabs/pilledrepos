@@ -20,7 +20,10 @@ releases are serialized. Stale main releases fail rather than replace newer code
 Public checks require HTTP 200, the exact `X-Pilledrepos-Revision`, real leaderboard
 counts, a repo page, a 1200×630 PNG, CSS, and browser script. A failed check fails the
 release; it does not silently roll back or retry a possibly completed write.
-Inspect the recorded deployment before retrying.
+Inspect the recorded deployment before retrying. Activation is proven through the
+Cloudflare API. The public revision check then waits up to 60 seconds for the new
+revision to reach the edge, because an edge colo can serve the previous Worker
+version for a short time after activation.
 
 ## Dedicated resources
 
