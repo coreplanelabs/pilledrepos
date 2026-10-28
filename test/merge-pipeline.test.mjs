@@ -51,6 +51,16 @@ function site({ revision = sha, empty = false, badPng = false } = {}) {
     });
   };
 }
+function clock() {
+  let elapsed = 0;
+  return {
+    now: () => elapsed,
+    wait: async (ms) => {
+      elapsed += ms;
+    },
+    elapsed: () => elapsed,
+  };
+}
 test("public validation proves the requested source and real payload shapes, not only HTTP 200", async () => {
   const result = await verifyLive("https://pilledrepos.com", sha, site());
   assert.equal(result.revision, sha);
@@ -63,11 +73,13 @@ test("public validation proves the requested source and real payload shapes, not
     "styles",
     "script",
   ]);
+  const stale = clock();
   await assert.rejects(
     verifyLive(
       "https://pilledrepos.com",
       sha,
       site({ revision: "b".repeat(40) }),
+      { wait: stale.wait, now: stale.now },
     ),
     /revision mismatch/,
   );
@@ -77,4 +89,44 @@ test("public validation proves the requested source and real payload shapes, not
   await assert.rejects(
     verifyLive("https://pilledrepos.com", sha, site({ badPng: true })),
   );
+});
+test("a stale edge revision is waited out before the strict checks", async () => {
+  const previous = "b".repeat(40);
+  const stale = site({ revision: previous });
+  const fresh = site();
+  let calls = 0;
+  const read = async (url, init) => {
+    calls += 1;
+    return calls <= 2 ? stale(url, init) : fresh(url, init);
+  };
+  const c = clock();
+  const result = await verifyLive("https://pilledrepos.com", sha, read, {
+    intervalMs: 1000,
+    timeoutMs: 60000,
+    wait: c.wait,
+    now: c.now,
+  });
+  assert.equal(result.revision, sha);
+  assert.equal(calls, 8);
+  assert.equal(c.elapsed(), 2000);
+});
+test("an edge that never serves the new revision fails inside the bounded wait", async () => {
+  const previous = "b".repeat(40);
+  let calls = 0;
+  const read = async (url, init) => {
+    calls += 1;
+    return site({ revision: previous })(url, init);
+  };
+  const c = clock();
+  await assert.rejects(
+    verifyLive("https://pilledrepos.com", sha, read, {
+      intervalMs: 1000,
+      timeoutMs: 5000,
+      wait: c.wait,
+      now: c.now,
+    }),
+    /Live revision mismatch: \/ \(observed b{40} after 5000ms\)/,
+  );
+  assert.equal(calls, 6);
+  assert.equal(c.elapsed(), 5000);
 });

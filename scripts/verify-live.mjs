@@ -1,21 +1,61 @@
 import assert from "node:assert/strict";
-export async function verifyLive(origin, sha, read = fetch) {
+export const REVISION_HEADER = "X-Pilledrepos-Revision";
+// Activation is proven through the Cloudflare API, but the public edge can keep
+// serving the previous Worker version for a short time after it. Wait for the
+// new revision to reach the edge before the strict per-path checks, and fail if
+// it does not converge inside this window.
+export const PROPAGATION_TIMEOUT_MS = 60000;
+export const PROPAGATION_INTERVAL_MS = 2000;
+export async function verifyLive(
+  origin,
+  sha,
+  read = fetch,
+  {
+    timeoutMs = PROPAGATION_TIMEOUT_MS,
+    intervalMs = PROPAGATION_INTERVAL_MS,
+    wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
+    now = () => Date.now(),
+  } = {},
+) {
   assert.match(sha, /^[a-f0-9]{40}$/);
-  async function get(path, type) {
-    const r = await read(origin + path, {
+  async function load(path) {
+    return read(origin + path, {
       redirect: "manual",
       signal: AbortSignal.timeout(30000),
     });
+  }
+  async function get(path, type) {
+    const r = await load(path);
     assert.equal(r.status, 200, "Public request failed: " + path);
     assert.equal(
-      r.headers.get("X-Pilledrepos-Revision"),
+      r.headers.get(REVISION_HEADER),
       sha,
       "Live revision mismatch: " + path,
     );
     assert.match(r.headers.get("Content-Type") ?? "", type);
     return r;
   }
-  const html = await (await get("/", /text\/html/)).text();
+  const deadline = now() + timeoutMs;
+  let home, served, status;
+  for (;;) {
+    home = await load("/");
+    status = home.status;
+    served = home.headers.get(REVISION_HEADER);
+    if ((status === 200 && served === sha) || now() >= deadline) break;
+    await wait(intervalMs);
+  }
+  assert.equal(status, 200, "Public request failed: /");
+  assert.equal(
+    served,
+    sha,
+    "Live revision mismatch: / (observed " +
+      (served ?? "no revision header") +
+      " after " +
+      timeoutMs +
+      "ms)",
+  );
+  assert.match(home.headers.get("Content-Type") ?? "", /text\/html/);
+  const html = await home.text();
   assert.match(html, /<main/);
   assert.match(html, /id="repo-form"/);
   const data = await (

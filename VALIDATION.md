@@ -92,8 +92,10 @@ Cloudflare deployment, public DNS/TLS, or live enrollment.
 
 To repeat after build: prepare isolated local KV with the complete compact dataset
 and current manifest, start Wrangler with a 40-hex `SOURCE_SHA`, then call
-`verifyLive(origin, sha)` from `scripts/verify-live.mjs`. Stop only that owned Worker;
-retain the real catalog and captures. Production preflight is read-only:
+`verifyLive(origin, sha, read)` from `scripts/verify-live.mjs`. It waits up to 60
+seconds for the new revision to reach the edge, and its `timeoutMs`, `intervalMs`,
+`wait`, and `now` options let a test skip the real wait. Stop only that owned
+Worker; retain the real catalog and captures. Production preflight is read-only:
 `node scripts/release.mjs --preflight`, in the checked-main workflow context.
 
 The deployment-only diff passed **79 tests**, frozen install, typecheck, build,
