@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
 export const REVISION_HEADER = "X-Pilledrepos-Revision";
 // Activation is proven through the Cloudflare API, but the public edge can keep
-// serving the previous Worker version for a short time after it. Wait for the
-// new revision to reach the edge before the strict per-path checks, and fail if
-// it does not converge inside this window.
+// serving the previous Worker version for a short time after it, and it can
+// serve the new revision on one path while another path still returns the old
+// one. Wait for the new revision to reach each checked path before the strict
+// assertions, and fail if a path does not converge inside this window.
 export const PROPAGATION_TIMEOUT_MS = 60000;
 export const PROPAGATION_INTERVAL_MS = 2000;
 export async function verifyLive(
@@ -24,37 +25,43 @@ export async function verifyLive(
       signal: AbortSignal.timeout(30000),
     });
   }
+  // Home is not a proxy for the other paths: the edge can serve the new
+  // revision on "/" while an asset path still returns the previous one. Poll
+  // every checked path until it serves the new revision, and stop at the
+  // deadline so a path that never converges still fails the check.
+  async function loadRevision(path) {
+    const deadline = now() + timeoutMs;
+    let response;
+    for (;;) {
+      response = await load(path);
+      if (
+        response.status === 200 &&
+        response.headers.get(REVISION_HEADER) === sha
+      )
+        break;
+      if (now() >= deadline) break;
+      await wait(intervalMs);
+    }
+    return response;
+  }
   async function get(path, type) {
-    const r = await load(path);
+    const r = await loadRevision(path);
     assert.equal(r.status, 200, "Public request failed: " + path);
     assert.equal(
       r.headers.get(REVISION_HEADER),
       sha,
-      "Live revision mismatch: " + path,
+      "Live revision mismatch: " +
+        path +
+        " (observed " +
+        (r.headers.get(REVISION_HEADER) ?? "no revision header") +
+        " after " +
+        timeoutMs +
+        "ms)",
     );
     assert.match(r.headers.get("Content-Type") ?? "", type);
     return r;
   }
-  const deadline = now() + timeoutMs;
-  let home, served, status;
-  for (;;) {
-    home = await load("/");
-    status = home.status;
-    served = home.headers.get(REVISION_HEADER);
-    if ((status === 200 && served === sha) || now() >= deadline) break;
-    await wait(intervalMs);
-  }
-  assert.equal(status, 200, "Public request failed: /");
-  assert.equal(
-    served,
-    sha,
-    "Live revision mismatch: / (observed " +
-      (served ?? "no revision header") +
-      " after " +
-      timeoutMs +
-      "ms)",
-  );
-  assert.match(home.headers.get("Content-Type") ?? "", /text\/html/);
+  const home = await get("/", /text\/html/);
   const html = await home.text();
   assert.match(html, /<main/);
   assert.match(html, /id="repo-form"/);
