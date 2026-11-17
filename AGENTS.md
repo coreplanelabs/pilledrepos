@@ -9,7 +9,9 @@ user accounts with human-written code. Keep other automation and unknown authors
 separate. Preserve metric evidence internally, sample limits, dates, and metric definitions.
 
 The independent public remote is coreplanelabs/pilledrepos. Deployment targets
-pilledrepos.com in its verified DNS-owning Polycorp account. Bind only the new
+the pilledrepos Worker in its verified DNS-owning Polycorp account. The
+pilledrepos.com domain is detached and workers.dev is disabled; do not attach a
+public route without the user's request. Bind only the new
 Pilled Repos resources in wrangler.json. Never copy Repo Lore secrets or resources.
 Open a PR and show the local preview before the user merges. The checked main
 pipeline deploys automatically after merge once its dedicated
