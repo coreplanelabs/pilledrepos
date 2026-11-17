@@ -15,9 +15,8 @@ export function checkConfig(c) {
   assert.equal(c.preview_urls, false);
   assert.equal(c.main, "worker/entry.ts");
   assert.equal(c.env, undefined);
-  assert.deepEqual(c.routes, [
-    { pattern: DOMAIN, custom_domain: true, zone_id: ZONE },
-  ]);
+  assert.equal(c.routes, undefined, "The Worker has no public route.");
+  assert.equal(c.route, undefined, "The Worker has no public route.");
   assert.deepEqual(c.kv_namespaces, [{ binding: "DATA", id: NAMESPACE }]);
   assert.deepEqual(c.d1_databases, [
     {

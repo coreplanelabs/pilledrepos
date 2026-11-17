@@ -79,8 +79,9 @@ were reset after verification.
 
 The affected entries are `check.yml`, `release.mjs`,
 `verify-live.mjs`, and the Worker revision header. Main merges must pass validation,
-activate that exact revision, and pass
-public checks. Tag pushes and stale-main releases are rejected.
+and activate that exact revision. Tag pushes and stale-main releases are rejected.
+Since November 17, 2026, the Worker has no public origin, so `release.mjs` no
+longer calls `verifyLive`. The module and its tests remain for local Worker checks.
 
 Local behavior tests cover tag refusal, exact live revision,
 empty data, and invalid PNG refusal. A real isolated local Worker on port 4192

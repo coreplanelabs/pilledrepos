@@ -35,7 +35,6 @@ jobs:
     timeout-minutes: 20
     environment:
       name: production
-      url: https://pilledrepos.com
     permissions:
       contents: read
     concurrency:

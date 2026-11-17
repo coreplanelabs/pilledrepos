@@ -13,13 +13,18 @@ import {
 const config = JSON.parse(
   await readFile(new URL("../wrangler.json", import.meta.url), "utf8"),
 );
-test("deployment cannot reuse the Repo Lore account, worker, namespace, or domain", () => {
+test("deployment cannot reuse Repo Lore resources or attach a public route", () => {
   checkConfig(config);
   for (const c of [
     { ...config, account_id: "3c7b28f23cc93f09e77bb0a9ffcb7e6f" },
     { ...config, name: "repo-lore" },
     { ...config, workers_dev: true },
     { ...config, routes: [{ pattern: "repolore.fun" }] },
+    {
+      ...config,
+      routes: [{ pattern: DOMAIN, custom_domain: true, zone_id: ZONE }],
+    },
+    { ...config, route: DOMAIN },
     {
       ...config,
       kv_namespaces: [

@@ -1,6 +1,13 @@
 # Pilled Repos deployment
 
-Target: public **pilledrepos.com**, source **coreplanelabs/pilledrepos**.
+Target: the `pilledrepos` Worker, source **coreplanelabs/pilledrepos**.
+
+As of November 17, 2026, the Worker is not publicly reachable. The
+`pilledrepos.com` custom domain is detached, and the workers.dev address and
+preview URLs are disabled. `wrangler.json` has no routes, and the release guard
+rejects any route. The zone stays in the account; preflight still checks DNS and
+account ownership. Releases prove activation through the Cloudflare API only;
+there is no public live check.
 This is a website, not an npm package. Pull requests validate changes. A push to main deploys
 only after validation passes. The workflow checks that its source is still current
 main before activating it.

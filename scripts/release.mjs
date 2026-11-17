@@ -10,10 +10,8 @@ import {
   cloudflare,
   ACCOUNT,
   WORKER,
-  DOMAIN,
 } from "./release-guard.mjs";
 import { edgeDatasetReader } from "../.server-dist/server/edge-data.js";
-import { verifyLive } from "./verify-live.mjs";
 const env = process.env,
   sha = env.GITHUB_SHA;
 checkReleaseContext(env, sha);
@@ -182,10 +180,8 @@ try {
   await summary(
     `Source ${sha}; active version ${upload.version_id}; deployment ${deployment.id}.`,
   );
-  const proof = await verifyLive("https://" + DOMAIN, sha);
-  await summary(
-    `Live revision ${proof.revision} passed home, ${proof.repository}, leaderboard, PNG, CSS, and browser-script checks.`,
-  );
+  // The Worker has no custom domain and no workers.dev address, so there is no
+  // public origin to verify. Activation is proven through the Cloudflare API.
 } finally {
   await rm(dir, { recursive: true, force: true });
 }
