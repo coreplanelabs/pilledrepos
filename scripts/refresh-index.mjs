@@ -22,6 +22,7 @@ import {
   refusedBound,
   refusedSummary,
 } from "./repository-availability.mjs";
+import { resolveIndexedIdentity } from "./indexed-identity.mjs";
 import {
   atomicJson,
   readJson,
@@ -199,12 +200,15 @@ async function capture(repository) {
         if (
           state.kind === "indexed" &&
           path.startsWith("/repos/") &&
-          state.identities &&
-          value.id !== state.identities[repository.toLowerCase()]
+          !body &&
+          state.identities
         )
-          throw new Error(
-            "Indexed repository identity changed; membership is preserved.",
-          );
+          value = await resolveIndexedIdentity({
+            read,
+            requested: repository,
+            trackedId: state.identities[repository.toLowerCase()],
+            value,
+          });
         if (!value.errors) await atomicJson(cache, value);
         return value;
       };
