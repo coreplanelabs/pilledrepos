@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { retryCapture } from "../scripts/capture-retry.mjs";
+import { RepositoryRenamed } from "../scripts/repository-availability.mjs";
 test("a capture that fails on a transient read then succeeds is retried, not failed", async () => {
   let calls = 0;
   const reverted = [];
@@ -48,4 +49,21 @@ test("a persistent provider failure still fails closed after the bounded attempt
     ),
   );
   assert.equal(calls, 4);
+});
+
+test("a member whose name now resolves to another repository is not retried", async () => {
+  let calls = 0,
+    pauses = 0;
+  await assert.rejects(
+    retryCapture(
+      async () => {
+        calls++;
+        throw new RepositoryRenamed("feder-cr/invisible_dots", 837911756, 850759104);
+      },
+      { pause: async () => pauses++ },
+    ),
+    (error) => error instanceof RepositoryRenamed,
+  );
+  assert.equal(calls, 1);
+  assert.equal(pauses, 0);
 });

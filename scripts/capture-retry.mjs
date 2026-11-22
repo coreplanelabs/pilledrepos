@@ -1,3 +1,4 @@
+import { RepositoryRenamed } from "./repository-availability.mjs";
 /** Bounded retry for one repository capture.
  *
  * A capture can fail on a transient GitHub condition: a rate-limit 403, a dropped
@@ -19,7 +20,8 @@ export async function retryCapture(
     try {
       return await capture();
     } catch (error) {
-      if (attempt >= attempts) throw error;
+      if (error instanceof RepositoryRenamed || attempt >= attempts)
+        throw error;
       await onRetry(error, attempt);
       await pause(1000 * 2 ** (attempt - 1));
     }

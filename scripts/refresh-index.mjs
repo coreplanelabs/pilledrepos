@@ -17,6 +17,7 @@ import { parseRepository } from "../.server-dist/src/core.js";
 import { githubReader, verifySource, digest } from "./github-api.mjs";
 import {
   RepositoryRefused,
+  RepositoryRenamed,
   poolWithoutRefused,
   refusalStatus,
   refusedBound,
@@ -141,7 +142,8 @@ if (!state) {
 parseRegistry(state.registry);
 const pages = [],
   candidateCounts = new Map(),
-  refused = [];
+  refused = [],
+  renamed = [];
 let failures = 0;
 async function capture(repository) {
   const file = resolve(
@@ -202,8 +204,10 @@ async function capture(repository) {
           state.identities &&
           value.id !== state.identities[repository.toLowerCase()]
         )
-          throw new Error(
-            "Indexed repository identity changed; membership is preserved.",
+          throw new RepositoryRenamed(
+            repository,
+            state.identities[repository.toLowerCase()],
+            value.id,
           );
         if (!value.errors) await atomicJson(cache, value);
         return value;
@@ -235,8 +239,9 @@ async function capture(repository) {
         `${pages.length}/${state.expected} ${repository}: ${analyzeAi(report, state.registry).total} merges`,
       );
   } catch (e) {
-    if (e instanceof RepositoryRefused) {
-      refused.push({ repository: e.repository, status: e.status });
+    if (e instanceof RepositoryRefused || e instanceof RepositoryRenamed) {
+      const member = { repository: e.repository, status: e.status };
+      (e instanceof RepositoryRenamed ? renamed : refused).push(member);
       console.warn(e.message);
       return;
     }
@@ -259,17 +264,18 @@ await atomicJson(resolve(dir, "candidates.json"), {
   status: "Unverified automation; excluded from AI counts",
   candidates,
 });
-if (refused.length) {
-  if (refused.length > refusedBound(state.expected))
+const excluded = [...refused, ...renamed];
+if (excluded.length) {
+  if (excluded.length > refusedBound(state.expected))
     throw new Error(
-      `${refused.length} indexed repositories are unavailable (${refusedSummary(refused)}); that is a credential or provider fault, so the previous index stays active.`,
+      `${excluded.length} indexed repositories are unavailable (${refusedSummary(excluded)}); that is a credential or provider fault, so the previous index stays active.`,
     );
   console.warn(
-    `${refused.length} indexed repositories are unavailable (${refusedSummary(refused)}); publishing the other ${state.expected - refused.length}.`,
+    `${excluded.length} indexed repositories are unavailable (${refusedSummary(excluded)}); publishing the other ${state.expected - excluded.length}.`,
   );
 }
-const published = refused.length
-  ? poolWithoutRefused(state.selected, refused)
+const published = excluded.length
+  ? poolWithoutRefused(state.selected, excluded)
   : state.selected;
 if (failures || pages.length !== published.length)
   throw new Error(
@@ -303,6 +309,7 @@ const index = {
   selected: published,
   expected: published.length,
   refused,
+  renamed,
   complete: true,
   pages,
   history,
