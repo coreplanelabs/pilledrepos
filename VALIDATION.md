@@ -193,3 +193,23 @@ covers the refusal classification, the pool filter, and the 25 / one-percent bou
 A live unauthenticated probe confirmed the rho redirect target and both 404s. The
 nine failing runs' full failure lists were not retrievable, so further refused
 members may exist; the names and statuses in the next run's log are the check.
+
+Daily index member identity change (November 22, 2026): before the change, all
+nineteen scheduled "Daily index" runs from November 4 to November 22 failed. Each
+run threw `1 captures failed` for one member, feder-cr/invisible_dots, and
+published nothing, so the public dataset stayed on the November 3 capture. The
+member's indexed name now resolves to repository 850759104 (`oss-invisible/dots`),
+while the tracked row records 837911756 (`feder-cr/Jobs_Applier_AI_Agent`), so the
+identity guard threw a plain error, the retry loop repeated the identical answer,
+and the publish gate aborted the whole run. After the change, the guard throws
+`RepositoryRenamed`, the retry loop passes it straight on, the member is named and
+left out of that day's dataset with its catalog row, saved metrics, and history
+kept, and the other members publish. More than 25 exclusions or one percent of the
+cohort still stops the run. Proof: `test/repository-availability.test.mjs` covers
+the named exclusion, its message, and its pool filter;
+`test/capture-retry.test.mjs` proves the renamed member is not retried. A live
+GitHub read confirmed both repository ids. The full script-level reproducer needs a
+GitHub token and live reads, so it did not run here; the names and counts in the
+next scheduled run's log are the remaining check. The tracked catalog row still
+holds a name that belongs to another repository, so that row needs a data
+correction before the member returns to the dataset.

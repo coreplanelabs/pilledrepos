@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { GitHubReadError } from "../scripts/github-api.mjs";
 import {
   RepositoryRefused,
+  RepositoryRenamed,
   poolWithoutRefused,
   refusalStatus,
   refusedBound,
@@ -45,4 +46,23 @@ test("a refused member names the repository and the provider status", () => {
     refusedSummary([refused, new RepositoryRefused("PCA-SDS/operis", 404)]),
     "experientiallabs/experiential (404), PCA-SDS/operis (404)",
   );
+});
+
+test("a member whose indexed name now resolves to another repository is named and left out", () => {
+  const renamed = new RepositoryRenamed(
+    "feder-cr/invisible_dots",
+    837911756,
+    850759104,
+  );
+  assert.equal(renamed.repository, "feder-cr/invisible_dots");
+  assert.match(renamed.message, /850759104/);
+  assert.match(renamed.message, /837911756/);
+  assert.deepEqual(
+    poolWithoutRefused(
+      ["feder-cr/invisible_dots", "c/three"],
+      [{ repository: renamed.repository, status: renamed.status }],
+    ),
+    ["c/three"],
+  );
+  assert.equal(refusedSummary([renamed]), "feder-cr/invisible_dots (identity changed)");
 });

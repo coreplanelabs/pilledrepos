@@ -26,3 +26,18 @@ export function poolWithoutRefused(selected, refused) {
   const drop = new Set(refused.map((r) => r.repository.toLowerCase()));
   return selected.filter((name) => !drop.has(name.toLowerCase()));
 }
+
+/**
+ * The indexed name now resolves to a different repository, so a capture would
+ * attribute another repository's merges to this member. GitHub answers the same
+ * way on every attempt, so the retry loop must pass the exclusion straight on.
+ */
+export class RepositoryRenamed extends Error {
+  constructor(repository, indexedId, liveId) {
+    super(
+      `${repository}: the indexed name now resolves to repository ${liveId}, not the indexed ${indexedId}. The last published page is preserved.`,
+    );
+    this.repository = repository;
+    this.status = "identity changed";
+  }
+}
